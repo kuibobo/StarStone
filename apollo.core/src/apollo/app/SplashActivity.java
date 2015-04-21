@@ -13,7 +13,6 @@ import apollo.utils.ImageUtil;
 public class SplashActivity extends BaseActivity {
 
 	private AlphaAnimation mAnim = null;
-	private Bitmap mBitmap = null;
 	private ImageView mImage = null;
 	private Handler mHandler;
 
@@ -23,18 +22,20 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_splash);
+		super.setContentView(R.layout.activity_splash);
 
-		initViews();
-		initListener();
+		this.initViews();
+		this.initListener();
 
-		mImage.startAnimation(mAnim);
+		this.mImage.startAnimation(mAnim);
 	}
 	
 	private void initViews() {
-		this.mBitmap = ImageUtil.getResBitmap(this, R.drawable.bg_splash_logo);
+		Bitmap mBitmap = null;
+		
+		mBitmap = ImageUtil.getResBitmap(this, R.drawable.bg_splash_logo);
 		this.mImage = (ImageView) super.findViewById(R.id.iv_splash_logo);
-		this.mImage.setImageBitmap(this.mBitmap);
+		this.mImage.setImageBitmap(mBitmap);
 		
 		this.mAnim = new AlphaAnimation(0.5F, 1.0F);
 		this.mAnim.setDuration(2500L);
@@ -84,6 +85,6 @@ public class SplashActivity extends BaseActivity {
 	}
 	
 	private void startApp() {
-		finish();
+		super.finish();
 	}
 }
