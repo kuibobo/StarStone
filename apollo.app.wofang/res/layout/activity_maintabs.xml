@@ -18,27 +18,32 @@
         android:layout_height="40dip"
         android:background="#fff3f3f3"
         android:orientation="horizontal" >
+
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            
+            android:layout_width="wrap_content"
+            android:layout_height="40dip"
+            android:layout_weight="1.0" >
+            <apollo.widget.ColumnHorizontalScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                
+            </apollo.widget.ColumnHorizontalScrollView>
         </RelativeLayout>
         
-        <RelativeLayout 
+        <LinearLayout 
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <ImageView />
-        </RelativeLayout>
-    </LinearLayout>
+            android:layout_height="40dip">
+            <ImageView 
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/maintabs_bg_btn_add"
+                />
+        </LinearLayout>
+    </LinearLayout>     
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <android.support.v4.view.ViewPager 
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+    
 
 </LinearLayout>

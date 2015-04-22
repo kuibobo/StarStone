@@ -85,6 +85,7 @@ public class SplashActivity extends BaseActivity {
 	}
 	
 	private void startApp() {
+		ApolloApplication.app().startMainActivity(this);
 		super.finish();
 	}
 }
