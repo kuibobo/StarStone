@@ -13,4 +13,11 @@ public abstract class ApolloApplication extends Application {
 		return ApolloApplication.app;
 	}
 	
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		
+		ApolloApplication.app = this;
+		
+	}
 }
