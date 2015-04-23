@@ -10,20 +10,23 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.HorizontalScrollView;
-import android.widget.ListView;
 import android.widget.TextView;
 import apollo.app.BaseActivity;
 import apollo.app.wofang.R;
 import apollo.model.Section;
+import apollo.widget.HorizontalListView;
 
-public class MainTabActivity extends BaseActivity {
+public class MainActivity extends BaseActivity {
 	
 	class SectionAdapter extends BaseAdapter {
 
 		List<Section> mItems = new ArrayList<Section>();
 		LayoutInflater mInflater = null;
+		
+		int mSelectedIndex;
 		
 		class SectionViewHolder {
 			TextView sectionName;
@@ -31,7 +34,7 @@ public class MainTabActivity extends BaseActivity {
 		
 		public SectionAdapter(List<Section> items) {
 			this.mItems = items;
-			this.mInflater = LayoutInflater.from(MainTabActivity.this);
+			this.mInflater = LayoutInflater.from(MainActivity.this);
 		}
 		
 		@Override
@@ -48,14 +51,18 @@ public class MainTabActivity extends BaseActivity {
 		public long getItemId(int position) {
 			return ((Section) this.getItem(position)).getId();
 		}
-
+		
+		public void setSelectedIndex(int position) {
+			mSelectedIndex = position;
+		}
+		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			SectionViewHolder holder = null;
 			Section section = null;
 			
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_maintabs_section_list, null);
+				convertView = mInflater.inflate(R.layout.item_main_section_list, null);
 				
 				holder = new SectionViewHolder();
 				holder.sectionName = (TextView) convertView.findViewById(R.id.section_name);
@@ -63,6 +70,11 @@ public class MainTabActivity extends BaseActivity {
 			} else {
 				holder = (SectionViewHolder) convertView.getTag();
 			}
+			
+			if (position == this.mSelectedIndex)
+				convertView.setSelected(true);
+			else
+				convertView.setSelected(false);
 			
 			section = (Section) this.getItem(position);
 			holder.sectionName.setText(section.getName());
@@ -73,8 +85,7 @@ public class MainTabActivity extends BaseActivity {
 
 	private ViewPager mViewPager = null;
 	private View mView = null;
-	private ListView mSectionListView = null;
-	private HorizontalScrollView mScrollView = null;
+	private HorizontalListView mSectionListView = null;
 	private SectionAdapter mSectionAdapter = null;
 	
 	private List<Section> mSections = null;
@@ -83,14 +94,14 @@ public class MainTabActivity extends BaseActivity {
 	public static void startActivity(Context context) {
 		Intent intent = null;
 		
-		intent = new Intent(context, MainTabActivity.class);
+		intent = new Intent(context, MainActivity.class);
 		context.startActivity(intent);
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.activity_maintabs);
+		super.setContentView(R.layout.activity_main);
 		
 		this.mSections = new ArrayList<Section>();
 
@@ -112,9 +123,20 @@ public class MainTabActivity extends BaseActivity {
 	
 	private void initView() {
 		this.mSectionAdapter = new SectionAdapter(this.mSections);
-		this.mScrollView = (HorizontalScrollView) super.findViewById(R.id.scroll_view);
-		this.mSectionListView = (ListView) super.findViewById(R.id.section_list);
+		this.mSectionListView = (HorizontalListView) super.findViewById(R.id.section_list);
 		this.mSectionListView.setAdapter(this.mSectionAdapter);
+		this.mSectionListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				MainActivity.this.mSectionAdapter.setSelectedIndex(position);
+				MainActivity.this.mSectionAdapter.notifyDataSetChanged();
+			}
+			
+			
+		});
+		
 	}
 	
 	private void initListener() {

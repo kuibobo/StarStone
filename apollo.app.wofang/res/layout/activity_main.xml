@@ -10,7 +10,7 @@
         android:layout_height="44.0dip"
         >
         
-        
+         
     </RelativeLayout>
     
     <LinearLayout
@@ -23,17 +23,13 @@
             android:layout_width="wrap_content"
             android:layout_height="40dip"
             android:layout_weight="1.0" >
-            <HorizontalScrollView
-                android:id="@+id/scroll_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-                <ListView 
+            
+                <apollo.widget.HorizontalListView 
                     android:id="@+id/section_list"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    ></ListView>
-            </HorizontalScrollView>
+                    ></apollo.widget.HorizontalListView>
+             
         </RelativeLayout>
         
         <LinearLayout 
@@ -43,7 +39,7 @@
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/maintabs_bg_btn_add"
+                android:background="@drawable/main_bg_btn_add"
                 />
         </LinearLayout>
     </LinearLayout>     
