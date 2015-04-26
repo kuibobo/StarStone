@@ -1,5 +1,7 @@
 package apollo.app;
 
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,8 +39,19 @@ public class SplashActivity extends BaseActivity {
 		this.mImage = (ImageView) super.findViewById(R.id.iv_splash_logo);
 		this.mImage.setImageBitmap(mBitmap);
 		
+		ActivityInfo info = null;
+		long duration = 300L;
+
+		try {
+			info = this.getPackageManager().getActivityInfo(getComponentName(),
+					PackageManager.GET_META_DATA);
+			duration = Long.parseLong(info.metaData.getString("duration"));
+		} catch (Exception ex) {
+		}
+		
+
 		this.mAnim = new AlphaAnimation(0.5F, 1.0F);
-		this.mAnim.setDuration(2500L);
+		this.mAnim.setDuration(duration);
 	}
 	
 	private void initListener() {

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import apollo.app.BaseActivity;
 import apollo.app.wofang.R;
@@ -25,9 +25,7 @@ public class MainActivity extends BaseActivity {
 
 		List<Section> mItems = new ArrayList<Section>();
 		LayoutInflater mInflater = null;
-		
-		int mSelectedIndex;
-		
+				
 		class SectionViewHolder {
 			TextView sectionName;
 		}
@@ -52,9 +50,6 @@ public class MainActivity extends BaseActivity {
 			return ((Section) this.getItem(position)).getId();
 		}
 		
-		public void setSelectedIndex(int position) {
-			mSelectedIndex = position;
-		}
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -70,12 +65,7 @@ public class MainActivity extends BaseActivity {
 			} else {
 				holder = (SectionViewHolder) convertView.getTag();
 			}
-			
-			if (position == this.mSelectedIndex)
-				convertView.setSelected(true);
-			else
-				convertView.setSelected(false);
-			
+						
 			section = (Section) this.getItem(position);
 			holder.sectionName.setText(section.getName());
 			return convertView;
@@ -87,7 +77,7 @@ public class MainActivity extends BaseActivity {
 	private View mView = null;
 	private HorizontalListView mSectionListView = null;
 	private SectionAdapter mSectionAdapter = null;
-	
+	private ImageView mBtnSecitonAdd = null;
 	private List<Section> mSections = null;
 	
 		
@@ -109,7 +99,7 @@ public class MainActivity extends BaseActivity {
 		this.initListener();
 		
 		// test code
-		for(int i=0; i<10; i++) {
+		for(int i=0; i<20; i++) {
 			Section s = new Section();
 			s.setId(i);
 			s.setName("Section" + i);
@@ -122,6 +112,7 @@ public class MainActivity extends BaseActivity {
 	
 	
 	private void initView() {
+		this.mBtnSecitonAdd = (ImageView) super.findViewById(R.id.btn_section_add);
 		this.mSectionAdapter = new SectionAdapter(this.mSections);
 		this.mSectionListView = (HorizontalListView) super.findViewById(R.id.section_list);
 		this.mSectionListView.setAdapter(this.mSectionAdapter);
@@ -130,8 +121,10 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				MainActivity.this.mSectionAdapter.setSelectedIndex(position);
-				MainActivity.this.mSectionAdapter.notifyDataSetChanged();
+				//MainActivity.this.mSectionAdapter.setSelectedIndex(14);
+				//MainActivity.this.mSectionAdapter.notifyDataSetChanged();
+				
+				MainActivity.this.mSectionListView.setSelection(position);
 			}
 			
 			
@@ -140,6 +133,13 @@ public class MainActivity extends BaseActivity {
 	}
 	
 	private void initListener() {
-		
+		this.mBtnSecitonAdd.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				//MainActivity.this.mSectionListView.scrollTo(100);
+			}
+		});
 	}
 }

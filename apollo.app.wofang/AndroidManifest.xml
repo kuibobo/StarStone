@@ -6,6 +6,7 @@
   	    	<action android:name="android.intent.action.MAIN"/>
   	    	<category android:name="android.intent.category.LAUNCHER" />
   	    </intent-filter>
+  	    <meta-data android:name="duration" android:value="1200" />
   	</activity>
   	<activity android:name="apollo.app.wofang.home.MainActivity" />
   </application>
