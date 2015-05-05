@@ -3,6 +3,9 @@ package apollo.app.wofang.home;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.miscwidgets.widget.Panel;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.LinearLayout;
+ 
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import apollo.app.BaseActivity;
 import apollo.app.wofang.R;
@@ -57,7 +63,7 @@ public class MainActivity extends BaseActivity {
 			Section section = null;
 			
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_main_section_list, null);
+				convertView = mInflater.inflate(R.layout.item_list_main_section, null);
 				
 				holder = new SectionViewHolder();
 				holder.sectionName = (TextView) convertView.findViewById(R.id.section_name);
@@ -75,11 +81,13 @@ public class MainActivity extends BaseActivity {
 
 	private ViewPager mViewPager = null;
 	private View mView = null;
+	private LinearLayout mLayoutSections = null; 
+	private RelativeLayout mLayoutTop = null;
 	private HorizontalListView mSectionListView = null;
 	private SectionAdapter mSectionAdapter = null;
-	private ImageView mBtnSecitonAdd = null;
+	private Button mBtnSecitonAdd = null;
 	private List<Section> mSections = null;
-	
+	private Panel mSectionsPanel = null;
 		
 	public static void startActivity(Context context) {
 		Intent intent = null;
@@ -111,34 +119,50 @@ public class MainActivity extends BaseActivity {
 	}
 	
 	
+	@SuppressLint("InflateParams")
 	private void initView() {
-		this.mBtnSecitonAdd = (ImageView) super.findViewById(R.id.btn_section_add);
+		View view = null;
+		
+		view = super.getLayoutInflater().inflate(R.layout.item_layout_main_sections, null);
+		this.mSectionsPanel = (Panel) view.findViewById(R.id.layout_main_sections);
+		
+		this.mLayoutSections = (LinearLayout) super.findViewById(R.id.layout_sections);
+		this.mLayoutTop = (RelativeLayout) super.findViewById(R.id.layout_top);
+		//this.mLayoutTop.addView(this.mSectionsPanel);
+		
+		this.mBtnSecitonAdd = (Button) super.findViewById(R.id.btn_section_add);
 		this.mSectionAdapter = new SectionAdapter(this.mSections);
 		this.mSectionListView = (HorizontalListView) super.findViewById(R.id.section_list);
-		this.mSectionListView.setAdapter(this.mSectionAdapter);
+		this.mSectionListView.setAdapter(this.mSectionAdapter);		
+	
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+	 
+		this.addContentView(this.mSectionsPanel, params);
+	}
+	
+	private void initListener() {
 		this.mSectionListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				//MainActivity.this.mSectionAdapter.setSelectedIndex(14);
-				//MainActivity.this.mSectionAdapter.notifyDataSetChanged();
-				
 				MainActivity.this.mSectionListView.setSelection(position);
 			}
 			
 			
 		});
 		
-	}
-	
-	private void initListener() {
 		this.mBtnSecitonAdd.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				
-				//MainActivity.this.mSectionListView.scrollTo(100);
+				if (MainActivity.this.mSectionsPanel.isOpen()) {
+					MainActivity.this.mSectionsPanel.setOpen(false, false);
+				} else {
+					MainActivity.this.mSectionsPanel.setOpen(true, false);
+				}
 			}
 		});
 	}
