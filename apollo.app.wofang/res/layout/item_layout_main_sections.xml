@@ -30,6 +30,16 @@
             android:layout_height="wrap_content"
             android:text="Test3" />
         
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test4" />
+        
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test5" />
+        
     </LinearLayout>
 
 </org.miscwidgets.widget.Panel>

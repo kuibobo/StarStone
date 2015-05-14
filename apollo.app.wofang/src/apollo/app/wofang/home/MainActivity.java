@@ -82,7 +82,9 @@ public class MainActivity extends BaseActivity {
 	private ViewPager mViewPager = null;
 	private View mView = null;
 	private LinearLayout mLayoutSections = null; 
-	private RelativeLayout mLayoutTop = null;
+	private RelativeLayout mLayoutMain = null;
+	private RelativeLayout mLayoutBottom = null;
+	private LinearLayout mLayoutTop = null;
 	private HorizontalListView mSectionListView = null;
 	private SectionAdapter mSectionAdapter = null;
 	private Button mBtnSecitonAdd = null;
@@ -127,19 +129,22 @@ public class MainActivity extends BaseActivity {
 		this.mSectionsPanel = (Panel) view.findViewById(R.id.layout_main_sections);
 		
 		this.mLayoutSections = (LinearLayout) super.findViewById(R.id.layout_sections);
-		this.mLayoutTop = (RelativeLayout) super.findViewById(R.id.layout_top);
+		this.mLayoutTop = (LinearLayout) super.findViewById(R.id.layout_top);
+		this.mLayoutBottom =  (RelativeLayout) super.findViewById(R.id.layout_bottom);
 		//this.mLayoutTop.addView(this.mSectionsPanel);
 		
 		this.mBtnSecitonAdd = (Button) super.findViewById(R.id.btn_section_add);
 		this.mSectionAdapter = new SectionAdapter(this.mSections);
 		this.mSectionListView = (HorizontalListView) super.findViewById(R.id.section_list);
 		this.mSectionListView.setAdapter(this.mSectionAdapter);		
-	
+		
+		this.mLayoutMain = (RelativeLayout) super.findViewById(R.id.layout_main);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-	 
-		this.addContentView(this.mSectionsPanel, params);
+		//params.addRule(RelativeLayout.BELOW, R.id.layout_sections);
+		 
+		this.mLayoutBottom.addView(this.mSectionsPanel, params);
 	}
 	
 	private void initListener() {
@@ -159,9 +164,9 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				if (MainActivity.this.mSectionsPanel.isOpen()) {
-					MainActivity.this.mSectionsPanel.setOpen(false, false);
+					MainActivity.this.mSectionsPanel.setOpen(false, true);
 				} else {
-					MainActivity.this.mSectionsPanel.setOpen(true, false);
+					MainActivity.this.mSectionsPanel.setOpen(true, true);
 				}
 			}
 		});
