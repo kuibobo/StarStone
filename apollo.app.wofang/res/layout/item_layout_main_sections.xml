@@ -2,44 +2,55 @@
 <org.miscwidgets.widget.Panel xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:panel="http://schemas.android.com/apk/res/apollo.app.wofang"
     android:id="@+id/layout_main_sections"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     panel:animationDuration="1000"
-    panel:content="@+id/panel_content"
+    panel:content="@+id/view_content"
     panel:linearFlying="true"
     panel:position="top" >
 
-    <LinearLayout
-        android:id="@+id/panel_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+    <ScrollView
+        android:id="@+id/view_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test1" />
-        
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test2" />
-        
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test3" />
-        
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test4" />
-        
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test5" />
-        
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button2" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button3" />
+
+            <apollo.view.DragGridView
+                android:id="@+id/grid_current"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="4" />
+
+            <apollo.view.DragGridView
+                android:id="@+id/grid_source"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="4" />
+            
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button4" />
+        </LinearLayout>
+    </ScrollView>
 
 </org.miscwidgets.widget.Panel>

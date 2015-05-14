@@ -17,12 +17,12 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
- 
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import apollo.app.BaseActivity;
 import apollo.app.wofang.R;
 import apollo.model.Section;
+import apollo.view.DragGridView;
 import apollo.widget.HorizontalListView;
 
 public class MainActivity extends BaseActivity {
@@ -74,6 +74,7 @@ public class MainActivity extends BaseActivity {
 						
 			section = (Section) this.getItem(position);
 			holder.sectionName.setText(section.getName());
+			holder.sectionName.setTag(section);
 			return convertView;
 		}
 	}
@@ -86,11 +87,17 @@ public class MainActivity extends BaseActivity {
 	private RelativeLayout mLayoutBottom = null;
 	private LinearLayout mLayoutTop = null;
 	private HorizontalListView mSectionListView = null;
-	private SectionAdapter mSectionAdapter = null;
+	private SectionAdapter mSectionAdapterCurrent = null;
+	private SectionAdapter mSectionAdapterSource = null;
 	private Button mBtnSecitonAdd = null;
-	private List<Section> mSections = null;
+	
 	private Panel mSectionsPanel = null;
-		
+	private DragGridView mDragGridViewCurrent = null;
+	private DragGridView mDragGridViewSource = null;
+	
+	private List<Section> mSectionsCurrent = null;
+	private List<Section> mSectionsSource = null;
+	
 	public static void startActivity(Context context) {
 		Intent intent = null;
 		
@@ -103,20 +110,35 @@ public class MainActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.activity_main);
 		
-		this.mSections = new ArrayList<Section>();
 
+		this.mSectionsCurrent = new ArrayList<Section>();
+		this.mSectionsSource = new ArrayList<Section>();
+		
 		this.initView();
 		this.initListener();
 		
 		// test code
+		
+		for(int i=0; i<4; i++) {
+			Section s = new Section();
+			s.setId(i);
+			s.setName("Section" + i);
+			
+			this.mSectionsCurrent.add(s);
+		}
+		this.mSectionAdapterCurrent.notifyDataSetChanged();
+		// end test code
+		
+		// test code
+		
 		for(int i=0; i<20; i++) {
 			Section s = new Section();
 			s.setId(i);
 			s.setName("Section" + i);
 			
-			this.mSections.add(s);
+			this.mSectionsSource.add(s);
 		}
-		this.mSectionAdapter.notifyDataSetChanged();
+		this.mSectionAdapterSource.notifyDataSetChanged();
 		// end test code
 	}
 	
@@ -125,25 +147,30 @@ public class MainActivity extends BaseActivity {
 	private void initView() {
 		View view = null;
 		
+		this.mSectionAdapterCurrent = new SectionAdapter(this.mSectionsCurrent);
+		this.mSectionAdapterSource = new SectionAdapter(this.mSectionsSource);
+		
 		view = super.getLayoutInflater().inflate(R.layout.item_layout_main_sections, null);
 		this.mSectionsPanel = (Panel) view.findViewById(R.id.layout_main_sections);
+		this.mDragGridViewCurrent = (DragGridView) view.findViewById(R.id.grid_current);
+		this.mDragGridViewCurrent.setAdapter(this.mSectionAdapterCurrent);
+		
+		this.mDragGridViewSource = (DragGridView) view.findViewById(R.id.grid_source);
+		this.mDragGridViewSource.setAdapter(this.mSectionAdapterSource);
 		
 		this.mLayoutSections = (LinearLayout) super.findViewById(R.id.layout_sections);
 		this.mLayoutTop = (LinearLayout) super.findViewById(R.id.layout_top);
 		this.mLayoutBottom =  (RelativeLayout) super.findViewById(R.id.layout_bottom);
-		//this.mLayoutTop.addView(this.mSectionsPanel);
+ 
 		
 		this.mBtnSecitonAdd = (Button) super.findViewById(R.id.btn_section_add);
-		this.mSectionAdapter = new SectionAdapter(this.mSections);
 		this.mSectionListView = (HorizontalListView) super.findViewById(R.id.section_list);
-		this.mSectionListView.setAdapter(this.mSectionAdapter);		
+		this.mSectionListView.setAdapter(this.mSectionAdapterCurrent);		
 		
 		this.mLayoutMain = (RelativeLayout) super.findViewById(R.id.layout_main);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
-		//params.addRule(RelativeLayout.BELOW, R.id.layout_sections);
-		 
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT);
 		this.mLayoutBottom.addView(this.mSectionsPanel, params);
 	}
 	
@@ -169,6 +196,42 @@ public class MainActivity extends BaseActivity {
 					MainActivity.this.mSectionsPanel.setOpen(true, true);
 				}
 			}
+		});
+		
+		this.mDragGridViewCurrent.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				TextView textView = (TextView) view.findViewById(R.id.section_name);
+				Section section = (Section)textView.getTag();
+				
+				MainActivity.this.mSectionsCurrent.remove(section);
+				MainActivity.this.mSectionAdapterCurrent.notifyDataSetChanged();
+				
+				MainActivity.this.mSectionsSource.add(section);
+				MainActivity.this.mSectionAdapterSource.notifyDataSetChanged();
+			}
+			
+		});
+		
+		this.mDragGridViewSource.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				 
+				TextView textView = (TextView) view.findViewById(R.id.section_name);
+				Section section = (Section)textView.getTag();
+				
+				MainActivity.this.mSectionsCurrent.add(section);
+				MainActivity.this.mSectionAdapterCurrent.notifyDataSetChanged();
+				
+				MainActivity.this.mSectionsSource.remove(section);
+				MainActivity.this.mSectionAdapterSource.notifyDataSetChanged();
+			}
+			
+			
 		});
 	}
 }
