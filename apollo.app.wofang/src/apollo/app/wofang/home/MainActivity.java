@@ -9,10 +9,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -97,6 +99,17 @@ public class MainActivity extends BaseActivity {
 	
 	private List<Section> mSectionsCurrent = null;
 	private List<Section> mSectionsSource = null;
+	
+	private Runnable mMoveAnimation = new Runnable() {
+
+		@Override
+		public void run() {
+			TranslateAnimation animation;
+			int fromXDelta = 0, toXDelta = 0, fromYDelta = 0, toYDelta = 0;
+			
+		}
+		
+	};
 	
 	public static void startActivity(Context context) {
 		Intent intent = null;
@@ -211,6 +224,15 @@ public class MainActivity extends BaseActivity {
 				
 				MainActivity.this.mSectionsSource.add(section);
 				MainActivity.this.mSectionAdapterSource.notifyDataSetChanged();
+				
+				new Handler().post(new Runnable(){
+
+					@Override
+					public void run() {
+						 
+					}
+					
+				});
 			}
 			
 		});
@@ -234,4 +256,5 @@ public class MainActivity extends BaseActivity {
 			
 		});
 	}
+	
 }
