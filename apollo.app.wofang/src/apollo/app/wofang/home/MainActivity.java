@@ -39,7 +39,9 @@ public class MainActivity extends BaseActivity {
 
 		List<Section> mItems = new ArrayList<Section>();
 		LayoutInflater mInflater = null;
-				
+		
+		int mVisibility = View.VISIBLE;
+		
 		class SectionViewHolder {
 			TextView sectionName;
 		}
@@ -79,11 +81,29 @@ public class MainActivity extends BaseActivity {
 			} else {
 				holder = (SectionViewHolder) convertView.getTag();
 			}
-						
+			
+			if (position == (this.getCount() - 1)) {
+				convertView.setVisibility(this.mVisibility);
+			}
+			
 			section = (Section) this.getItem(position);
 			holder.sectionName.setText(section.getName());
 			holder.sectionName.setTag(section);
 			return convertView;
+		}
+		
+		public void addItem(Section s) {
+			this.mItems.add(s);
+			this.notifyDataSetChanged();
+		}
+		
+		public void removeItem(Section s) {
+			this.mItems.remove(s);
+			this.notifyDataSetChanged();
+		}
+		
+		public void setLastItemVisibility(int visibility) {
+			 this.mVisibility = visibility;
 		}
 	}
 	
@@ -158,6 +178,7 @@ public class MainActivity extends BaseActivity {
 		this.mSectionAdapterCurrent = new SectionAdapter(this.mSectionsCurrent);
 		this.mSectionAdapterSource = new SectionAdapter(this.mSectionsSource);
 		
+
 		view = super.getLayoutInflater().inflate(R.layout.item_layout_main_sections, null);
 		this.mSectionsPanel = (Panel) view.findViewById(R.id.layout_main_sections);
 		this.mDragGridViewCurrent = (DragGridView) view.findViewById(R.id.grid_current);
@@ -213,10 +234,10 @@ public class MainActivity extends BaseActivity {
 					int position, long id) {
 				final TextView textView = (TextView) view.findViewById(R.id.section_name);
 				final Section section = (Section)textView.getTag();
-				final ImageView img = getView(view);
+				final ImageView img = buildImageView(view);
 				
-				MainActivity.this.mSectionsSource.add(section);
-				MainActivity.this.mSectionAdapterSource.notifyDataSetChanged();
+				MainActivity.this.mSectionAdapterSource.addItem(section);
+				MainActivity.this.mSectionAdapterSource.setLastItemVisibility(View.GONE);
 				
 				new Handler().post(new Runnable(){
 
@@ -229,14 +250,10 @@ public class MainActivity extends BaseActivity {
 						textView.getLocationInWindow(location);
 						v = MainActivity.this.mDragGridViewSource.getChildAt(MainActivity.this.mDragGridViewSource.getLastVisiblePosition());
 						v.getLocationInWindow(target_location);
-						//v.setVisibility(View.GONE);
-						
-						img.setTag(v);
-						
-						MainActivity.this.doMoveAnimation(img, location[0], location[1], target_location[0], target_location[1]);
-						
-						MainActivity.this.mSectionsCurrent.remove(section);
-						MainActivity.this.mSectionAdapterCurrent.notifyDataSetChanged();
+												
+						MainActivity.this.doMoveAnimation(img, MainActivity.this.mDragGridViewSource, 
+								location[0], location[1], target_location[0], target_location[1]);						
+						MainActivity.this.mSectionAdapterCurrent.removeItem(section);
 					}
 					
 				});
@@ -248,23 +265,38 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				 
-				TextView textView = (TextView) view.findViewById(R.id.section_name);
-				Section section = (Section)textView.getTag();
+					int position, long id) {				
+				final TextView textView = (TextView) view.findViewById(R.id.section_name);
+				final Section section = (Section)textView.getTag();
+				final ImageView img = buildImageView(view);
 				
-				MainActivity.this.mSectionsCurrent.add(section);
-				MainActivity.this.mSectionAdapterCurrent.notifyDataSetChanged();
-				
-				MainActivity.this.mSectionsSource.remove(section);
-				MainActivity.this.mSectionAdapterSource.notifyDataSetChanged();
+				MainActivity.this.mSectionAdapterCurrent.addItem(section);
+				MainActivity.this.mSectionAdapterCurrent.setLastItemVisibility(View.GONE);
+				new Handler().post(new Runnable(){
+
+					@Override
+					public void run() {
+						View v = null;
+						int[] location = new int[2];
+						int[] target_location = new int[2];
+						
+						textView.getLocationInWindow(location);
+						v = MainActivity.this.mDragGridViewCurrent.getChildAt(MainActivity.this.mDragGridViewCurrent.getLastVisiblePosition());
+						v.getLocationInWindow(target_location);
+												
+						MainActivity.this.doMoveAnimation(img, MainActivity.this.mDragGridViewCurrent, 
+								location[0], location[1], target_location[0], target_location[1]);						
+						MainActivity.this.mSectionAdapterSource.removeItem(section);
+					}
+					
+				});
 			}
 			
 			
 		});
 	}
 	
-	private ImageView getView(View view) {
+	private ImageView buildImageView(View view) {
 		view.destroyDrawingCache();
 		view.setDrawingCacheEnabled(true);
 		Bitmap cache = Bitmap.createBitmap(view.getDrawingCache());
@@ -274,44 +306,28 @@ public class MainActivity extends BaseActivity {
 		return iv;
 	}
 	
-	private ViewGroup getMoveViewGroup() {
-		ViewGroup viewGrup = (ViewGroup) getWindow().getDecorView();
-		LinearLayout layout = new LinearLayout(this);
-		
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		viewGrup.addView(layout);
-		return layout;
-	}
 	
-	private View getMoveView(View view, int fromXDelta, int fromYDelta) {
-		ViewGroup viewGrup = (ViewGroup) getWindow().getDecorView();
-		LinearLayout layout = new LinearLayout(this);
-		
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		viewGrup.addView(layout);
-		layout.addView(view);
-		
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.leftMargin = fromXDelta;
-		params.topMargin = fromYDelta;
-		view.setLayoutParams(params);
-		return view;
-	}
-	
-	private void doMoveAnimation(final View view, int fromXDelta, int fromYDelta, int toXDelta, int toYDelta) {
+	private void doMoveAnimation(final View view, final DragGridView gridView, int fromXDelta, int fromYDelta, 
+									int toXDelta, int toYDelta) {
 		TranslateAnimation animation = null;
 		AnimationSet animationSet = null;
-		int calculatedDuration;
-		int[] initLocation = new int[2];
+		ViewGroup group = null;
+		LinearLayout layout = null;
+		LinearLayout.LayoutParams params = null;
+ 
 		
-		view.getLocationInWindow(initLocation);
-		final View moveView = getMoveView(view, initLocation[0], initLocation[1]);
+		params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		view.setLayoutParams(params);
 		
-		calculatedDuration = (int) (1000 * Math.abs((toYDelta - fromYDelta) / 20));
-		calculatedDuration = Math.max(calculatedDuration, 20);
+		layout = new LinearLayout(this);
+		layout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		layout.addView(view);
+		
+		group = (ViewGroup) getWindow().getDecorView();
+		group.addView(layout);
+
 		
 		animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
-		animation.setDuration(calculatedDuration);
 		animation.setDuration(300L);
 		
 		animationSet = new AnimationSet(true);
@@ -324,7 +340,9 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				((View) view.getTag()).setVisibility(View.VISIBLE);
+				SectionAdapter adapter = (SectionAdapter) gridView.getAdapter();
+				adapter.setLastItemVisibility(View.VISIBLE);
+				adapter.notifyDataSetChanged();
 			}
 
 			@Override
@@ -336,6 +354,6 @@ public class MainActivity extends BaseActivity {
 		animationSet.setFillAfter(false);//动画效果执行完毕后，View对象不保留在终止的位置
 		animationSet.addAnimation(animation);
 		 
-		moveView.startAnimation(animationSet);
+		view.startAnimation(animationSet);
 	}
 }
