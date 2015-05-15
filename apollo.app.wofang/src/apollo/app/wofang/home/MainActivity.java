@@ -8,16 +8,22 @@ import org.miscwidgets.widget.Panel;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -99,18 +105,7 @@ public class MainActivity extends BaseActivity {
 	
 	private List<Section> mSectionsCurrent = null;
 	private List<Section> mSectionsSource = null;
-	
-	private Runnable mMoveAnimation = new Runnable() {
-
-		@Override
-		public void run() {
-			TranslateAnimation animation;
-			int fromXDelta = 0, toXDelta = 0, fromYDelta = 0, toYDelta = 0;
-			
-		}
 		
-	};
-	
 	public static void startActivity(Context context) {
 		Intent intent = null;
 		
@@ -216,11 +211,9 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				TextView textView = (TextView) view.findViewById(R.id.section_name);
-				Section section = (Section)textView.getTag();
-				
-				MainActivity.this.mSectionsCurrent.remove(section);
-				MainActivity.this.mSectionAdapterCurrent.notifyDataSetChanged();
+				final TextView textView = (TextView) view.findViewById(R.id.section_name);
+				final Section section = (Section)textView.getTag();
+				final ImageView img = getView(view);
 				
 				MainActivity.this.mSectionsSource.add(section);
 				MainActivity.this.mSectionAdapterSource.notifyDataSetChanged();
@@ -229,7 +222,21 @@ public class MainActivity extends BaseActivity {
 
 					@Override
 					public void run() {
-						 
+						View v = null;
+						int[] location = new int[2];
+						int[] target_location = new int[2];
+						
+						textView.getLocationInWindow(location);
+						v = MainActivity.this.mDragGridViewSource.getChildAt(MainActivity.this.mDragGridViewSource.getLastVisiblePosition());
+						v.getLocationInWindow(target_location);
+						//v.setVisibility(View.GONE);
+						
+						img.setTag(v);
+						
+						MainActivity.this.doMoveAnimation(img, location[0], location[1], target_location[0], target_location[1]);
+						
+						MainActivity.this.mSectionsCurrent.remove(section);
+						MainActivity.this.mSectionAdapterCurrent.notifyDataSetChanged();
 					}
 					
 				});
@@ -257,4 +264,78 @@ public class MainActivity extends BaseActivity {
 		});
 	}
 	
+	private ImageView getView(View view) {
+		view.destroyDrawingCache();
+		view.setDrawingCacheEnabled(true);
+		Bitmap cache = Bitmap.createBitmap(view.getDrawingCache());
+		view.setDrawingCacheEnabled(false);
+		ImageView iv = new ImageView(this);
+		iv.setImageBitmap(cache);
+		return iv;
+	}
+	
+	private ViewGroup getMoveViewGroup() {
+		ViewGroup viewGrup = (ViewGroup) getWindow().getDecorView();
+		LinearLayout layout = new LinearLayout(this);
+		
+		layout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		viewGrup.addView(layout);
+		return layout;
+	}
+	
+	private View getMoveView(View view, int fromXDelta, int fromYDelta) {
+		ViewGroup viewGrup = (ViewGroup) getWindow().getDecorView();
+		LinearLayout layout = new LinearLayout(this);
+		
+		layout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		viewGrup.addView(layout);
+		layout.addView(view);
+		
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.leftMargin = fromXDelta;
+		params.topMargin = fromYDelta;
+		view.setLayoutParams(params);
+		return view;
+	}
+	
+	private void doMoveAnimation(final View view, int fromXDelta, int fromYDelta, int toXDelta, int toYDelta) {
+		TranslateAnimation animation = null;
+		AnimationSet animationSet = null;
+		int calculatedDuration;
+		int[] initLocation = new int[2];
+		
+		view.getLocationInWindow(initLocation);
+		final View moveView = getMoveView(view, initLocation[0], initLocation[1]);
+		
+		calculatedDuration = (int) (1000 * Math.abs((toYDelta - fromYDelta) / 20));
+		calculatedDuration = Math.max(calculatedDuration, 20);
+		
+		animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
+		animation.setDuration(calculatedDuration);
+		animation.setDuration(300L);
+		
+		animationSet = new AnimationSet(true);
+		animationSet.setAnimationListener(new AnimationListener(){
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				((View) view.getTag()).setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			
+		});
+		
+		animationSet.setFillAfter(false);//动画效果执行完毕后，View对象不保留在终止的位置
+		animationSet.addAnimation(animation);
+		 
+		moveView.startAnimation(animationSet);
+	}
 }
