@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -21,7 +20,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,82 +28,11 @@ import android.widget.TextView;
 import apollo.app.BaseActivity;
 import apollo.app.wofang.R;
 import apollo.model.Section;
+import apollo.view.DragAdapter;
 import apollo.view.DragGridView;
 import apollo.widget.HorizontalListView;
 
 public class MainActivity extends BaseActivity {
-	
-	class SectionAdapter extends BaseAdapter {
-
-		List<Section> mItems = new ArrayList<Section>();
-		LayoutInflater mInflater = null;
-		
-		int mVisibility = View.VISIBLE;
-		
-		class SectionViewHolder {
-			TextView sectionName;
-		}
-		
-		public SectionAdapter(List<Section> items) {
-			this.mItems = items;
-			this.mInflater = LayoutInflater.from(MainActivity.this);
-		}
-		
-		@Override
-		public int getCount() {
-			return this.mItems.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return this.mItems.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return ((Section) this.getItem(position)).getId();
-		}
-		
-		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			SectionViewHolder holder = null;
-			Section section = null;
-			
-			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_list_main_section, null);
-				
-				holder = new SectionViewHolder();
-				holder.sectionName = (TextView) convertView.findViewById(R.id.section_name);
-				convertView.setTag(holder);
-			} else {
-				holder = (SectionViewHolder) convertView.getTag();
-			}
-			
-			if (position == (this.getCount() - 1)) {
-				convertView.setVisibility(this.mVisibility);
-			}
-			
-			section = (Section) this.getItem(position);
-			holder.sectionName.setText(section.getName());
-			holder.sectionName.setTag(section);
-			return convertView;
-		}
-		
-		public void addItem(Section s) {
-			this.mItems.add(s);
-			this.notifyDataSetChanged();
-		}
-		
-		public void removeItem(Section s) {
-			this.mItems.remove(s);
-			this.notifyDataSetChanged();
-		}
-		
-		public void setLastItemVisibility(int visibility) {
-			 this.mVisibility = visibility;
-		}
-	}
 	
 
 	private ViewPager mViewPager = null;
@@ -115,8 +42,8 @@ public class MainActivity extends BaseActivity {
 	private RelativeLayout mLayoutBottom = null;
 	private LinearLayout mLayoutTop = null;
 	private HorizontalListView mSectionListView = null;
-	private SectionAdapter mSectionAdapterCurrent = null;
-	private SectionAdapter mSectionAdapterSource = null;
+	private DragAdapter mSectionAdapterCurrent = null;
+	private DragAdapter mSectionAdapterSource = null;
 	private Button mBtnSecitonAdd = null;
 	
 	private Panel mSectionsPanel = null;
@@ -175,8 +102,8 @@ public class MainActivity extends BaseActivity {
 	private void initView() {
 		View view = null;
 		
-		this.mSectionAdapterCurrent = new SectionAdapter(this.mSectionsCurrent);
-		this.mSectionAdapterSource = new SectionAdapter(this.mSectionsSource);
+		this.mSectionAdapterCurrent = new DragAdapter(this, this.mSectionsCurrent);
+		this.mSectionAdapterSource = new DragAdapter(this, this.mSectionsSource);
 		
 
 		view = super.getLayoutInflater().inflate(R.layout.item_layout_main_sections, null);
@@ -340,7 +267,7 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				SectionAdapter adapter = (SectionAdapter) gridView.getAdapter();
+				DragAdapter adapter = (DragAdapter) gridView.getAdapter();
 				adapter.setLastItemVisibility(View.VISIBLE);
 				adapter.notifyDataSetChanged();
 			}
