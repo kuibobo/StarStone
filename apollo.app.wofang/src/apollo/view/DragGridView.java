@@ -5,11 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -155,8 +156,8 @@ public class DragGridView extends GridView {
 	}
 	
 	private void onMove(int x, int y) {
-		if (mIsMoving == true)
-			return;
+		//if (mIsMoving == true)
+		//	return;
 		
 		mIsMoving = true;
 		// 当前滑动经过的的Item的position 
@@ -169,18 +170,72 @@ public class DragGridView extends GridView {
 			return;
 		}
 		
-		View view = null;
-		DragAdapter adapter = null;
-		
-		view = getChildAt(this.mCurrentItemPosition);
-		view.setVisibility(View.INVISIBLE);
-		
 		move_items = Math.abs(move_items);
 		
-		adapter = (DragAdapter) getAdapter();
-		adapter.swap(this.mCurrentItemPosition, moveOverPosition);
-		this.mCurrentItemPosition = moveOverPosition;
-		mIsMoving = false;
+		for (int i = 0; i < move_items; i++) {
+			TranslateAnimation animation = null;
+			View move_item_view = null;
+			View prev_item_view = null;
+			int[] move_item_location = new int[2];
+			int[] prev_item_location = new int[2];
+			int move_item_position = 0;
+			int prev_item_position = 0;
+			int fromXDelta; int fromYDelta; 
+			int toXDelta; int toYDelta;
+			
+			if ( this.mCurrentItemPosition > moveOverPosition ) {
+				move_item_position = this.mCurrentItemPosition - i - 1;
+				prev_item_position = move_item_position + 1;
+			} else {
+				move_item_position = this.mCurrentItemPosition + i + 1;
+				prev_item_position = move_item_position - 1;
+			}
+			
+			move_item_view = getChildAt(move_item_position);
+			move_item_view.getLocationInWindow(move_item_location);
+			
+			prev_item_view = getChildAt(prev_item_position);
+			prev_item_view.getLocationInWindow(prev_item_location);
+			
+			fromXDelta = 0;
+			fromYDelta = 0;
+			
+			toXDelta = prev_item_location[0] - move_item_location[0];
+			toYDelta = prev_item_location[1] - move_item_location[1];
+			
+			animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
+			animation.setDuration(300L);
+			animation.setFillAfter(true);
+			animation.setAnimationListener(new Animation.AnimationListener(){
+
+				@Override
+				public void onAnimationStart(Animation animation) {
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+				}
+				
+			});
+			
+			move_item_view.startAnimation(animation);
+		}
+//		//View view = null;
+//		DragAdapter adapter = null;
+//		
+//		//view = getChildAt(this.mCurrentItemPosition);
+//		//view.setVisibility(View.INVISIBLE);
+//		
+//		move_items = Math.abs(move_items);
+//		
+//		adapter = (DragAdapter) getAdapter();
+//		adapter.swap(this.mCurrentItemPosition, moveOverPosition);
+//		this.mCurrentItemPosition = moveOverPosition;
+//		mIsMoving = false;
 	}
 	
 	private void onDrag(int x, int y) {

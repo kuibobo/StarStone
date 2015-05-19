@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity {
 		
 		// test code
 		
-		for(int i=0; i<4; i++) {
+		for(int i=0; i<20; i++) {
 			Section s = new Section();
 			s.setId(i);
 			s.setName("Section" + i);
@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity {
 		
 		// test code
 		
-		for(int i=0; i<20; i++) {
+		for(int i=0; i<4; i++) {
 			Section s = new Section();
 			s.setId(i);
 			s.setName("Section" + i);
