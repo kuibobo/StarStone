@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="animationDuration" format="integer" />
     <declare-styleable name="Panel">
         <!-- Defines panel animation duration in ms. -->
-        <attr name="animationDuration" format="integer" />
+        <attr name="animationDuration"/>
         <!-- Defines panel position on the screen. -->
         <attr name="position">
         	<!-- Panel placed at top of the screen. -->
@@ -26,5 +27,12 @@
         <attr name="openedHandle" format="reference|color" />
         <!-- Defines closed handle (drawable/color). -->
         <attr name="closedHandle" format="reference|color" />
+    </declare-styleable>
+    
+    <declare-styleable name="DragGridView">
+       <attr name="animationDuration"/>
+       
+       <attr name="dragEnable" format="boolean" />
+       
     </declare-styleable>
 </resources>

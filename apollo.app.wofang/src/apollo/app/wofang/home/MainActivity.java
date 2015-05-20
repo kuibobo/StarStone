@@ -159,31 +159,31 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-//				final TextView textView = (TextView) view.findViewById(R.id.section_name);
-//				final Section section = (Section)textView.getTag();
-//				final ImageView img = buildImageView(view);
-//				
-//				MainActivity.this.mSectionAdapterSource.addItem(section);
-//				MainActivity.this.mSectionAdapterSource.setLastItemVisibility(View.GONE);
-//				
-//				new Handler().post(new Runnable(){
-//
-//					@Override
-//					public void run() {
-//						View v = null;
-//						int[] location = new int[2];
-//						int[] target_location = new int[2];
-//						
-//						textView.getLocationInWindow(location);
-//						v = MainActivity.this.mDragGridViewSource.getChildAt(MainActivity.this.mDragGridViewSource.getLastVisiblePosition());
-//						v.getLocationInWindow(target_location);
-//												
-//						MainActivity.this.doMoveAnimation(img, MainActivity.this.mDragGridViewSource, 
-//								location[0], location[1], target_location[0], target_location[1]);						
-//						MainActivity.this.mSectionAdapterCurrent.removeItem(section);
-//					}
-//					
-//				});
+				final TextView textView = (TextView) view.findViewById(R.id.section_name);
+				final Section section = (Section)textView.getTag();
+				final ImageView img = buildImageView(view);
+				
+				MainActivity.this.mSectionAdapterSource.addItem(section);
+				MainActivity.this.mSectionAdapterSource.setLastItemVisibility(View.GONE);
+				
+				new Handler().post(new Runnable(){
+
+					@Override
+					public void run() {
+						View v = null;
+						int[] location = new int[2];
+						int[] target_location = new int[2];
+						
+						textView.getLocationInWindow(location);
+						v = MainActivity.this.mDragGridViewSource.getChildAt(MainActivity.this.mDragGridViewSource.getLastVisiblePosition());
+						v.getLocationInWindow(target_location);
+												
+						MainActivity.this.doMoveAnimation(img, MainActivity.this.mDragGridViewSource, 
+								location[0], location[1], target_location[0], target_location[1]);						
+						MainActivity.this.mSectionAdapterCurrent.removeItem(section);
+					}
+					
+				});
 			}
 			
 		});

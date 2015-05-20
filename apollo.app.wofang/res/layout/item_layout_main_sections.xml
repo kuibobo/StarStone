@@ -20,37 +20,28 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button1" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button2" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button3" />
-
             <apollo.view.DragGridView
+                xmlns:draggridview="http://schemas.android.com/apk/res/apollo.app.wofang"
+                draggridview:animationDuration="300"
                 android:id="@+id/grid_current"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:listSelector="@android:color/transparent"
+                android:horizontalSpacing="14dip"
+                android:verticalSpacing="14dip"
                 android:numColumns="4" />
 
             <apollo.view.DragGridView
+                xmlns:draggridview="http://schemas.android.com/apk/res/apollo.app.wofang"
+                draggridview:dragEnable="false"
                 android:id="@+id/grid_source"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:listSelector="@android:color/transparent"
+                android:horizontalSpacing="14dip"
+                android:verticalSpacing="14dip"
                 android:numColumns="4" />
-            
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button4" />
+
         </LinearLayout>
     </ScrollView>
 

@@ -54,7 +54,7 @@ public class DragAdapter extends BaseAdapter {
 		Section section = null;
 		
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_list_main_section, null);
+			convertView = mInflater.inflate(R.layout.item_grid_main_section, null);
 			
 			holder = new SectionViewHolder();
 			holder.sectionName = (TextView) convertView.findViewById(R.id.section_name);

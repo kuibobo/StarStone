@@ -1,6 +1,7 @@
 package apollo.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Vibrator;
@@ -14,6 +15,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import apollo.app.wofang.R;
 
 public class DragGridView extends GridView {
 
@@ -23,8 +25,10 @@ public class DragGridView extends GridView {
 	private int mPoint2ItemOffsetLeft;
 	private int mOffsetTop;
 	private int mOffsetLeft;
-	private boolean mIsMoving;
+	private int mDuration;
 	
+	private boolean mIsMoving;
+	private boolean mDragEnable;
 	/** WindowManager管理器 */
 	private WindowManager mWindowManager;
 	
@@ -42,23 +46,15 @@ public class DragGridView extends GridView {
 	
 	private WindowManager.LayoutParams mDragViewLayoutParams;
 	
-	public DragGridView(Context context) {
-		super(context);
-		
-		this.mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-		this.mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-	}
 	
 	public DragGridView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		this.mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-		this.mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-	}
-	
-	public DragGridView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DragGridView);
+		
+		this.mDuration = a.getInteger(R.styleable.DragGridView_animationDuration, 750);	
+		this.mDragEnable = a.getBoolean(R.styleable.DragGridView_dragEnable, true);
+		
 		this.mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		this.mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 	}
@@ -84,6 +80,10 @@ public class DragGridView extends GridView {
 	public boolean onInterceptTouchEvent(final MotionEvent ev) {
 		switch(ev.getAction()) {
 		case MotionEvent.ACTION_DOWN:
+			
+			if (this.mDragEnable == false)
+				break;
+			
 			this.mDownX = (int)ev.getX();
 			this.mDownY = (int)ev.getY();
 			
@@ -96,6 +96,7 @@ public class DragGridView extends GridView {
 					
 					mCurrentItemPosition = position;//pointToPosition(mDownX, mDownY);
 					mCurrentItemView = getChildAt(mCurrentItemPosition - getFirstVisiblePosition());
+					mCurrentItemView.setSelected(true);
 					
 					// 获得当前 point 到 item的偏移量
 					mPoint2ItemOffsetLeft = mDownX - mCurrentItemView.getLeft();
@@ -212,7 +213,7 @@ public class DragGridView extends GridView {
 			toYDelta = prev_item_location[1] - move_item_location[1];
 			
 			animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
-			animation.setDuration(3000L);
+			animation.setDuration(mDuration);
 			//animation.setFillAfter(true);
 			if (move_item_position == mMoveOverPosition) {
 				this.mLastAnimation = animation.toString();
