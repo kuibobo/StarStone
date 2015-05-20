@@ -114,9 +114,9 @@ public class DragGridView extends GridView {
 					
 					mIsMoving = false;
 					
-					//adapter.setSelectedItemPosition(position);
-					//adapter.setSelectedItemVisibility(View.GONE);
-					//adapter.notifyDataSetChanged();
+					adapter.setSelectedItemPosition(position);
+					adapter.setSelectedItemVisibility(View.GONE);
+					adapter.notifyDataSetChanged();
 					
 					startDrag(mDragBmp, 
 							mDownX - mPoint2ItemOffsetLeft + mOffsetLeft,  
@@ -155,21 +155,29 @@ public class DragGridView extends GridView {
 		return super.onTouchEvent(ev);
 	}
 	
+	private String mLastAnimation;
+	private int mMoveOverPosition;
+	
 	private void onMove(int x, int y) {
-		//if (mIsMoving == true)
-		//	return;
+		if (mIsMoving == true)
+			return;
 		
 		mIsMoving = true;
 		// 当前滑动经过的的Item的position 
-		int moveOverPosition = pointToPosition(x, y);
+		mMoveOverPosition = pointToPosition(x, y);
+		if (mMoveOverPosition == -1) {
+			mIsMoving = false;
+			return;
+		}
+		
 		// 需要移动的个数
-		int move_items = this.mCurrentItemPosition - moveOverPosition;
+		int move_items = this.mCurrentItemPosition - mMoveOverPosition;
 		
 		if (move_items == 0) {
 			mIsMoving = false;
 			return;
 		}
-		
+
 		move_items = Math.abs(move_items);
 		
 		for (int i = 0; i < move_items; i++) {
@@ -183,7 +191,7 @@ public class DragGridView extends GridView {
 			int fromXDelta; int fromYDelta; 
 			int toXDelta; int toYDelta;
 			
-			if ( this.mCurrentItemPosition > moveOverPosition ) {
+			if ( this.mCurrentItemPosition > mMoveOverPosition ) {
 				move_item_position = this.mCurrentItemPosition - i - 1;
 				prev_item_position = move_item_position + 1;
 			} else {
@@ -204,16 +212,28 @@ public class DragGridView extends GridView {
 			toYDelta = prev_item_location[1] - move_item_location[1];
 			
 			animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
-			animation.setDuration(300L);
-			animation.setFillAfter(true);
+			animation.setDuration(3000L);
+			//animation.setFillAfter(true);
+			if (move_item_position == mMoveOverPosition) {
+				this.mLastAnimation = animation.toString();
+			}
 			animation.setAnimationListener(new Animation.AnimationListener(){
 
 				@Override
 				public void onAnimationStart(Animation animation) {
+					mIsMoving = true;
 				}
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
+					if (animation.toString().equals(mLastAnimation)) {
+						DragAdapter adapter = null;
+						adapter = (DragAdapter) getAdapter();
+						adapter.swap(mCurrentItemPosition, mMoveOverPosition);
+						
+						mCurrentItemPosition = mMoveOverPosition;
+						mIsMoving = false;
+					}
 				}
 
 				@Override

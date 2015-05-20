@@ -62,14 +62,15 @@ public class DragAdapter extends BaseAdapter {
 		} else {
 			holder = (SectionViewHolder) convertView.getTag();
 		}
+		convertView.setVisibility(View.VISIBLE);
 		
 		if (position == (this.getCount() - 1)) {
 			convertView.setVisibility(this.mLastItemVisibility);
 		}
 		
-		//if (position == this.mSelectedItemPosition) {
-		//	convertView.setVisibility(this.mSelectedItemVisibility);
-		//}
+		if (position == this.mSelectedItemPosition) {
+			convertView.setVisibility(this.mSelectedItemVisibility);
+		}
 		
 		section = (Section) this.getItem(position);
 		holder.sectionName.setText(section.getName());
@@ -80,7 +81,7 @@ public class DragAdapter extends BaseAdapter {
 	public void swap(int index1, int index2) {
 		Section s = (Section) getItem(index1);
 		
-		Log.i("ifo", "1:" + index1 + "_2:" + index2);
+		this.mSelectedItemPosition = index2;
 		if (index1 < index2) {
 			this.mItems.add(index2 + 1, s);
 			this.mItems.remove(index1);
@@ -88,7 +89,6 @@ public class DragAdapter extends BaseAdapter {
 			this.mItems.add(index2, s);
 			this.mItems.remove(index1 + 1);
 		}
-		//isChanged = true;
 		notifyDataSetChanged();
 	}
 	
