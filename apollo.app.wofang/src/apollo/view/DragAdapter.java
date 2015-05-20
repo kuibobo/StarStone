@@ -62,6 +62,11 @@ public class DragAdapter extends BaseAdapter {
 		} else {
 			holder = (SectionViewHolder) convertView.getTag();
 		}
+
+		section = (Section) this.getItem(position);
+		holder.sectionName.setText(section.getName());
+		holder.sectionName.setTag(section);
+		
 		convertView.setVisibility(View.VISIBLE);
 		
 		if (position == (this.getCount() - 1)) {
@@ -72,9 +77,6 @@ public class DragAdapter extends BaseAdapter {
 			convertView.setVisibility(this.mSelectedItemVisibility);
 		}
 		
-		section = (Section) this.getItem(position);
-		holder.sectionName.setText(section.getName());
-		holder.sectionName.setTag(section);
 		return convertView;
 	}
 	

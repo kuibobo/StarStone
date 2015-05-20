@@ -214,7 +214,6 @@ public class DragGridView extends GridView {
 			
 			animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
 			animation.setDuration(mDuration);
-			//animation.setFillAfter(true);
 			if (move_item_position == mMoveOverPosition) {
 				this.mLastAnimation = animation.toString();
 			}
@@ -229,12 +228,19 @@ public class DragGridView extends GridView {
 				public void onAnimationEnd(Animation animation) {
 					if (animation.toString().equals(mLastAnimation)) {
 						DragAdapter adapter = null;
+						View view = null;
+						
 						adapter = (DragAdapter) getAdapter();
+						view = getChildAt(mCurrentItemPosition);
+						view.setVisibility(View.GONE);
+						
 						adapter.swap(mCurrentItemPosition, mMoveOverPosition);
 						
 						mCurrentItemPosition = mMoveOverPosition;
 						mIsMoving = false;
 					}
+					
+					
 				}
 
 				@Override
@@ -245,18 +251,6 @@ public class DragGridView extends GridView {
 			
 			move_item_view.startAnimation(animation);
 		}
-//		//View view = null;
-//		DragAdapter adapter = null;
-//		
-//		//view = getChildAt(this.mCurrentItemPosition);
-//		//view.setVisibility(View.INVISIBLE);
-//		
-//		move_items = Math.abs(move_items);
-//		
-//		adapter = (DragAdapter) getAdapter();
-//		adapter.swap(this.mCurrentItemPosition, moveOverPosition);
-//		this.mCurrentItemPosition = moveOverPosition;
-//		mIsMoving = false;
 	}
 	
 	private void onDrag(int x, int y) {
@@ -275,7 +269,6 @@ public class DragGridView extends GridView {
 	}
 	
 	private void onDrop(int x, int y) {
-		//int position = pointToPosition(x, y);
 		DragAdapter adapter = (DragAdapter) this.getAdapter();
 		
 		adapter.setSelectedItemPosition(mCurrentItemPosition);
