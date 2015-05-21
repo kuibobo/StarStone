@@ -1,30 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.miscwidgets.widget.Panel xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:panel="http://schemas.android.com/apk/res/apollo.app.wofang"
-    android:id="@+id/layout_main_sections"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    panel:animationDuration="1000"
-    panel:content="@+id/view_content"
-    panel:linearFlying="true"
-    panel:position="top" >
+    android:layout_height="match_parent" >
 
     <ScrollView
-        android:id="@+id/view_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/subscribe_main_layout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingBottom="14.0dip" >
 
             <apollo.view.DragGridView
                 xmlns:draggridview="http://schemas.android.com/apk/res/apollo.app.wofang"
-                draggridview:animationDuration="3000"
                 android:id="@+id/grid_current"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dip"
                 android:layout_marginRight="14dip"
@@ -34,13 +27,13 @@
                 android:numColumns="4"
                 android:scrollbars="vertical"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="14.0px" />
+                android:verticalSpacing="14.0px"
+                draggridview:animationDuration="3000" />
 
             <apollo.view.DragGridView
                 xmlns:draggridview="http://schemas.android.com/apk/res/apollo.app.wofang"
-                draggridview:dragEnable="false"
                 android:id="@+id/grid_source"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dip"
                 android:layout_marginRight="14dip"
@@ -50,9 +43,9 @@
                 android:numColumns="4"
                 android:scrollbars="vertical"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="14.0px" />
-
+                android:verticalSpacing="14.0px"
+                draggridview:dragEnable="false" />
         </LinearLayout>
     </ScrollView>
 
-</org.miscwidgets.widget.Panel>
+</RelativeLayout>

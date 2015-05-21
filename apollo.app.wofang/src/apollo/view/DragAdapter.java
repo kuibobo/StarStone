@@ -76,7 +76,7 @@ public class DragAdapter extends BaseAdapter {
 		if (position == this.mSelectedItemPosition) {
 			convertView.setVisibility(this.mSelectedItemVisibility);
 		}
-		
+		Log.i("Info", section.getName());
 		return convertView;
 	}
 	

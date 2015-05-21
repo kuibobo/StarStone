@@ -66,9 +66,7 @@
         android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_sections"
-        android:layout_weight="1.0" >
-
+        android:layout_below="@id/layout_sections" >
     </RelativeLayout>
 
 </RelativeLayout>

@@ -105,18 +105,13 @@ public class DragGridView extends GridView {
 	
 	@Override
 	public boolean onInterceptTouchEvent(final MotionEvent ev) {
-		switch(ev.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			
-			if (this.mDragEnable == false)
-				break;
+		if (this.mDragEnable == true && ev.getAction() == MotionEvent.ACTION_DOWN) {
 			
 			this.mDownX = (int)ev.getX();
 			this.mDownY = (int)ev.getY();
 			
-			mCurrentItemPosition = pointToPosition(mDownX, mDownY);
+			this.mCurrentItemPosition = pointToPosition(mDownX, mDownY);
 			this.setOnItemLongClickListener(new OnItemLongClickListener() {
-
 				@Override
 				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 					DragAdapter adapter = (DragAdapter) getAdapter();
@@ -144,23 +139,21 @@ public class DragGridView extends GridView {
 					// 创建一个拖拽的位图
 					mCurrentItemView.destroyDrawingCache();
 					mCurrentItemView.setDrawingCacheEnabled(true);
-					
+		
 					mDragBmp = Bitmap.createBitmap(mCurrentItemView.getDrawingCache());
-					
 					mIsMoving = false;
-					
 					startDrag(mDragBmp, 
 							mDownX - mPoint2ItemOffsetLeft + mOffsetLeft,  
 							mDownY - mPoint2ItemOffsetTop + mOffsetTop);
+					
+					requestDisallowInterceptTouchEvent(true);
 					return false;
 				}
-
 			});
-			break;
 		}
 		return super.onInterceptTouchEvent(ev);
 	}
-	
+	 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		if (this.mDragImageView != null && this.mCurrentItemPosition != AdapterView.INVALID_POSITION) {
@@ -172,6 +165,8 @@ public class DragGridView extends GridView {
 			case MotionEvent.ACTION_MOVE:
 				this.onDrag(x, y);
 				this.onMove(x, y);
+ 
+				smoothScrollBy(300, 30);
 				break;
 	
 			case MotionEvent.ACTION_UP:				
