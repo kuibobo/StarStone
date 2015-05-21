@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -19,16 +20,36 @@ import apollo.app.wofang.R;
 
 public class DragGridView extends GridView {
 
+	/** 拖拽时经过的Item的位置**/
+	private int mMoveOverPosition;
+	
+	/** 相对DragGridView左上角的X偏移量**/
 	private int mDownX;
+	
+	/** 相对DragGridView左上角的Y偏移量**/
 	private int mDownY;
+	
+	/** 按下Item后X的坐标，其值是相对当前Item的偏移量**/
 	private int mPoint2ItemOffsetTop;
+	
+	/** 按下Item后Y的坐标，其值是相对当前Item的偏移量**/
 	private int mPoint2ItemOffsetLeft;
+	
+	/** DragGridView 相对屏幕顶部的偏移量*/
 	private int mOffsetTop;
+	
+	/** DragGridView 相对屏幕左边的偏移量*/
 	private int mOffsetLeft;
+	
+	/** 动画时间 **/
 	private int mDuration;
 	
+	/** Item是否在移动 **/
 	private boolean mIsMoving;
+	
+	/** 是否允许拖拽 **/
 	private boolean mDragEnable;
+	
 	/** WindowManager管理器 */
 	private WindowManager mWindowManager;
 	
@@ -38,10 +59,16 @@ public class DragGridView extends GridView {
 	/** 长按Item对应postion */
 	private int mCurrentItemPosition;
 	
+	/** 按下后的Item对应的View */
 	private View mCurrentItemView;
 	
+	/** 拖拽的时候显示的位图 **/
 	private Bitmap mDragBmp;
 	
+	private String mLastAnimation;
+	
+	
+	/** 振动器 **/
 	private Vibrator mVibrator; 
 	
 	private WindowManager.LayoutParams mDragViewLayoutParams;
@@ -94,7 +121,12 @@ public class DragGridView extends GridView {
 				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 					DragAdapter adapter = (DragAdapter) getAdapter();
 					
-					mCurrentItemPosition = position;//pointToPosition(mDownX, mDownY);
+					// 将当前按下的Item设置不显示, 需要在停止拖放onDrop的时候还原
+					adapter.setSelectedItemPosition(position);
+					adapter.setSelectedItemVisibility(View.GONE);
+					adapter.notifyDataSetChanged();
+					
+					mCurrentItemPosition = position;
 					mCurrentItemView = getChildAt(mCurrentItemPosition - getFirstVisiblePosition());
 					mCurrentItemView.setSelected(true);
 					
@@ -106,18 +138,16 @@ public class DragGridView extends GridView {
 					mOffsetLeft = (int) (ev.getRawX() - mDownX);
 					mOffsetTop = (int) (ev.getRawY() - mDownY);
 					
+					// 小振一下
 					mVibrator.vibrate(50L);
 					
+					// 创建一个拖拽的位图
 					mCurrentItemView.destroyDrawingCache();
 					mCurrentItemView.setDrawingCacheEnabled(true);
 					
 					mDragBmp = Bitmap.createBitmap(mCurrentItemView.getDrawingCache());
 					
 					mIsMoving = false;
-					
-					adapter.setSelectedItemPosition(position);
-					adapter.setSelectedItemVisibility(View.GONE);
-					adapter.notifyDataSetChanged();
 					
 					startDrag(mDragBmp, 
 							mDownX - mPoint2ItemOffsetLeft + mOffsetLeft,  
@@ -138,9 +168,6 @@ public class DragGridView extends GridView {
 			int y = (int) ev.getY();
 			
 			switch(ev.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				
-				break;
 				
 			case MotionEvent.ACTION_MOVE:
 				this.onDrag(x, y);
@@ -149,16 +176,14 @@ public class DragGridView extends GridView {
 	
 			case MotionEvent.ACTION_UP:				
 				this.stopDrag();
-				this.onDrop(x, y);
+				this.onDrop();
 				break;
 			}
 		}
 		return super.onTouchEvent(ev);
 	}
 	
-	private String mLastAnimation;
-	private int mMoveOverPosition;
-	
+
 	private void onMove(int x, int y) {
 		if (mIsMoving == true)
 			return;
@@ -214,6 +239,7 @@ public class DragGridView extends GridView {
 			
 			animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
 			animation.setDuration(mDuration);
+			// 设置最后一个移动的
 			if (move_item_position == mMoveOverPosition) {
 				this.mLastAnimation = animation.toString();
 			}
@@ -226,18 +252,23 @@ public class DragGridView extends GridView {
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
+					// 当 当前动画是最后一个结束的时候，交换拖拽的和最后放下的那个
 					if (animation.toString().equals(mLastAnimation)) {
-						DragAdapter adapter = null;
-						View view = null;
 						
-						adapter = (DragAdapter) getAdapter();
-						view = getChildAt(mCurrentItemPosition);
-						view.setVisibility(View.GONE);
+						new Handler().postDelayed(new Runnable(){
+							@Override
+							public void run() {
+								DragAdapter adapter = null;
+								
+								adapter = (DragAdapter) getAdapter();
+								adapter.swap(mCurrentItemPosition, mMoveOverPosition);
+								
+								mCurrentItemPosition = mMoveOverPosition;
+								mIsMoving = false;
+								
+							}
+						}, 10L);
 						
-						adapter.swap(mCurrentItemPosition, mMoveOverPosition);
-						
-						mCurrentItemPosition = mMoveOverPosition;
-						mIsMoving = false;
 					}
 					
 					
@@ -268,7 +299,7 @@ public class DragGridView extends GridView {
 		}
 	}
 	
-	private void onDrop(int x, int y) {
+	private void onDrop() {
 		DragAdapter adapter = (DragAdapter) this.getAdapter();
 		
 		adapter.setSelectedItemPosition(mCurrentItemPosition);
