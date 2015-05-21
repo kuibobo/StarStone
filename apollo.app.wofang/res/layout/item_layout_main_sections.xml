@@ -22,7 +22,7 @@
 
             <apollo.view.DragGridView
                 xmlns:draggridview="http://schemas.android.com/apk/res/apollo.app.wofang"
-                draggridview:animationDuration="3000"
+                draggridview:animationDuration="350"
                 android:id="@+id/grid_current"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
