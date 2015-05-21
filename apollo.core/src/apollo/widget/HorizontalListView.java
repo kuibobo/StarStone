@@ -255,7 +255,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
 		for(int i=0; i<super.getChildCount(); i++) {
 			view = super.getChildAt(i);
 			if (this.isEventWithinView(e, view)) {
-				if (super.getOnItemClickListener() != null) {
+				if (super.getOnItemLongClickListener() != null) {
 					pos = this.mLeftItemPosition + 1 + i;
 					id = this.mAdapter.getItemId(pos);
 					super.getOnItemLongClickListener().onItemLongClick(this, view, pos, id);
