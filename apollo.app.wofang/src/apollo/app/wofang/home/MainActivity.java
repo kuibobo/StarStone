@@ -50,6 +50,8 @@ public class MainActivity extends BaseActivity {
 	private RelativeLayout mLayoutBottom = null;
 	private LinearLayout mLayoutTop = null;
 	private ListView mLayoutLeft = null;
+	private LinearLayout mLayoutRight; //右滑视图
+	
 	private HorizontalListView mSectionListView = null;
 	private DragAdapter mSectionAdapterCurrent = null;
 	private DragAdapter mSectionAdapterSource = null;
@@ -152,6 +154,7 @@ public class MainActivity extends BaseActivity {
         getActionBar().setHomeButtonEnabled(true);
         
         this.mLayoutLeft = (ListView) super.findViewById(R.id.layout_left);
+        this.mLayoutRight = (LinearLayout) super.findViewById(R.id.layout_right);
 	}
 	
 	private void initListener() {
