@@ -28,3 +28,7 @@ proguard/
 
 *.metadata
 *.recommenders
+
+/*
+!/apollo.app.wofang/
+!/apollo.core/
