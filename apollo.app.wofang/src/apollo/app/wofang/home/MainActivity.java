@@ -40,7 +40,7 @@ import apollo.view.DragAdapter;
 import apollo.view.DragGridView;
 import apollo.widget.HorizontalListView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends DrawerActivity {
 	
 
 	private ViewPager mViewPager = null;
@@ -49,15 +49,13 @@ public class MainActivity extends BaseActivity {
 	private DrawerLayout mLayoutMain = null;
 	private RelativeLayout mLayoutBottom = null;
 	private LinearLayout mLayoutTop = null;
-	private ListView mLayoutLeft = null;
-	private LinearLayout mLayoutRight; //右滑视图
+ 
 	
 	private HorizontalListView mSectionListView = null;
 	private DragAdapter mSectionAdapterCurrent = null;
 	private DragAdapter mSectionAdapterSource = null;
 	private Button mBtnSecitonAdd = null;
 	
-	private ActionBarDrawerToggle mDrawerToggle;
 	
 	private Panel mSectionsPanel = null;
 	private DragGridView mDragGridViewCurrent = null;
@@ -66,8 +64,6 @@ public class MainActivity extends BaseActivity {
 	private List<Section> mSectionsCurrent = null;
 	private List<Section> mSectionsSource = null;
 		
-	private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
     
 	public static void startActivity(Context context) {
 		Intent intent = null;
@@ -78,9 +74,8 @@ public class MainActivity extends BaseActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.activity_main);
-		
+		super.onCreate(savedInstanceState);
 
 		this.mSectionsCurrent = new ArrayList<Section>();
 		this.mSectionsSource = new ArrayList<Section>();
@@ -140,45 +135,15 @@ public class MainActivity extends BaseActivity {
 		this.mBtnSecitonAdd = (Button) super.findViewById(R.id.btn_section_add);
 		this.mSectionListView = (HorizontalListView) super.findViewById(R.id.section_list);
 		this.mSectionListView.setAdapter(this.mSectionAdapterCurrent);		
-		
-		
-		mTitle = mDrawerTitle = getTitle();
-		this.mLayoutMain = (DrawerLayout) super.findViewById(R.id.layout_main);
-		this.mLayoutMain.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		this.mLayoutBottom.addView(this.mSectionsPanel, params);
 		
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        
-        this.mLayoutLeft = (ListView) super.findViewById(R.id.layout_left);
-        this.mLayoutRight = (LinearLayout) super.findViewById(R.id.layout_right);
 	}
 	
 	private void initListener() {
-		this.mDrawerToggle = new ActionBarDrawerToggle(
-				this,                  /* host Activity */
-				this.mLayoutMain,      /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-				){
-			
-			public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-		};
- 
-		this.mLayoutMain.setDrawerListener(this.mDrawerToggle);
-		
 		this.mSectionListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
 			@Override
@@ -332,30 +297,5 @@ public class MainActivity extends BaseActivity {
 		view.startAnimation(animationSet);
 	}
 	
-	/* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = this.mLayoutMain.isDrawerOpen(this.mLayoutLeft);
-        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
-    
-    @Override  
-    public void onConfigurationChanged(Configuration newConfig) {  
-        super.onConfigurationChanged(newConfig);  
-        mDrawerToggle.onConfigurationChanged(newConfig);  
-    } 
-    
-    @Override  
-    public boolean onOptionsItemSelected(MenuItem item) {  
-        // Pass the event to ActionBarDrawerToggle, if it returns  
-        // true, then it has handled the app icon touch event  
-        if (mDrawerToggle.onOptionsItemSelected(item)) {  
-          return true;  
-        }  
-        // Handle your other action bar items...  
-  
-        return super.onOptionsItemSelected(item);  
-    }  
+	 
 }

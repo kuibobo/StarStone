@@ -9,7 +9,7 @@ public class WoFangApplication extends ApolloApplication {
 	
 	@Override
 	public void startMainActivity(Context c) {
-		//MainActivity.startActivity(c);
-		TestActivity.startActivity(c);
+		MainActivity.startActivity(c);
+		//TestActivity.startActivity(c);
 	}
 }
