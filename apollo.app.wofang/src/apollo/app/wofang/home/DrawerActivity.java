@@ -1,8 +1,6 @@
 package apollo.app.wofang.home;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -125,6 +123,26 @@ public class DrawerActivity extends BaseActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+		
+		getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        menu.findItem(R.id.action_menu_search).setIcon(
+                new IconDrawable(this, Iconify.IconValue.fa_search)
+                        .colorRes(R.color.toolbar_text_color)
+                        .sizeDp(AppConfig.SEARCH_ICON_SIZE_PATCH)
+        );
+
+        menu.findItem(R.id.action_menu_favor).setIcon(
+                new IconDrawable(this, Iconify.IconValue.fa_star)
+                        .colorRes(R.color.toolbar_text_color)
+                        .actionBarSize()
+        );
+        
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
