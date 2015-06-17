@@ -3,8 +3,9 @@ package apollo.app.wofang.home;
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,7 +26,7 @@ public class DrawerActivity extends BaseActivity {
 	private DrawerLayout mLayoutMain = null;
 	private View mLayoutLeft = null; // 左滑视图
 	private View mLayoutRight = null; // 右滑视图
-
+	private Toolbar mActionBar = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,31 +86,16 @@ public class DrawerActivity extends BaseActivity {
 					mLayoutMain.openDrawer(Gravity.END);
 
 				}
- 
+
 			}
 		});
 	}
 
 	@SuppressWarnings("deprecation")
 	private void initListener() {
-		this.mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		this.mLayoutMain, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.drawer_open, /* "open drawer" description for accessibility */
-		R.string.drawer_close /* "close drawer" description for accessibility */
-		) {
-
-			public void onDrawerClosed(View view) {
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
-			}
-
-			public void onDrawerOpened(View drawerView) {
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
-			}
-		};
-
+		this.mDrawerToggle = new ActionBarDrawerToggle(this, this.mLayoutMain, this.mActionBar, R.string.drawer_open,
+				R.string.drawer_close);
+		this.mDrawerToggle.syncState();
 		this.mLayoutMain.setDrawerListener(this.mDrawerToggle);
 	}
 
