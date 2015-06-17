@@ -44,51 +44,51 @@ public class DrawerActivity extends BaseActivity {
 		this.mLayoutLeft = (View) super.findViewById(R.id.layout_left);
 		this.mLayoutRight = (View) super.findViewById(R.id.layout_right);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false); // 隐藏系统actionbar icon
-		getActionBar().setDisplayShowTitleEnabled(false);
-		getActionBar().setDisplayShowCustomEnabled(true);
-		View actionbarLayout = LayoutInflater.from(this).inflate(
-				R.layout.item_layout_action_bar, null);
-
-		getActionBar().setCustomView(actionbarLayout);
-		Button btnLeft = (Button) actionbarLayout.findViewById(R.id.btn_left); // 左边按钮
-		Button btnRight = (Button) actionbarLayout.findViewById(R.id.btn_right); // 右边按钮
-
-		btnLeft.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// 如果右边视图显示则关闭，如果左边视图显示则关闭如果关闭则显示
-				if (mLayoutMain.isDrawerOpen(mLayoutRight)) {
-					mLayoutMain.closeDrawer(Gravity.END);
-				}
-				if (mLayoutMain.isDrawerOpen(mLayoutLeft)) {
-					mLayoutMain.closeDrawer(Gravity.START);
-				} else {
-					mLayoutMain.openDrawer(Gravity.START);
-
-				}
-			}
-		});
-		btnRight.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// 如果左边视图显示则关闭，如果右边视图显示则关闭如果关闭则显示
-				if (mLayoutMain.isDrawerOpen(mLayoutLeft)) {
-					mLayoutMain.closeDrawer(Gravity.START);
-				}
-				if (mLayoutMain.isDrawerOpen(mLayoutRight)) {
-					mLayoutMain.closeDrawer(Gravity.END);
-				} else {
-					mLayoutMain.openDrawer(Gravity.END);
-
-				}
-
-			}
-		});
+//		getActionBar().setDisplayHomeAsUpEnabled(true);
+//		getActionBar().setHomeButtonEnabled(true);
+//		getActionBar().setDisplayShowHomeEnabled(false); // 隐藏系统actionbar icon
+//		getActionBar().setDisplayShowTitleEnabled(false);
+//		getActionBar().setDisplayShowCustomEnabled(true);
+//		View actionbarLayout = LayoutInflater.from(this).inflate(
+//				R.layout.item_layout_action_bar, null);
+//
+//		getActionBar().setCustomView(actionbarLayout);
+//		Button btnLeft = (Button) actionbarLayout.findViewById(R.id.btn_left); // 左边按钮
+//		Button btnRight = (Button) actionbarLayout.findViewById(R.id.btn_right); // 右边按钮
+//
+//		btnLeft.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// 如果右边视图显示则关闭，如果左边视图显示则关闭如果关闭则显示
+//				if (mLayoutMain.isDrawerOpen(mLayoutRight)) {
+//					mLayoutMain.closeDrawer(Gravity.END);
+//				}
+//				if (mLayoutMain.isDrawerOpen(mLayoutLeft)) {
+//					mLayoutMain.closeDrawer(Gravity.START);
+//				} else {
+//					mLayoutMain.openDrawer(Gravity.START);
+//
+//				}
+//			}
+//		});
+//		btnRight.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// 如果左边视图显示则关闭，如果右边视图显示则关闭如果关闭则显示
+//				if (mLayoutMain.isDrawerOpen(mLayoutLeft)) {
+//					mLayoutMain.closeDrawer(Gravity.START);
+//				}
+//				if (mLayoutMain.isDrawerOpen(mLayoutRight)) {
+//					mLayoutMain.closeDrawer(Gravity.END);
+//				} else {
+//					mLayoutMain.openDrawer(Gravity.END);
+//
+//				}
+//
+//			}
+//		});
 	}
 
 	@SuppressWarnings("deprecation")
