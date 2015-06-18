@@ -74,12 +74,13 @@ public class MainActivity extends DrawerActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.setContentView(R.layout.activity_main);
 		super.onCreate(savedInstanceState);
+		super.setContentView(R.layout.activity_main);
 
 		this.mSectionsCurrent = new ArrayList<Section>();
 		this.mSectionsSource = new ArrayList<Section>();
-		
+
+		super.init();
 		this.initView();
 		this.initListener();
 		

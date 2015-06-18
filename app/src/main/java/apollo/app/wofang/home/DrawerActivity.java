@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -19,30 +21,39 @@ import com.joanzapata.android.iconify.Iconify;
 
 import apollo.app.BaseActivity;
 import apollo.app.wofang.R;
+import apollo.widget.NavigationDrawerFragment;
 
-public class DrawerActivity extends BaseActivity {
+public class DrawerActivity extends ActionBarActivity
+		implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
 	private ActionBarDrawerToggle mDrawerToggle = null;
 
 	private DrawerLayout mLayoutMain = null;
 	private View mLayoutLeft = null; // 左滑视图
 	private View mLayoutRight = null; // 右滑视图
-	private Toolbar mActionBar = null;
+	private Toolbar mToolbar = null;
+	private ActionBar mActionBar = null;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		//super.setContentView(R.layout.activity_test);
-
+	protected void init() {
 		this.initView();
 		this.initListener();
-
 	}
-	
+
 	@SuppressLint("InflateParams")
 	private void initView() {
 		this.mLayoutMain = (DrawerLayout) super.findViewById(R.id.layout_main);
 		this.mLayoutLeft = (View) super.findViewById(R.id.layout_left);
 		this.mLayoutRight = (View) super.findViewById(R.id.layout_right);
+		this.mActionBar = super.getSupportActionBar();
+
+		this.mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		this.mActionBar.setDisplayShowTitleEnabled(true);
+		this.mActionBar.setHomeButtonEnabled(true);
+		this.mActionBar.setDisplayHomeAsUpEnabled(true);
+		this.mActionBar.setHomeButtonEnabled(true);
+		this.mActionBar.setDisplayShowHomeEnabled(false); // 隐藏系统actionbar icon
+		this.mActionBar.setDisplayShowTitleEnabled(false);
+		this.mActionBar.setDisplayShowCustomEnabled(true);
 
 //		getActionBar().setDisplayHomeAsUpEnabled(true);
 //		getActionBar().setHomeButtonEnabled(true);
@@ -93,7 +104,7 @@ public class DrawerActivity extends BaseActivity {
 
 	@SuppressWarnings("deprecation")
 	private void initListener() {
-		this.mDrawerToggle = new ActionBarDrawerToggle(this, this.mLayoutMain, this.mActionBar, R.string.drawer_open,
+		this.mDrawerToggle = new ActionBarDrawerToggle(this, this.mLayoutMain, this.mToolbar, R.string.drawer_open,
 				R.string.drawer_close);
 		this.mDrawerToggle.syncState();
 		this.mLayoutMain.setDrawerListener(this.mDrawerToggle);
@@ -121,16 +132,16 @@ public class DrawerActivity extends BaseActivity {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 
         menu.findItem(R.id.action_menu_search).setIcon(
-                new IconDrawable(this, Iconify.IconValue.fa_search)
-                        .colorRes(R.color.toolbar_text_color)
-                        .sizeDp(22)
-        );
+				new IconDrawable(this, Iconify.IconValue.fa_search)
+						.colorRes(R.color.toolbar_text_color)
+						.sizeDp(22)
+		);
 
         menu.findItem(R.id.action_menu_favor).setIcon(
-                new IconDrawable(this, Iconify.IconValue.fa_star)
-                        .colorRes(R.color.toolbar_text_color)
-                        .actionBarSize()
-        );
+				new IconDrawable(this, Iconify.IconValue.fa_star)
+						.colorRes(R.color.toolbar_text_color)
+						.actionBarSize()
+		);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -145,5 +156,10 @@ public class DrawerActivity extends BaseActivity {
 		// Handle your other action bar items...
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onNavigationDrawerItemSelected(int position) {
+
 	}
 }
