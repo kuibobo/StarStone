@@ -2,29 +2,21 @@ package apollo.app.wofang.home;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
-import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 
 import com.joanzapata.android.iconify.IconDrawable;
 import com.joanzapata.android.iconify.Iconify;
 
-import apollo.app.BaseActivity;
 import apollo.app.wofang.R;
-import apollo.widget.NavigationDrawerFragment;
 
-public class DrawerActivity extends ActionBarActivity
-		implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class DrawerActivity extends ActionBarActivity {
 
 	private ActionBarDrawerToggle mDrawerToggle = null;
 
@@ -158,8 +150,5 @@ public class DrawerActivity extends ActionBarActivity
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onNavigationDrawerItemSelected(int position) {
 
-	}
 }
