@@ -57,15 +57,9 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <ListView
-        android:id="@+id/layout_left"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#111"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp" />
+
+    <include layout="@layout/item_layout_fragment_navigation_drawer"/>
+
 
     <!-- 右边滑出视图  end\start 区分左右视图 -->
 

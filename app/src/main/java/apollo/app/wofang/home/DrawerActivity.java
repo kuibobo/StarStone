@@ -1,33 +1,144 @@
 package apollo.app.wofang.home;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.IconTextView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.joanzapata.android.iconify.IconDrawable;
 import com.joanzapata.android.iconify.Iconify;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import apollo.app.wofang.R;
+import apollo.widget.HorizontalListView;
 
 public class DrawerActivity extends ActionBarActivity {
+
+	class DrawerMenu {
+		private String icon;
+		private String text;
+
+		public String getIcon() {
+			return icon;
+		}
+
+		public void setIcon(String icon) {
+			this.icon = icon;
+		}
+
+		public String getText() {
+			return text;
+		}
+
+		public void setText(String text) {
+			this.text = text;
+		}
+	}
+
+	class DrawerMenuHolder {
+		private IconTextView mIconTextView;
+		private TextView mTextView;
+
+		public DrawerMenuHolder(View view) {
+			mIconTextView = (IconTextView) view.findViewById(R.id.drawer_left_list_item_icon);
+			mTextView = (TextView) view.findViewById(R.id.drawer_left_list_item_text);
+		}
+
+		public TextView getTextView() {
+			return mTextView;
+		}
+
+		public IconTextView getIconTextView() {
+			return mIconTextView;
+		}
+	}
+
+	class DrawerMenuAdapter extends BaseAdapter {
+
+		private LayoutInflater mInflater;
+		private List<DrawerMenu> mItemsData;
+		private int mResId;
+
+		public DrawerMenuAdapter(Context context, List<DrawerMenu> listItemData, int res_id) {
+			mInflater = LayoutInflater.from(context);
+			mItemsData = listItemData;
+			mResId = res_id;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return mItemsData.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			DrawerMenuHolder holder;
+
+			if (convertView == null) {
+				convertView = mInflater.inflate(mResId, null);
+				holder = new DrawerMenuHolder(convertView);
+				convertView.setTag(holder);
+			} else {
+				holder = (DrawerMenuHolder) convertView.getTag();
+			}
+
+			DrawerMenu item = mItemsData.get(position);
+			holder.getIconTextView().setText(item.getIcon());
+			holder.getTextView().setText(item.getText());
+
+			return convertView;
+		}
+
+		@Override
+		public int getCount() {
+			return mItemsData.size();
+		}
+	}
+
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+								long id) {
+			selectItem(position);
+		}
+	}
 
 	private ActionBarDrawerToggle mDrawerToggle = null;
 
 	private DrawerLayout mLayoutMain = null;
 	private View mLayoutLeft = null; // 左滑视图
 	private View mLayoutRight = null; // 右滑视图
+	private ListView mListMenu = null;
+	private HorizontalListView mListFooter = null;
 	private Toolbar mToolbar = null;
 	private ActionBar mActionBar = null;
 
 	protected void init() {
 		this.initView();
+		this.initSlidingMenu();
 		this.initListener();
 	}
 
@@ -36,8 +147,8 @@ public class DrawerActivity extends ActionBarActivity {
 		this.mLayoutMain = (DrawerLayout) super.findViewById(R.id.layout_main);
 		this.mLayoutLeft = (View) super.findViewById(R.id.layout_left);
 		this.mLayoutRight = (View) super.findViewById(R.id.layout_right);
-		this.mActionBar = super.getSupportActionBar();
 
+		this.mActionBar = super.getSupportActionBar();
 		this.mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		this.mActionBar.setDisplayShowTitleEnabled(true);
 		this.mActionBar.setHomeButtonEnabled(true);
@@ -92,6 +203,32 @@ public class DrawerActivity extends ActionBarActivity {
 //
 //			}
 //		});
+	}
+
+	private void initSlidingMenu() {
+		List<DrawerMenu> menus = null;
+
+		menus = new ArrayList<>();
+		for (String data : getResources().getStringArray(R.array.main_drawer_left_menu_array)) {
+			DrawerMenu itemData = new DrawerMenu();
+			itemData.setIcon("{fa-rss}");
+			itemData.setText(data);
+			menus.add(itemData);
+		}
+		this.mListMenu = (ListView) super.findViewById(R.id.list_menu);
+		this.mListMenu.setAdapter(new DrawerMenuAdapter(this, menus, R.layout.item_list_main_drawer_left));
+		this.mListMenu.setOnItemClickListener(new DrawerItemClickListener());
+
+		menus = new ArrayList<>();
+		for (String data : getResources().getStringArray(R.array.main_drawer_footer_menu_array)) {
+			DrawerMenu itemData = new DrawerMenu();
+			itemData.setIcon("{fa-rss}");
+			itemData.setText(data);
+			menus.add(itemData);
+		}
+		this.mListFooter = (HorizontalListView) super.findViewById(R.id.list_footer);
+		this.mListFooter.setAdapter(new DrawerMenuAdapter(this, menus, R.layout.item_list_main_drawer_footer));
+		this.mListFooter.setOnItemClickListener(new DrawerItemClickListener());
 	}
 
 	@SuppressWarnings("deprecation")
@@ -150,5 +287,7 @@ public class DrawerActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
+	private void selectItem(int position) {
+		mLayoutMain.closeDrawer(mLayoutLeft);
+	}
 }

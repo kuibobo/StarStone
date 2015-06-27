@@ -14,6 +14,11 @@
     <color name="subscribe_item_normal_stroke">#ffcdcdcd</color>
     <color name="subscribe_item_normal_bg">#fff5f5f5</color>
 
+    <!--ListItem Configuration-->
+    <color name="list_divider_color">#757575</color>
+    <color name="list_item_text_color">@color/text_color_black</color>
+    <color name="list_item_background_normal">#ffffffff</color>
+    <color name="list_item_background_pressed">#F1F1F1</color>
 
     <!-- brand color: orange -->
     <color name="colorPrimary">#2196F3</color>
@@ -21,8 +26,17 @@
     <!--Common Configuration-->
     <color name="main">@color/colorPrimary</color>
     <color name="text_color_white">#ffffffff</color>
+    <color name="text_color_black">#ff000000</color>
 
     <!--Toolbar Configuration-->
     <color name="toolbar_text_color">@color/text_color_white</color>
     <color name="toolbar_background">@color/main</color>
+
+
+    <!--Left Drawer Configuration-->
+    <color name="drawer_left_header_username">@color/text_color_white</color>
+    <color name="drawer_left_header_avatar_border">@color/drawer_left_header_username</color>
+    <color name="drawer_left_divider">@color/list_divider_color</color>
+    <color name="drawer_left_list_item_ic_color">@color/list_divider_color</color>
+    <color name="drawer_left_list_item_text_color">@color/drawer_left_list_item_ic_color</color>
 </resources>
