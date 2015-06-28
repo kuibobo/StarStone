@@ -10,7 +10,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import apollo.core.R;
-import apollo.utils.ImageUtil;
+import apollo.util.ImageUtil;
 
 public class SplashActivity extends BaseActivity {
 

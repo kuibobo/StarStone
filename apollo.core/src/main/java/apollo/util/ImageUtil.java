@@ -1,4 +1,4 @@
-package apollo.utils;
+package apollo.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
