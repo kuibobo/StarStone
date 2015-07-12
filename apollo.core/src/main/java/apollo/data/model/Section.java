@@ -22,6 +22,8 @@ public class Section extends Entity {
 		}
     };
 
+	public Section() {}
+
     
     public Section(Parcel in) {
     	super(in);
