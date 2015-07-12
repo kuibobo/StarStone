@@ -3,96 +3,114 @@ package apollo.app.wofang.home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.view.View;
+import android.widget.Button;
 
-import java.util.Date;
+import org.miscwidgets.widget.Panel;
 
 import apollo.app.wofang.R;
-import apollo.net.AsyncHttpClient;
-import apollo.util.Regex;
 
 
 public class TestActivity extends ActionBarActivity {
-
-    private class TestTask extends AsyncTask<Void, Void, String> {
-
-
-        @Override
-        protected String doInBackground(Void... params) {
-            AsyncHttpClient client = AsyncHttpClient.getInstance();
-
-            String content = client.getContent("http://m.wofang.com");
-
-            // fix css
-            content = Regex.replace(content,
-                    "<link\\s.*?href=\"([^\"]+)\"[^>]*/>",
-                    "<link href=\"http://m.wofang.com$1\" rel=\"stylesheet\" type=\"text/css\" />");
-
-            // fix js
-            content = Regex.replace(content,
-                    "<script\\s.*?src=\"([^\"]+)\"[^>]*></script>",
-                    "<script src=\"http://m.wofang.com$1\"></script>");
-
-            // remove element
-            content = Regex.replace(content, "(?s)<div class=\"header\">.*</form></div></div>", "");
-            content = Regex.replace(content, "<div class=\"(bot_menu|menu|wraper telbg)\"[^>]*?>.*?</div>", "");
-            content = Regex.replace(content, "<div class=\"footer_from\">.*?</form></div>", "");
-            content = Regex.replace(content, "(?s)<div class=\"footer\">.*</span></div>", "");
-
-            //content += "<style>.header,.footer,.footer_from{display:none;}</style>";
-            return content;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            view.loadData(result, "text/html; charset=UTF-8", null);
-        }
-    }
-
-    private WebView view = null;
-    private TestTask task = null;
-
+//
+//    private class TestTask extends AsyncTask<Void, Void, String> {
+//
+//
+//        @Override
+//        protected String doInBackground(Void... params) {
+//            AsyncHttpClient client = AsyncHttpClient.getInstance();
+//
+//            String content = client.getContent("http://m.wofang.com");
+//
+//            // fix css
+//            content = Regex.replace(content,
+//                    "<link\\s.*?href=\"([^\"]+)\"[^>]*/>",
+//                    "<link href=\"http://m.wofang.com$1\" rel=\"stylesheet\" type=\"text/css\" />");
+//
+//            // fix js
+//            content = Regex.replace(content,
+//                    "<script\\s.*?src=\"([^\"]+)\"[^>]*></script>",
+//                    "<script src=\"http://m.wofang.com$1\"></script>");
+//
+//            // remove element
+//            content = Regex.replace(content, "(?s)<div class=\"header\">.*</form></div></div>", "");
+//            content = Regex.replace(content, "<div class=\"(bot_menu|menu|wraper telbg)\"[^>]*?>.*?</div>", "");
+//            content = Regex.replace(content, "<div class=\"footer_from\">.*?</form></div>", "");
+//            content = Regex.replace(content, "(?s)<div class=\"footer\">.*</span></div>", "");
+//
+//            //content += "<style>.header,.footer,.footer_from{display:none;}</style>";
+//            return content;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            view.loadData(result, "text/html; charset=UTF-8", null);
+//        }
+//    }
+//
+//    private WebView view = null;
+//    private TestTask task = null;
+//
     public static void startActivity(Context context) {
         Intent intent = null;
 
         intent = new Intent(context, TestActivity.class);
         context.startActivity(intent);
     }
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        super.setContentView(R.layout.activity_test);
+//
+//        view = (WebView) super.findViewById(R.id.webView);
+//        view.getSettings().setJavaScriptEnabled(true);
+//        view.setWebViewClient(new WebViewClient() {
+//            /* ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//             * Í¨ï¿½ï¿½ï¿½Ð¶ï¿½urlï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½ï¿½
+//             * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½trueï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½requestï¿½ï¿½
+//             * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½falseï¿½ï¿½ï¿½ï¿½ Ê¾Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+//             * ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½urlï¿½ï¿½È¡ï¿½ï¿½Ò³*/
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                String page="<html><body><a href=\"clock\">" +
+//                        new Date().toString()  + "</a></body></html>";
+//	        /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½loadDataWithBaseUrlï¿½Ä·ï¿½Ê½ï¿½ï¿½
+//	         * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½"file:///android_asset/"ï¿½ï¿½ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½ï¿½asset/ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½
+//	         * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½baseUrlï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Õ£ï¿½ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½È¡ï¿½ï¿½
+//	         * ï¿½ï¿½ï¿½È¡ï¿½ï¿½Ð©ï¿½ï¿½Ô´ï¿½ï¿½baseUrlï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªhttp(s)/ftp(s) /about/javascript
+//	         * ï¿½ï¿½Ð©ï¿½ï¿½ï¿½ï¿½×¨ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½å¡£
+//	         * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½baseUrlï¿½ï¿½ï¿½ï¿½Îª"wei://base".
+//	         * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ï¿½ï¿½ï¿½Óµï¿½Ö·Îªwei://base/clock */
+//                view.loadDataWithBaseURL ("wei://base", page, "text/html", "UTF-8", null);
+//
+//                return true; //ï¿½ï¿½ Ê¾ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½URLï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//            }
+//        });
+//
+//        task = new TestTask();
+//        task.execute();
+//    }
 
-    @Override
+    private Panel panel = null;
+    //    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_test);
 
-        view = (WebView) super.findViewById(R.id.webView);
-        view.getSettings().setJavaScriptEnabled(true);
-        view.setWebViewClient(new WebViewClient() {
-            /* Õâ¸öÊÂ¼þ£¬½«ÔÚÓÃ»§µã»÷Á´½ÓÊ±´¥·¢¡£
-             * Í¨¹ýÅÐ¶Ïurl£¬¿ÉÈ·¶¨ÈçºÎ²Ù×÷£¬
-             * Èç¹û·µ»Øtrue£¬±íÊ¾ÎÒÃÇÒÑ¾­´¦ÀíÁËÕâ¸örequest£¬
-             * Èç¹û·µ»Øfalse£¬±í Ê¾Ã»ÓÐ´¦Àí£¬
-             * ÄÇÃ´ä¯ÀÀÆ÷½«»á¸ù¾Ýurl»ñÈ¡ÍøÒ³*/
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                String page="<html><body><a href=\"clock\">" +
-                        new Date().toString()  + "</a></body></html>";
-	        /* ÕâÀïÎÒÃÇÊ¹ÓÃÁËloadDataWithBaseUrlµÄ·½Ê½¡£
-	         * ä¯ÀÀÆ÷¿ÉÒÔÍ¨¹ý"file:///android_asset/"À´»ñµÃÓ³ÓÃÖÐasset/µÄ×ÊÔ´¡£
-	         * µ«ÊÇÈç¹ûÎÒÃÇÃ»ÓÐÉèÖÃbaseUrl£¬»òÕßÎª¿Õ£¬ÕâÎÞ·¨»ñÈ¡£¬
-	         * Ïë»ñÈ¡ÕâÐ©×ÊÔ´£¬baseUrl²»ÄÜÉèÖÃÎªhttp(s)/ftp(s) /about/javascript
-	         * ÕâÐ©ÒÑÓÐ×¨ÊôµÄ¶¨Òå¡£
-	         * ÔÚÀý×ÓÖÐ£¬ÎÒÃÇbaseUrlÉèÖÃÎª"wei://base".
-	         * ¶ÔÓÚÉÏÃæµÄÄÇ¸öÁ´½ÓµØÖ·Îªwei://base/clock */
-                view.loadDataWithBaseURL ("wei://base", page, "text/html", "UTF-8", null);
+        panel = (Panel) super.findViewById(R.id.layout_main_sections);
 
-                return true; //±í Ê¾ÒÑ¾­´¦ÀíÁËÕâ´ÎURLµÄÇëÇó
+        Button btn = (Button) super.findViewById(R.id.btn_drop);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (panel.isOpen()) {
+                    panel.setOpen(false, true);
+                } else {
+                    panel.setOpen(true, true);
+                }
             }
         });
-
-        task = new TestTask();
-        task.execute();
     }
 }

@@ -26,9 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data
-                android:name="duration"
-                android:value="1200" />
+            <meta-data android:name="duration" android:value="1000" />
+            <meta-data android:name="android.activity.MAIN" android:value="apollo.app.wofang.home.TestActivity" />
         </activity>
         <activity android:name="apollo.app.wofang.home.MainActivity" />
         <activity android:name="apollo.app.wofang.home.TestActivity" />

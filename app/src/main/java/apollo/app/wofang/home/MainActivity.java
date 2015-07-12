@@ -41,13 +41,13 @@ public class MainActivity extends DrawerActivity {
 	private LinearLayout mLayoutSections = null; 
 	private DrawerLayout mLayoutMain = null;
 	private RelativeLayout mLayoutBottom = null;
-	private LinearLayout mLayoutTop = null;
+	//private LinearLayout mLayoutTop = null;
  
 	
 	private HorizontalListView mSectionListView = null;
 	private DragAdapter mSectionAdapterCurrent = null;
 	private DragAdapter mSectionAdapterSource = null;
-	private Button mBtnSecitonAdd = null;
+	private Button mBtnSecitonDropDown = null;
 	
 	
 	private Panel mSectionsPanel = null;
@@ -81,7 +81,7 @@ public class MainActivity extends DrawerActivity {
 		
 		// test code
 		
-		for(int i=0; i<60; i++) {
+		for(int i=0; i<6; i++) {
 			Section s = new Section();
 			s.setId(i);
 			s.setName("Section" + i);
@@ -93,7 +93,7 @@ public class MainActivity extends DrawerActivity {
 		
 		// test code
 		
-		for(int i=0; i<64; i++) {
+		for(int i=0; i<6; i++) {
 			Section s = new Section();
 			s.setId(i);
 			s.setName("Section" + i);
@@ -115,6 +115,7 @@ public class MainActivity extends DrawerActivity {
 
 		view = super.getLayoutInflater().inflate(R.layout.item_layout_main_sections, null);
 		this.mSectionsPanel = (Panel) view.findViewById(R.id.layout_main_sections);
+
 		this.mDragGridViewCurrent = (DragGridView) view.findViewById(R.id.grid_current);
 		this.mDragGridViewCurrent.setAdapter(this.mSectionAdapterCurrent);
 		
@@ -122,11 +123,11 @@ public class MainActivity extends DrawerActivity {
 		this.mDragGridViewSource.setAdapter(this.mSectionAdapterSource);
 		
 		this.mLayoutSections = (LinearLayout) super.findViewById(R.id.layout_sections);
-		this.mLayoutTop = (LinearLayout) super.findViewById(R.id.layout_top);
+		//this.mLayoutTop = (LinearLayout) super.findViewById(R.id.layout_top);
 		this.mLayoutBottom =  (RelativeLayout) super.findViewById(R.id.layout_bottom);
  
 		
-		this.mBtnSecitonAdd = (Button) super.findViewById(R.id.btn_section_add);
+		this.mBtnSecitonDropDown = (Button) super.findViewById(R.id.btn_section_drop_down);
 		this.mSectionListView = (HorizontalListView) super.findViewById(R.id.section_list);
 		this.mSectionListView.setAdapter(this.mSectionAdapterCurrent);		
 
@@ -149,7 +150,7 @@ public class MainActivity extends DrawerActivity {
 			
 		});
 		
-		this.mBtnSecitonAdd.setOnClickListener(new View.OnClickListener() {
+		this.mBtnSecitonDropDown.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -231,11 +232,16 @@ public class MainActivity extends DrawerActivity {
 	}
 	
 	private ImageView buildImageView(View view) {
+		Bitmap cache = null;
+		ImageView iv = null;
+
 		view.destroyDrawingCache();
 		view.setDrawingCacheEnabled(true);
-		Bitmap cache = Bitmap.createBitmap(view.getDrawingCache());
+
+		cache = Bitmap.createBitmap(view.getDrawingCache());
 		view.setDrawingCacheEnabled(false);
-		ImageView iv = new ImageView(this);
+
+		iv = new ImageView(this);
 		iv.setImageBitmap(cache);
 		return iv;
 	}
