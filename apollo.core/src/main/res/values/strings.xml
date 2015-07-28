@@ -2,4 +2,7 @@
 
     <string name="app_name">apollo.core</string>
 
+    <string name="exit">退出</string>
+    <string name="reboot">重启</string>
+
 </resources>

@@ -14,12 +14,14 @@ import apollo.core.R;
  */
 
 public class CollapseActivity extends Activity {
-    private Button btnRestart, btnExit;
+    private Button mBtnRestart;
+    private Button mBtnExit;
 
     public static void startActivity(Context context) {
         Intent intent = null;
 
         intent = new Intent(context, CollapseActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
@@ -27,10 +29,8 @@ public class CollapseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collapse);
-        setTitle("FC");
-        btnRestart = (Button) findViewById(R.id.collapse_restart);
-        btnExit = (Button) findViewById(R.id.collapse_exit);
-        btnRestart.setOnClickListener(new View.OnClickListener() {
+        mBtnRestart = (Button) findViewById(R.id.collapse_restart);
+        mBtnRestart.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -40,7 +40,9 @@ public class CollapseActivity extends Activity {
                 finish();
             }
         });
-        btnExit.setOnClickListener(new View.OnClickListener() {
+
+        mBtnExit = (Button) findViewById(R.id.collapse_exit);
+        mBtnExit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

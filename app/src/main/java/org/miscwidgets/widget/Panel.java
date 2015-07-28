@@ -115,11 +115,11 @@ public class Panel extends LinearLayout {
 
         RuntimeException e = null;
         mHandleId = a.getResourceId(R.styleable.Panel_handle, 0);
-        if (mHandleId == 0) {
-            e = new IllegalArgumentException(
-                    a.getPositionDescription()
-                            + ": The handle attribute is required and must refer to a valid child.");
-        }
+        //if (mHandleId == 0) {
+        //    e = new IllegalArgumentException(
+        //            a.getPositionDescription()
+        //                    + ": The handle attribute is required and must refer to a valid child.");
+        //}
         mContentId = a.getResourceId(R.styleable.Panel_content, 0);
         if (mContentId == 0) {
             e = new IllegalArgumentException(

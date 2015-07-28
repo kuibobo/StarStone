@@ -24,71 +24,56 @@ import apollo.util.FileUtil;
 public class ApolloExceptionHandler implements UncaughtExceptionHandler  {
 
     private UncaughtExceptionHandler mHandler = null;
-    private ArrayList<Activity> list = new ArrayList<Activity>();
 
     ApolloExceptionHandler() {
         mHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 
-    protected void writeErrorLog(Throwable ex) {
-        String info = null;
+    protected void writeErrorLog(Throwable throwable) {
         ByteArrayOutputStream baos = null;
-        PrintStream printStream = null;
+        PrintStream ps = null;
         File file = null;
+        FileOutputStream fos = null;
+        byte[] data = null;
+
+        try {
+            file = FileUtil.createFile("fatal_error.log");
+        } catch (Exception e) {
+            return;
+        }
 
         try {
             baos = new ByteArrayOutputStream();
-            printStream = new PrintStream(baos);
-            ex.printStackTrace(printStream);
-            byte[] data = baos.toByteArray();
-            info = new String(data);
-            data = null;
+            ps = new PrintStream(baos);
+            throwable.printStackTrace(ps);
+
+            data = baos.toByteArray();
+
+            fos = new FileOutputStream(file, true);
+            fos.write(data);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                if (printStream != null) {
-                    printStream.close();
+                if (ps != null) {
+                    ps.close();
                 }
                 if (baos != null) {
                     baos.close();
+                }
+                if (fos != null) {
+                    fos.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        Log.d(ApolloExceptionHandler.class.getName(), info);
-        try {
-            file = FileUtil.createFile("fatal_error.log");
-        } catch (Exception e) {
-        }
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(file, true);
-            fileOutputStream.write(info.getBytes());
-            fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        writeErrorLog(ex);
+    public void uncaughtException(Thread thread, Throwable throwable) {
+        writeErrorLog(throwable);
         CollapseActivity.startActivity(ApolloApplication.app());
-        exit();
-    }
-
-    private void exit() {
-        for (Activity activity : list) {
-            if (null != activity) {
-                activity.finish();
-            }
-        }
-
-        android.os.Process.killProcess(android.os.Process.myPid());
+        mHandler.uncaughtException(thread, throwable);
     }
 }
