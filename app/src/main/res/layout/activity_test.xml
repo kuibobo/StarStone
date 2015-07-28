@@ -20,20 +20,21 @@
 
     <org.miscwidgets.widget.Panel
         xmlns:panel="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/layout_main_sections"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        panel:animationDuration="1000"
+        android:paddingBottom="4dip"
         panel:content="@+id/view_content"
+        panel:position="top"
+        panel:animationDuration="1000"
         panel:linearFlying="true"
-        panel:position="top" >
-
+        >
         <LinearLayout
             android:id="@+id/view_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

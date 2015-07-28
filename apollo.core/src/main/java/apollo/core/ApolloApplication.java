@@ -1,4 +1,4 @@
-package apollo.app;
+package apollo.core;
 
 import android.app.Application;
 
@@ -13,8 +13,9 @@ public abstract class ApolloApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		ApolloApplication.app = this;
-		
+
+		Thread.setDefaultUncaughtExceptionHandler(new ApolloExceptionHandler());
 	}
 }

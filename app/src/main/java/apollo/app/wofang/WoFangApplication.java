@@ -1,6 +1,6 @@
 package apollo.app.wofang;
 
-import apollo.app.ApolloApplication;
+import apollo.core.ApolloApplication;
 
 public class WoFangApplication extends ApolloApplication {
 

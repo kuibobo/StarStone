@@ -10,6 +10,8 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
         android:name=".WoFangApplication"
@@ -27,8 +29,9 @@
             </intent-filter>
 
             <meta-data android:name="duration" android:value="1000" />
-            <meta-data android:name="android.activity.MAIN" android:value="apollo.app.wofang.home.TestActivity" />
+            <meta-data android:name="android.activity.MAIN" android:value="apollo.app.wofang.home.MainActivity" />
         </activity>
+        <activity android:name="apollo.app.CollapseActivity" />
         <activity android:name="apollo.app.wofang.home.MainActivity" />
         <activity android:name="apollo.app.wofang.home.TestActivity" />
     </application>

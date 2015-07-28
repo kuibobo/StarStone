@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import android.util.Log;
-import apollo.app.ApolloApplication;
+import apollo.core.ApolloApplication;
 
 public class ConfigUtil  {
 	private Properties props;

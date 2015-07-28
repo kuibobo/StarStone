@@ -18,7 +18,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import apollo.app.ApolloApplication;
+import apollo.core.ApolloApplication;
 import apollo.exception.ApplicationException;
 
 public class FileUtil {

@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import apollo.core.ApolloApplication;
+
 public class BaseActivity extends Activity {
 
 	public static int dip2px(Context context, float f) {
