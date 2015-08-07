@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import apollo.app.wofang.R;
 import apollo.data.model.Entity;
 import apollo.fragments.BaseDetailFragment;
 
@@ -33,7 +34,7 @@ public class MainDetailFragment extends BaseDetailFragment {
         View view = null;
         Bundle args = null;
 
-        view = inflater.inflate(R.layout.fragment_main, container, false);
+
         args = super.getArguments();
         if (args != null) {
 
@@ -45,16 +46,16 @@ public class MainDetailFragment extends BaseDetailFragment {
     private void initViews(View view) {
         super.initWebViews(super.mWebView);
 
-        view.findViewById(R.id.ib_zoomin).setOnClickListener(this);
-        view.findViewById(R.id.ib_zoomout).setOnClickListener(this);
+        //view.findViewById(R.id.ib_zoomin).setOnClickListener(this);
+        //.findViewById(R.id.ib_zoomout).setOnClickListener(this);
     }
 
     private void fillWebView() {
         String content = null;
 
         super.mWebView.setWebViewClient(super.mWebViewClient);
-        super.mWebView.loadDataWithBaseURL(
-                AppConfig.LOCAL_PATH, content, mimeType, AppConfig.UTF8, null);
+       // super.mWebView.loadDataWithBaseURL(
+       //         AppConfig.LOCAL_PATH, content, mimeType, AppConfig.UTF8, null);
 
     }
 

@@ -38,7 +38,11 @@ public class ContentViewPagerFragment extends Fragment implements
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = null;
 
-        mViewPager = (ViewPager) view.findViewById(R.id.main_tab_pager);
+        view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
+        //mViewPager = (ViewPager) view.findViewById(R.id.main_tab_pager);
+        //mViewPager.setOffscreenPageLimit(mTabAdapter.getCacheCount());
+        //mViewPager.setAdapter(mTabAdapter);
+        //mViewPager.setOnPageChangeListener(this);
         return view;
     }
 }

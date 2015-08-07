@@ -44,14 +44,21 @@
             </LinearLayout>
         </LinearLayout>
 
-        <fragment
-            android:name="apollo.app.wofang.activity.ContentViewPagerFragment"
+        <RelativeLayout
+            android:id="@+id/layout_bottom"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout="@layout/fragment_main_viewpager">
+            android:layout_below="@id/layout_sections" >
 
-        </fragment>
+            <fragment
+                android:name="apollo.app.wofang.activity.ContentViewPagerFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_main_viewpager">
 
+            </fragment>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
