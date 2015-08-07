@@ -3,9 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/main_tab_pager"
+    <LinearLayout
+        android:id="@+id/layout_sections"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="40dip"
+            android:layout_weight="1.0" >
+
+            <apollo.widget.HorizontalListView
+                android:id="@+id/section_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" >
+            </apollo.widget.HorizontalListView>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="40dip" >
+
+            <Button
+                android:id="@+id/btn_section_drop_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dip"
+                android:background="@drawable/main_bg_btn_add" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_sections" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/main_tab_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

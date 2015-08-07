@@ -1,14 +1,34 @@
 package apollo.app.wofang.activity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import org.miscwidgets.widget.Panel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import apollo.app.wofang.R;
+import apollo.data.model.Section;
+import apollo.view.DragAdapter;
+import apollo.view.DragGridView;
+import apollo.widget.HorizontalListView;
 
 /**
  * Created by Texel on 2015/8/6.
@@ -16,7 +36,19 @@ import apollo.app.wofang.R;
 public class ContentViewPagerFragment extends Fragment implements
         ViewPager.OnPageChangeListener {
 
-    private ViewPager mViewPager;
+    private ViewPager mViewPager = null;
+    private HorizontalListView mSectionListView = null;
+    private DragAdapter mSectionAdapterCurrent = null;
+    private DragAdapter mSectionAdapterSource = null;
+    private Button mBtnSecitonDropDown = null;
+    private RelativeLayout mLayoutBottom = null;
+
+    private Panel mSectionsPanel = null;
+    private DragGridView mDragGridViewCurrent = null;
+    private DragGridView mDragGridViewSource = null;
+
+    private List<Section> mSectionsCurrent = null;
+    private List<Section> mSectionsSource = null;
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -36,13 +68,187 @@ public class ContentViewPagerFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        this.mSectionsCurrent = new ArrayList<Section>();
+        this.mSectionsSource = new ArrayList<Section>();
+
+        // test code
+
+        for(int i=0; i<6; i++) {
+            Section s = new Section();
+            s.setId(i);
+            s.setName("Section" + i);
+
+            this.mSectionsCurrent.add(s);
+        }
+        this.mSectionAdapterCurrent.notifyDataSetChanged();
+        // end test code
+
+        // test code
+
+        for(int i=0; i<6; i++) {
+            Section s = new Section();
+            s.setId(i);
+            s.setName("Section" + i);
+
+            this.mSectionsSource.add(s);
+        }
+        this.mSectionAdapterSource.notifyDataSetChanged();
+        // end test code
+
+
         View view = null;
 
         view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
-        //mViewPager = (ViewPager) view.findViewById(R.id.main_tab_pager);
-        //mViewPager.setOffscreenPageLimit(mTabAdapter.getCacheCount());
-        //mViewPager.setAdapter(mTabAdapter);
-        //mViewPager.setOnPageChangeListener(this);
+
+        this.mSectionAdapterCurrent = new DragAdapter(this.getActivity(), this.mSectionsCurrent);
+        this.mSectionAdapterSource = new DragAdapter(this.getActivity(), this.mSectionsSource);
+
+
+        View view2 = inflater.inflate(R.layout.item_layout_main_sections, null);
+        this.mSectionsPanel = (Panel) view2.findViewById(R.id.layout_main_sections);
+
+        this.mDragGridViewCurrent = (DragGridView) view2.findViewById(R.id.grid_current);
+        this.mDragGridViewCurrent.setAdapter(this.mSectionAdapterCurrent);
+
+        this.mDragGridViewSource = (DragGridView) view2.findViewById(R.id.grid_source);
+        this.mDragGridViewSource.setAdapter(this.mSectionAdapterSource);
+
+        this.mBtnSecitonDropDown = (Button) view.findViewById(R.id.btn_section_drop_down);
+        this.mSectionListView = (HorizontalListView) view.findViewById(R.id.section_list);
+        this.mSectionListView.setAdapter(this.mSectionAdapterCurrent);
+
+        this.mLayoutBottom =  (RelativeLayout) view.findViewById(R.id.layout_bottom);
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        this.mLayoutBottom.addView(this.mSectionsPanel, params);
+
         return view;
+    }
+
+    private void initListener(View view) {
+        this.mSectionListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                mSectionListView.setSelection(position);
+            }
+
+
+        });
+
+        this.mBtnSecitonDropDown.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (mSectionsPanel.isOpen()) {
+                    mSectionsPanel.setOpen(false, true);
+                } else {
+                    mSectionsPanel.setOpen(true, true);
+                }
+            }
+        });
+
+        this.mDragGridViewSource.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                final TextView textView = (TextView) view.findViewById(R.id.section_name);
+                final Section section = (Section) textView.getTag();
+                final ImageView img = buildImageView(view);
+
+                mSectionAdapterCurrent.addItem(section);
+                mSectionAdapterCurrent.setLastItemVisibility(View.GONE);
+                new Handler().post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        View v = null;
+                        int[] location = new int[2];
+                        int[] target_location = new int[2];
+
+                        textView.getLocationInWindow(location);
+                        v = mDragGridViewCurrent.getChildAt(mDragGridViewCurrent.getLastVisiblePosition());
+                        v.getLocationInWindow(target_location);
+
+                        doMoveAnimation(img, mDragGridViewCurrent,
+                                location[0], location[1], target_location[0], target_location[1]);
+                        mSectionAdapterSource.removeItem(section);
+                    }
+
+                });
+            }
+
+
+        });
+    }
+
+    private ImageView buildImageView(View view) {
+        Bitmap cache = null;
+        ImageView iv = null;
+
+        view.destroyDrawingCache();
+        view.setDrawingCacheEnabled(true);
+
+        cache = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+
+        iv = new ImageView(this.getActivity());
+        iv.setImageBitmap(cache);
+        return iv;
+    }
+
+
+    private void doMoveAnimation(final View view, final DragGridView gridView, int fromXDelta, int fromYDelta,
+                                 int toXDelta, int toYDelta) {
+        TranslateAnimation animation = null;
+        AnimationSet animationSet = null;
+        ViewGroup group = null;
+        LinearLayout layout = null;
+        LinearLayout.LayoutParams params = null;
+
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(params);
+
+        layout = new LinearLayout(this.getActivity());
+        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        layout.addView(view);
+
+        group = (ViewGroup) this.getActivity().getWindow().getDecorView();
+        group.addView(layout);
+
+
+        animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
+        animation.setDuration(300L);
+
+        animationSet = new AnimationSet(true);
+        animationSet.setAnimationListener(new Animation.AnimationListener(){
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                DragAdapter adapter = (DragAdapter) gridView.getAdapter();
+                adapter.setLastItemVisibility(View.VISIBLE);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+        });
+
+        animationSet.setFillAfter(false);//
+        animationSet.addAnimation(animation);
+
+        view.startAnimation(animationSet);
     }
 }
