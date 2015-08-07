@@ -44,7 +44,7 @@ public class AppCache {
      *
      * @param key
      * @param value
-     * @param seconds 可持久化时间
+     * @param seconds
      */
     public static void add(String key, Object value, int seconds) {
         String name = null;
