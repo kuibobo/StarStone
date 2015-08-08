@@ -71,31 +71,6 @@ public class ContentViewPagerFragment extends Fragment implements
         this.mSectionsCurrent = new ArrayList<Section>();
         this.mSectionsSource = new ArrayList<Section>();
 
-        // test code
-
-        for(int i=0; i<6; i++) {
-            Section s = new Section();
-            s.setId(i);
-            s.setName("Section" + i);
-
-            this.mSectionsCurrent.add(s);
-        }
-        this.mSectionAdapterCurrent.notifyDataSetChanged();
-        // end test code
-
-        // test code
-
-        for(int i=0; i<6; i++) {
-            Section s = new Section();
-            s.setId(i);
-            s.setName("Section" + i);
-
-            this.mSectionsSource.add(s);
-        }
-        this.mSectionAdapterSource.notifyDataSetChanged();
-        // end test code
-
-
         View view = null;
 
         view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
@@ -124,6 +99,31 @@ public class ContentViewPagerFragment extends Fragment implements
                 ViewGroup.LayoutParams.MATCH_PARENT);
         this.mLayoutBottom.addView(this.mSectionsPanel, params);
 
+        // test code
+
+        for(int i=0; i<6; i++) {
+            Section s = new Section();
+            s.setId(i);
+            s.setName("Section" + i);
+
+            this.mSectionsCurrent.add(s);
+        }
+        this.mSectionAdapterCurrent.notifyDataSetChanged();
+        // end test code
+
+        // test code
+
+        for(int i=0; i<6; i++) {
+            Section s = new Section();
+            s.setId(i);
+            s.setName("Section" + i);
+
+            this.mSectionsSource.add(s);
+        }
+        this.mSectionAdapterSource.notifyDataSetChanged();
+        // end test code
+
+        this.initListener(view);
         return view;
     }
 
