@@ -28,6 +28,7 @@ import apollo.app.wofang.R;
 import apollo.data.model.Section;
 import apollo.view.DragAdapter;
 import apollo.view.DragGridView;
+import apollo.widget.SectionPagerAdapter;
 import apollo.widget.HorizontalListView;
 
 /**
@@ -42,7 +43,7 @@ public class ContentViewPagerFragment extends Fragment implements
     private DragAdapter mSectionAdapterSource = null;
     private Button mBtnSecitonDropDown = null;
     private RelativeLayout mLayoutBottom = null;
-
+    private SectionPagerAdapter mTabAdapter = null;
     private Panel mSectionsPanel = null;
     private DragGridView mDragGridViewCurrent = null;
     private DragGridView mDragGridViewSource = null;
@@ -71,34 +72,34 @@ public class ContentViewPagerFragment extends Fragment implements
         this.mSectionsCurrent = new ArrayList<Section>();
         this.mSectionsSource = new ArrayList<Section>();
 
-        View view = null;
+        View parent_view = null;
+        View sections_view = null;
 
-        view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
+        parent_view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
 
         this.mSectionAdapterCurrent = new DragAdapter(this.getActivity(), this.mSectionsCurrent);
         this.mSectionAdapterSource = new DragAdapter(this.getActivity(), this.mSectionsSource);
 
 
-        View view2 = inflater.inflate(R.layout.item_layout_main_sections, null);
-        this.mSectionsPanel = (Panel) view2.findViewById(R.id.layout_main_sections);
+        sections_view = inflater.inflate(R.layout.item_layout_main_sections, null);
+        this.mSectionsPanel = (Panel) sections_view.findViewById(R.id.layout_main_sections);
 
-        this.mDragGridViewCurrent = (DragGridView) view2.findViewById(R.id.grid_current);
+        this.mDragGridViewCurrent = (DragGridView) sections_view.findViewById(R.id.grid_current);
         this.mDragGridViewCurrent.setAdapter(this.mSectionAdapterCurrent);
 
-        this.mDragGridViewSource = (DragGridView) view2.findViewById(R.id.grid_source);
+        this.mDragGridViewSource = (DragGridView) sections_view.findViewById(R.id.grid_source);
         this.mDragGridViewSource.setAdapter(this.mSectionAdapterSource);
 
-        this.mBtnSecitonDropDown = (Button) view.findViewById(R.id.btn_section_drop_down);
-        this.mSectionListView = (HorizontalListView) view.findViewById(R.id.section_list);
+        this.mBtnSecitonDropDown = (Button) parent_view.findViewById(R.id.btn_section_drop_down);
+        this.mSectionListView = (HorizontalListView) parent_view.findViewById(R.id.section_list);
         this.mSectionListView.setAdapter(this.mSectionAdapterCurrent);
 
-        this.mLayoutBottom =  (RelativeLayout) view.findViewById(R.id.layout_bottom);
+        this.mLayoutBottom = (RelativeLayout) parent_view.findViewById(R.id.layout_bottom);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         this.mLayoutBottom.addView(this.mSectionsPanel, params);
-
         // test code
 
         for(int i=0; i<6; i++) {
@@ -123,8 +124,17 @@ public class ContentViewPagerFragment extends Fragment implements
         this.mSectionAdapterSource.notifyDataSetChanged();
         // end test code
 
-        this.initListener(view);
-        return view;
+        this.mViewPager = (ViewPager) parent_view.findViewById(R.id.main_tab_pager);
+        if (this.mViewPager.getAdapter() == null &&
+                this.mTabAdapter == null) {
+            this.mTabAdapter = new SectionPagerAdapter(super.getChildFragmentManager(),
+                    super.getActivity(), this.mSectionsCurrent, this.mViewPager);
+        }
+        //this.mViewPager.setOffscreenPageLimit(1);
+        this.mViewPager.setAdapter(this.mTabAdapter);
+
+        this.initListener(parent_view);
+        return parent_view;
     }
 
     private void initListener(View view) {
@@ -134,6 +144,7 @@ public class ContentViewPagerFragment extends Fragment implements
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 mSectionListView.setSelection(position);
+                mViewPager.setCurrentItem(position);
             }
 
 
