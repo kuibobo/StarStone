@@ -1,4 +1,4 @@
-package apollo.app.wofang.activity;
+package apollo.app.wofang.widget;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -34,19 +34,22 @@ import apollo.widget.HorizontalListView;
 /**
  * Created by Texel on 2015/8/6.
  */
-public class ContentViewPagerFragment extends Fragment implements
+public class SectionViewPagerFragment extends Fragment implements
         ViewPager.OnPageChangeListener {
 
     private ViewPager mViewPager = null;
-    private HorizontalListView mSectionListView = null;
+    private SectionPagerAdapter mTabAdapter = null;
+
     private DragAdapter mSectionAdapterCurrent = null;
     private DragAdapter mSectionAdapterSource = null;
-    private Button mBtnSecitonDropDown = null;
-    private RelativeLayout mLayoutBottom = null;
-    private SectionPagerAdapter mTabAdapter = null;
-    private Panel mSectionsPanel = null;
     private DragGridView mDragGridViewCurrent = null;
     private DragGridView mDragGridViewSource = null;
+
+    private HorizontalListView mSectionListView = null;
+    private RelativeLayout mLayoutBottom = null;
+    private Button mBtnSecitonDropDown = null;
+    private Panel mSectionsPanel = null;
+
 
     private List<Section> mSectionsCurrent = null;
     private List<Section> mSectionsSource = null;
@@ -100,8 +103,8 @@ public class ContentViewPagerFragment extends Fragment implements
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         this.mLayoutBottom.addView(this.mSectionsPanel, params);
-        // test code
 
+        // test code
         for(int i=0; i<6; i++) {
             Section s = new Section();
             s.setId(i);
@@ -113,7 +116,6 @@ public class ContentViewPagerFragment extends Fragment implements
         // end test code
 
         // test code
-
         for(int i=0; i<6; i++) {
             Section s = new Section();
             s.setId(i);
@@ -128,7 +130,8 @@ public class ContentViewPagerFragment extends Fragment implements
         if (this.mViewPager.getAdapter() == null &&
                 this.mTabAdapter == null) {
             this.mTabAdapter = new SectionPagerAdapter(super.getChildFragmentManager(),
-                    super.getActivity(), this.mSectionsCurrent, this.mViewPager);
+                    SectionContentFragment.class,
+                    this.mSectionsCurrent);
         }
         //this.mViewPager.setOffscreenPageLimit(1);
         this.mViewPager.setAdapter(this.mTabAdapter);

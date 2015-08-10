@@ -1,6 +1,5 @@
 package apollo.fragments;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -11,7 +10,6 @@ import android.webkit.WebViewClient;
 import android.widget.ZoomButtonsController;
 
 import java.io.Serializable;
-import java.lang.ref.WeakReference;
 
 import apollo.cache.AppCache;
 import apollo.data.model.Entity;
@@ -20,7 +18,7 @@ import apollo.net.AsyncHttpClient;
 /**
  * Created by Texel on 2015/8/4.
  */
-public abstract class BaseDetailFragment extends BaseFragment {
+public abstract class WebBaseFragment<T> extends EntityBaseFragment<T> {
 
     class SaveCacheTask extends AsyncTask<Void, Void, Void> {
         private Serializable seri;

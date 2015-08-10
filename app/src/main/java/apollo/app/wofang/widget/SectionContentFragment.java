@@ -1,4 +1,4 @@
-package apollo.fragments;
+package apollo.app.wofang.widget;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +9,13 @@ import android.widget.Button;
 
 import apollo.core.R;
 import apollo.data.model.Entity;
+import apollo.data.model.Section;
+import apollo.fragments.WebBaseFragment;
 
 /**
  * Created by kuibo on 2015/8/8.
  */
-public class SectionContentFragment extends BaseTabFragment {
+public class SectionContentFragment extends WebBaseFragment<Section> {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,21 @@ public class SectionContentFragment extends BaseTabFragment {
 
         Log.i("SectionContentFragment", "onCreateView" + this.toString());
         return view;
+    }
+
+    @Override
+    protected String getCacheKey() {
+        return null;
+    }
+
+    @Override
+    protected void executeOnLoadDataSuccess(Entity entity) {
+
+    }
+
+    @Override
+    protected void executeOnLoadDataError(String object) {
+
     }
 
     protected int getLayoutRes() {

@@ -12,7 +12,7 @@
         android:layout_height="match_parent" >
 
         <fragment
-            android:name="apollo.app.wofang.activity.ContentViewPagerFragment"
+            android:name="apollo.app.wofang.widget.SectionViewPagerFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_main_viewpager">

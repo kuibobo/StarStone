@@ -6,23 +6,19 @@ import android.view.View;
 /**
  * Created by Texel on 2015/8/4.
  */
-public abstract class BaseFragment extends Fragment implements View.OnClickListener {
+public abstract class EntityBaseFragment<T> extends Fragment {
     protected static final int STATE_NONE = 0;
     protected static final int STATE_REFRESH = 1;
     protected static final int STATE_LOADMORE = 2;
     protected int mState = STATE_NONE;
 
-    @Override
-    public void onClick(View v) {
+    private T mEntity;
 
+    public T getEntity() {
+        return this.mEntity;
     }
 
-    /**
-     * Listener the back key click event.
-     *
-     * @return false (default)
-     */
-    public boolean onBackPressed() {
-        return false;
+    public void setEntity(T entity) {
+        this.mEntity = entity;
     }
 }

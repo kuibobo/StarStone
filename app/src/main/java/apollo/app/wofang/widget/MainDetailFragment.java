@@ -5,15 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import apollo.app.wofang.R;
 import apollo.data.model.Entity;
-import apollo.fragments.BaseDetailFragment;
+import apollo.fragments.WebBaseFragment;
 
 /**
  * Created by Texel on 2015/8/5.
  */
 
-public class MainDetailFragment extends BaseDetailFragment {
+public class MainDetailFragment extends WebBaseFragment {
     @Override
     protected String getCacheKey() {
         return null;
