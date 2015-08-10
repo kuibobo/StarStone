@@ -3,6 +3,7 @@ package apollo.fragments;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -10,15 +11,17 @@ import android.webkit.WebViewClient;
 import android.widget.ZoomButtonsController;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 
 import apollo.cache.AppCache;
 import apollo.data.model.Entity;
 import apollo.net.AsyncHttpClient;
+import apollo.util.CompatibleUtil;
 
 /**
  * Created by Texel on 2015/8/4.
  */
-public abstract class WebBaseFragment<T> extends EntityBaseFragment<T> {
+public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
 
     class SaveCacheTask extends AsyncTask<Void, Void, Void> {
         private Serializable seri;
@@ -55,6 +58,25 @@ public abstract class WebBaseFragment<T> extends EntityBaseFragment<T> {
         }
     }
 
+    class ReadCacheTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String key = params[0];
+
+            return (String)AppCache.get(key);
+        }
+
+        @Override
+        protected void onPostExecute(String content) {
+            if (TextUtils.isEmpty(content)) {
+                executeOnLoadDataSuccess(null);
+            } else {
+                executeOnLoadDataError(null);
+            }
+        }
+    }
+
     protected WebViewClient mWebViewClient = new WebViewClient() {
         private boolean receiveError = false;
 
@@ -79,6 +101,7 @@ public abstract class WebBaseFragment<T> extends EntityBaseFragment<T> {
 
     };
 
+    private AsyncTask<String, Void, String> mCacheTask;
     private HttpContextAsyncTask mHttpContentTask;
     protected WebView mWebView;
 
@@ -87,7 +110,6 @@ public abstract class WebBaseFragment<T> extends EntityBaseFragment<T> {
     protected abstract void executeOnLoadDataSuccess(Entity entity);
 
     protected abstract void executeOnLoadDataError(String object);
-
 
     protected void saveCache(Entity entity) {
         new SaveCacheTask(entity, getCacheKey()).execute();
@@ -120,6 +142,34 @@ public abstract class WebBaseFragment<T> extends EntityBaseFragment<T> {
         }
     }
 
+    protected void requestData(boolean refresh) {
+        String key = getCacheKey();
+        if (CompatibleUtil.hasInternet(super.getActivity())
+                && (!AppCache.exists( key) || refresh)) {
+            sendRequestData();
+        } else {
+            readCacheData(key);
+        }
+    }
+
+    protected abstract void sendRequestData();
+
+    protected void readCacheData(String key) {
+        cancelReadCacheTask();
+        mCacheTask = new ReadCacheTask().execute(key);
+    };
+
+    private void cancelReadCacheTask() {
+        if (mCacheTask != null) {
+            mCacheTask.cancel(true);
+            mCacheTask = null;
+        }
+    }
+
+    public void refresh() {
+        this.mState = STATE_REFRESH;
+        requestData(true);
+    }
 
     @Override
     public void onDestroy() {

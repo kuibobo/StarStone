@@ -10,12 +10,12 @@ import android.widget.Button;
 import apollo.core.R;
 import apollo.data.model.Entity;
 import apollo.data.model.Section;
-import apollo.fragments.WebBaseFragment;
+import apollo.fragments.WebViewBaseFragment;
 
 /**
  * Created by kuibo on 2015/8/8.
  */
-public class SectionContentFragment extends WebBaseFragment<Section> {
+public class SectionContentFragment extends WebViewBaseFragment<Section> {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

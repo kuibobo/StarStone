@@ -6,13 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import apollo.data.model.Entity;
-import apollo.fragments.WebBaseFragment;
+import apollo.fragments.WebViewBaseFragment;
 
 /**
  * Created by Texel on 2015/8/5.
  */
 
-public class MainDetailFragment extends WebBaseFragment {
+public class MainDetailFragment extends WebViewBaseFragment {
     @Override
     protected String getCacheKey() {
         return null;

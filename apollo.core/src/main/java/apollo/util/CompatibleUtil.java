@@ -5,6 +5,7 @@ package apollo.util;
  */
 import android.app.ActivityManager;
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.util.FloatMath;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -46,5 +47,12 @@ public class CompatibleUtil {
             float y = event.getY(0) - event.getY(1);
             return FloatMath.sqrt(x * x + y * y);
         }
+    }
+
+    public static boolean hasInternet(Context context) {
+        boolean flag;
+        flag = ((ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
+        return flag;
     }
 }

@@ -95,4 +95,8 @@ public class AppCache {
         }
         return obj;
     }
+
+    public static boolean exists(String key) {
+        return get(key) != null;
+    }
 }
