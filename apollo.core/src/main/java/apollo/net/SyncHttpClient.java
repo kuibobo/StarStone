@@ -10,13 +10,13 @@ import apollo.exception.SystemException;
 /**
  * Created by bourne on 2015/7/11.
  */
-public class AsyncHttpClient {
+public class SyncHttpClient {
 
-    private static AsyncHttpClient instance = null;
+    private static SyncHttpClient instance = null;
 
-    public static AsyncHttpClient getInstance() {
+    public static SyncHttpClient getInstance() {
         if(instance == null) {
-            instance = new AsyncHttpClient();
+            instance = new SyncHttpClient();
         }
         return instance;
     }

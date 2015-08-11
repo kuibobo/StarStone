@@ -3,8 +3,12 @@ package apollo.fragments;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -15,7 +19,7 @@ import java.lang.ref.WeakReference;
 
 import apollo.cache.AppCache;
 import apollo.data.model.Entity;
-import apollo.net.AsyncHttpClient;
+import apollo.net.SyncHttpClient;
 import apollo.util.CompatibleUtil;
 
 /**
@@ -39,8 +43,7 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
         }
     }
 
-    class HttpContextAsyncTask extends AsyncTask<Object, Void, String> {
-
+    protected AsyncTask mHttpContentTask = new AsyncTask<Object, Void, String>(){
         @Override
         protected String doInBackground(Object... params) {
             String url = null;
@@ -48,15 +51,15 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
 
             url = (String)params[0];
 
-            content = AsyncHttpClient.getInstance().getContent(url);
+            content = SyncHttpClient.getInstance().getContent(url);
             return content;
         }
 
         @Override
         protected void onPostExecute(String content) {
-
+            executeOnLoadDataSuccess(content);
         }
-    }
+    };
 
     class ReadCacheTask extends AsyncTask<String, Void, String> {
 
@@ -101,18 +104,24 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
 
     };
 
-    private AsyncTask<String, Void, String> mCacheTask;
-    private HttpContextAsyncTask mHttpContentTask;
+    protected AsyncTask<String, Void, String> mCacheTask;
+
     protected WebView mWebView;
 
     protected abstract String getCacheKey();
 
-    protected abstract void executeOnLoadDataSuccess(Entity entity);
+    protected abstract void executeOnLoadDataSuccess(String content);
 
-    protected abstract void executeOnLoadDataError(String object);
+    protected abstract void executeOnLoadDataError(String content);
 
     protected void saveCache(Entity entity) {
         new SaveCacheTask(entity, getCacheKey()).execute();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        requestData(false);
     }
 
     protected void initWebViews(WebView webView) {

@@ -19,7 +19,7 @@ public class MainDetailFragment extends WebViewBaseFragment {
     }
 
     @Override
-    protected void executeOnLoadDataSuccess(Entity entity) {
+    protected void executeOnLoadDataSuccess(String entity) {
 
     }
 
@@ -58,5 +58,8 @@ public class MainDetailFragment extends WebViewBaseFragment {
 
     }
 
+    @Override
+    protected void sendRequestData() {
 
+    }
 }
