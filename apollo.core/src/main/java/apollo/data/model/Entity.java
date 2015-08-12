@@ -16,6 +16,7 @@ public abstract class Entity implements Serializable, Parcelable {
     private String body;
     private String icon;
     private String url;
+    private boolean locked;
 
     public int getId() {
         return id;
@@ -63,6 +64,14 @@ public abstract class Entity implements Serializable, Parcelable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     public Entity() {
