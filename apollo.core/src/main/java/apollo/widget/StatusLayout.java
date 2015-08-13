@@ -19,22 +19,22 @@ import apollo.util.CompatibleUtil;
  */
 public class StatusLayout extends LinearLayout implements View.OnClickListener {
 
-    public static final int HIDE_LAYOUT = 4;
     public static final int NETWORK_ERROR = 1;
     public static final int NETWORK_LOADING = 2;
     public static final int NODATA = 3;
+    public static final int HIDE_LAYOUT = 4;
     public static final int NODATA_ENABLE_CLICK = 5;
 
-    private ProgressBar animProgress;
-    private ImageView img;
-    private OnClickListener listener;
+    private ProgressBar mProgress;
+    private ImageView mImgView;
+    private OnClickListener mClickListener;
     private RelativeLayout mLayout;
-    private TextView mTv;
+    private TextView mTextView;
     private Animation mAnim;
 
     private int mErrorState;
-    private boolean clickEnable = true;
-    private String strNoDataContent = "";
+    private boolean mClickEnable = true;
+    private String mNoDataContent = "";
 
     public StatusLayout(Context context) {
         super(context);
@@ -51,21 +51,21 @@ public class StatusLayout extends LinearLayout implements View.OnClickListener {
      */
     private void init() {
         View view = View.inflate(super.getContext(), R.layout.layout_status, null);
-        img = (ImageView) view.findViewById(R.id.error_layout_img);
-        mTv = (TextView) view.findViewById(R.id.error_layout_tv);
+        mImgView = (ImageView) view.findViewById(R.id.error_layout_img);
+        mTextView = (TextView) view.findViewById(R.id.error_layout_tv);
         mLayout = (RelativeLayout) view.findViewById(R.id.error_layout_main);
-        animProgress = (ProgressBar) view.findViewById(R.id.error_layout_animProgress);
+        mProgress = (ProgressBar) view.findViewById(R.id.error_layout_animProgress);
         mAnim = AnimationUtils.loadAnimation(super.getContext(), R.anim.progressbar_loading);
         setBackgroundColor(-1);
         setOnClickListener(this);
-        img.setOnClickListener(new OnClickListener() {
+        mImgView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if (clickEnable) {
+                if (mClickEnable) {
                     //setErrorType(NETWORK_LOADING);
-                    if (listener != null)
-                        listener.onClick(v);
+                    if (mClickListener != null)
+                        mClickListener.onClick(v);
                 }
             }
         });
@@ -92,10 +92,10 @@ public class StatusLayout extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (clickEnable) {
+        if (mClickEnable) {
             //setErrorType(NETWORK_LOADING);
-            if (listener != null)
-                listener.onClick(v);
+            if (mClickListener != null)
+                mClickListener.onClick(v);
         }
     }
 
@@ -110,58 +110,58 @@ public class StatusLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void setErrorMessage(String msg) {
-        mTv.setText(msg);
+        mTextView.setText(msg);
     }
 
     public void setErrorMessage(int msg) {
-        if (msg != 0) mTv.setText(msg);
+        if (msg != 0) mTextView.setText(msg);
     }
 
-    public void setErrorType(int i) {
+    public void setStatus(int i) {
         setVisibility(View.VISIBLE);
         switch (i) {
             case NETWORK_ERROR:
                 mErrorState = NETWORK_ERROR;
                 if (CompatibleUtil.hasInternet(super.getContext())) {
-                    mTv.setText(R.string.click_to_refresh);
-                    img.setBackgroundResource(R.drawable.pagefailed_bg);
+                    mTextView.setText(R.string.click_to_refresh);
+                    mImgView.setBackgroundResource(R.drawable.pagefailed_bg);
                 } else {
-                    mTv.setText(R.string.network_error);
-                    img.setBackgroundResource(R.drawable.page_icon_network);
+                    mTextView.setText(R.string.network_error);
+                    mImgView.setBackgroundResource(R.drawable.page_icon_network);
                 }
-                img.setVisibility(View.VISIBLE);
-                animProgress.setVisibility(View.GONE);
-                animProgress.clearAnimation();
-                clickEnable = true;
+                mImgView.setVisibility(View.VISIBLE);
+                mProgress.setVisibility(View.GONE);
+                mProgress.clearAnimation();
+                mClickEnable = true;
                 break;
             case NETWORK_LOADING:
                 mErrorState = NETWORK_LOADING;
-                animProgress.setVisibility(View.VISIBLE);
-                animProgress.clearAnimation();
-                animProgress.startAnimation(mAnim);
-                img.setVisibility(View.GONE);
-                mTv.setText(R.string.loading);
-                clickEnable = false;
+                mProgress.setVisibility(View.VISIBLE);
+                mProgress.clearAnimation();
+                mProgress.startAnimation(mAnim);
+                mImgView.setVisibility(View.GONE);
+                mTextView.setText(R.string.loading);
+                mClickEnable = false;
                 break;
             case NODATA:
                 mErrorState = NODATA;
-                img.setVisibility(View.VISIBLE);
-                animProgress.setVisibility(View.GONE);
-                animProgress.clearAnimation();
-                setTvNoDataContent();
-                clickEnable = false;
+                mImgView.setVisibility(View.VISIBLE);
+                mProgress.setVisibility(View.GONE);
+                mProgress.clearAnimation();
+                setNoDataContent();
+                mClickEnable = false;
                 break;
             case HIDE_LAYOUT:
                 setVisibility(View.GONE);
-                animProgress.clearAnimation();
+                mProgress.clearAnimation();
                 break;
             case NODATA_ENABLE_CLICK:
                 mErrorState = NODATA_ENABLE_CLICK;
-                img.setVisibility(View.VISIBLE);
-                animProgress.setVisibility(View.GONE);
-                animProgress.clearAnimation();
-                setTvNoDataContent();
-                clickEnable = true;
+                mImgView.setVisibility(View.VISIBLE);
+                mProgress.setVisibility(View.GONE);
+                mProgress.clearAnimation();
+                setNoDataContent();
+                mClickEnable = true;
                 break;
             default:
                 break;
@@ -169,18 +169,18 @@ public class StatusLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void setNoDataContent(String noDataContent) {
-        strNoDataContent = noDataContent;
+        mNoDataContent = noDataContent;
     }
 
     public void setOnLayoutClickListener(OnClickListener listener) {
-        this.listener = listener;
+        this.mClickListener = listener;
     }
 
-    public void setTvNoDataContent() {
-        if (!strNoDataContent.equals(""))
-            mTv.setText(strNoDataContent);
+    public void setNoDataContent() {
+        if (!mNoDataContent.equals(""))
+            mTextView.setText(mNoDataContent);
         else
-            mTv.setText(R.string.no_data);
+            mTextView.setText(R.string.no_data);
     }
 
     @Override
@@ -191,8 +191,8 @@ public class StatusLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public String getMessage() {
-        if (mTv != null) {
-            return mTv.getText().toString();
+        if (mTextView != null) {
+            return mTextView.getText().toString();
         }
         return "";
     }

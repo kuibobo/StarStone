@@ -11,8 +11,8 @@ import apollo.data.model.Section;
  */
 public class SectionPagerAdapter extends BaseFragmentPagerAdapter<Section> {
 
-    public SectionPagerAdapter(FragmentManager fm, Class<?> fragment, List<Section> source) {
-        super(fm, fragment, source);
+    public SectionPagerAdapter(FragmentManager fm, Class<?> fragment, List<Section> items) {
+        super(fm, fragment, items);
     }
 
 }

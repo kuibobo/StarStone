@@ -45,10 +45,10 @@ public class SectionViewPagerFragment extends Fragment implements
     private ViewPager mViewPager = null;
     private SectionPagerAdapter mTabAdapter = null;
 
-    private DragAdapter mSectionAdapterCurrent = null;
-    private DragAdapter mSectionAdapterSource = null;
-    private DragGridView mDragGridViewCurrent = null;
-    private DragGridView mDragGridViewSource = null;
+    private DragAdapter mRecommSectionAdapter = null;
+    private DragAdapter mSubSectionAdapter = null;
+    private DragGridView mRecommDragGridView = null;
+    private DragGridView mSubDragGridView = null;
 
     private HorizontalListView mSectionListView = null;
     private RelativeLayout mLayoutBottom = null;
@@ -83,30 +83,28 @@ public class SectionViewPagerFragment extends Fragment implements
         parent_view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
 
         Gson gson = new Gson();
-        String temp = ResUtil.read(super.getActivity().getAssets(), "recomm_sections.json");
         Type listType = new TypeToken<ArrayList<Section>>(){}.getType();
+        String temp = ResUtil.read(super.getActivity().getAssets(), "recomm_sections.json");
 
         this.mSectionsCurrent = gson.fromJson(temp, listType);
-        this.mSectionAdapterCurrent = new DragAdapter(this.getActivity(), this.mSectionsCurrent);
-        ///this.mSectionAdapterCurrent.notifyDataSetChanged();
+        this.mRecommSectionAdapter = new DragAdapter(this.getActivity(), this.mSectionsCurrent);
 
         temp = ResUtil.read(super.getActivity().getAssets(), "sub_sections.json");
         this.mSectionsSource = gson.fromJson(temp, listType);
-        this.mSectionAdapterSource = new DragAdapter(this.getActivity(), this.mSectionsSource);
-        ///this.mSectionAdapterSource.notifyDataSetChanged();
+        this.mSubSectionAdapter = new DragAdapter(this.getActivity(), this.mSectionsSource);
 
         sections_view = inflater.inflate(R.layout.item_layout_main_sections, null);
         this.mSectionsPanel = (Panel) sections_view.findViewById(R.id.layout_main_sections);
 
-        this.mDragGridViewCurrent = (DragGridView) sections_view.findViewById(R.id.grid_current);
-        this.mDragGridViewCurrent.setAdapter(this.mSectionAdapterCurrent);
+        this.mRecommDragGridView = (DragGridView) sections_view.findViewById(R.id.grid_current);
+        this.mRecommDragGridView.setAdapter(this.mRecommSectionAdapter);
 
-        this.mDragGridViewSource = (DragGridView) sections_view.findViewById(R.id.grid_source);
-        this.mDragGridViewSource.setAdapter(this.mSectionAdapterSource);
+        this.mSubDragGridView = (DragGridView) sections_view.findViewById(R.id.grid_source);
+        this.mSubDragGridView.setAdapter(this.mSubSectionAdapter);
 
         this.mBtnSecitonDropDown = (Button) parent_view.findViewById(R.id.btn_section_drop_down);
         this.mSectionListView = (HorizontalListView) parent_view.findViewById(R.id.section_list);
-        this.mSectionListView.setAdapter(this.mSectionAdapterCurrent);
+        this.mSectionListView.setAdapter(this.mRecommSectionAdapter);
 
         this.mLayoutBottom = (RelativeLayout) parent_view.findViewById(R.id.layout_bottom);
 
@@ -154,7 +152,15 @@ public class SectionViewPagerFragment extends Fragment implements
             }
         });
 
-        this.mDragGridViewSource.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        this.mRecommDragGridView.setSwapItemHandle(new DragGridView.SwapItemHandle(){
+
+            @Override
+            public void swap(int index1, int index2) {
+                mTabAdapter.swap(index1, index2);
+            }
+        });
+
+        this.mSubDragGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -163,8 +169,9 @@ public class SectionViewPagerFragment extends Fragment implements
                 final Section section = (Section) textView.getTag();
                 final ImageView img = buildImageView(view);
 
-                mSectionAdapterCurrent.addItem(section);
-                mSectionAdapterCurrent.setLastItemVisibility(View.GONE);
+                mRecommSectionAdapter.addItem(section);
+                mRecommSectionAdapter.setLastItemVisibility(View.GONE);
+                mTabAdapter.addItem(section);
                 new Handler().post(new Runnable() {
 
                     @Override
@@ -174,12 +181,12 @@ public class SectionViewPagerFragment extends Fragment implements
                         int[] target_location = new int[2];
 
                         textView.getLocationInWindow(location);
-                        v = mDragGridViewCurrent.getChildAt(mDragGridViewCurrent.getLastVisiblePosition());
+                        v = mRecommDragGridView.getChildAt(mRecommDragGridView.getLastVisiblePosition());
                         v.getLocationInWindow(target_location);
 
-                        doMoveAnimation(img, mDragGridViewCurrent,
+                        doMoveAnimation(img, mRecommDragGridView,
                                 location[0], location[1], target_location[0], target_location[1]);
-                        mSectionAdapterSource.removeItem(section);
+                        mSubSectionAdapter.removeItem(section);
                     }
 
                 });

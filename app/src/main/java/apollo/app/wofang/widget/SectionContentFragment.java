@@ -37,8 +37,9 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
     }
 
     private void initViews(View view) {
-        mStatusLayout = (StatusLayout) view.findViewById(R.id.layout_status);
-        mWebView = (WebView)view.findViewById(R.id.webview);
+        this.mStatusLayout = (StatusLayout) view.findViewById(R.id.layout_status);
+        this.mWebView = (WebView)view.findViewById(R.id.webview);
+        this.mWebView.setWebViewClient(super.mWebViewClient);
     }
 
 
@@ -68,18 +69,25 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
         //content += "<style>.header,.footer,.footer_from{display:none;}</style>";
         mWebView.loadDataWithBaseURL(
                 "wei://base", content, "text/html", "UTF-8", null);
+
+        mStatusLayout.setStatus(StatusLayout.HIDE_LAYOUT);
     }
 
     @Override
     protected void executeOnLoadDataError(String content) {
-
+        mStatusLayout.setStatus(StatusLayout.NETWORK_ERROR);
     }
 
     @Override
     protected void sendRequestData() {
         String url = super.getEntity().getUrl();
 
-        mStatusLayout.setErrorType(StatusLayout.NETWORK_LOADING);
+        mStatusLayout.setStatus(StatusLayout.NETWORK_LOADING);
+
+        if (mHttpContentTask != null && mHttpContentTask.getStatus() != AsyncTask.Status.FINISHED)
+            mHttpContentTask.cancel(true);
+
+        mHttpContentTask = new HttpContentAsyncTask();
         mHttpContentTask.execute(url);
     }
 }

@@ -3,6 +3,7 @@ package apollo.widget;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import apollo.fragments.EntityBaseFragment;
@@ -13,33 +14,63 @@ import apollo.fragments.EntityBaseFragment;
  */
 public abstract class BaseFragmentPagerAdapter<T> extends FragmentPagerAdapter {
 
-    protected final EntityBaseFragment[] mFragments;
+    protected List<EntityBaseFragment> mFragments;
+    private Class<?> mFragment;
 
-    public BaseFragmentPagerAdapter(FragmentManager fm, Class<?> fragment, List<T> sources) {
+    public BaseFragmentPagerAdapter(FragmentManager fm, Class<?> fragment, List<T> items) {
         super(fm);
 
-        this.mFragments = new EntityBaseFragment[sources.size()];
-        for(int i=0; i<sources.size();i++) {
+        EntityBaseFragment ebf = null;
+        this.mFragments = new ArrayList<EntityBaseFragment>();
+        this.mFragment = fragment;
+        for(int i=0; i<items.size();i++) {
             try {
-                this.mFragments[i] = (EntityBaseFragment)fragment.newInstance();
+                ebf = (EntityBaseFragment) fragment.newInstance();
+                this.mFragments.add(ebf);
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
 
-            this.mFragments[i].setEntity(sources.get(i));
+            ebf.setEntity(items.get(i));
         }
     }
 
     @Override
     public int getCount() {
-        return this.mFragments.length;
+        return this.mFragments.size();
     }
 
     @Override
     public EntityBaseFragment<T> getItem(int position) {
-        return this.mFragments[position];
+        return this.mFragments.get(position);
     }
 
+    public void addItem(T t) {
+        EntityBaseFragment ebf = null;
+
+        try {
+            ebf = (EntityBaseFragment) this.mFragment.newInstance();
+            ebf.setEntity(t);
+            this.mFragments.add(ebf);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        this.notifyDataSetChanged();
+    }
+
+    public void swap(int index1, int index2) {
+        EntityBaseFragment ebf = this.getItem(index1);
+
+
+        if (index1 < index2) {
+            this.mFragments.add(index2 + 1, ebf);
+            this.mFragments.remove(index1);
+        } else {
+            this.mFragments.add(index2, ebf);
+            this.mFragments.remove(index1 + 1);
+        }
+        notifyDataSetChanged();
+    }
 }

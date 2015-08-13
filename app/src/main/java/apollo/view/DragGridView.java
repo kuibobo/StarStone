@@ -20,6 +20,14 @@ import apollo.app.wofang.R;
 
 public class DragGridView extends GridView {
 
+	public interface SwapItemHandle {
+		void swap(int index1, int index2);
+	}
+	private SwapItemHandle mSwapItemHandle;
+	public void setSwapItemHandle(SwapItemHandle h) {
+		mSwapItemHandle = h;
+	}
+
 	/** 拖拽时经过的Item的位置**/
 	private int mMoveOverPosition;
 	
@@ -257,7 +265,9 @@ public class DragGridView extends GridView {
 								
 								adapter = (DragAdapter) getAdapter();
 								adapter.swap(mCurrentItemPosition, mMoveOverPosition);
-								
+
+								if (mSwapItemHandle != null)
+									mSwapItemHandle.swap(mCurrentItemPosition, mMoveOverPosition);
 								mCurrentItemPosition = mMoveOverPosition;
 								mIsMoving = false;
 								

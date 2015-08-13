@@ -44,7 +44,8 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
         }
     }
 
-    protected AsyncTask mHttpContentTask = new AsyncTask<Object, Void, String>(){
+    protected HttpContentAsyncTask mHttpContentTask;
+    public class HttpContentAsyncTask extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
             String url = null;
