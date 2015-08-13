@@ -21,6 +21,7 @@ import apollo.cache.AppCache;
 import apollo.data.model.Entity;
 import apollo.net.SyncHttpClient;
 import apollo.util.CompatibleUtil;
+import apollo.widget.StatusLayout;
 
 /**
  * Created by Texel on 2015/8/4.
@@ -107,6 +108,7 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
     protected AsyncTask<String, Void, String> mCacheTask;
 
     protected WebView mWebView;
+    protected StatusLayout mStatusLayout;
 
     protected abstract String getCacheKey();
 

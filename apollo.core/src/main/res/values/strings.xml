@@ -4,5 +4,8 @@
 
     <string name="exit">退出</string>
     <string name="reboot">重启</string>
-
+    <string name="loading">Loading</string>
+    <string name="no_data">no_data</string>
+    <string name="network_error">network_error</string>
+    <string name="click_to_refresh">click_to_refresh</string>
 </resources>

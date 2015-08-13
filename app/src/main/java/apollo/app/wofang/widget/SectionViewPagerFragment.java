@@ -19,13 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.miscwidgets.widget.Panel;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import apollo.app.wofang.R;
 import apollo.data.model.Section;
+import apollo.util.ResUtil;
 import apollo.view.DragAdapter;
 import apollo.view.DragGridView;
 import apollo.widget.SectionPagerAdapter;
@@ -72,17 +77,23 @@ public class SectionViewPagerFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.mSectionsCurrent = new ArrayList<Section>();
-        this.mSectionsSource = new ArrayList<Section>();
-
         View parent_view = null;
         View sections_view = null;
 
         parent_view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
 
-        this.mSectionAdapterCurrent = new DragAdapter(this.getActivity(), this.mSectionsCurrent);
-        this.mSectionAdapterSource = new DragAdapter(this.getActivity(), this.mSectionsSource);
+        Gson gson = new Gson();
+        String temp = ResUtil.read(super.getActivity().getAssets(), "recomm_sections.json");
+        Type listType = new TypeToken<ArrayList<Section>>(){}.getType();
 
+        this.mSectionsCurrent = gson.fromJson(temp, listType);
+        this.mSectionAdapterCurrent = new DragAdapter(this.getActivity(), this.mSectionsCurrent);
+        ///this.mSectionAdapterCurrent.notifyDataSetChanged();
+
+        temp = ResUtil.read(super.getActivity().getAssets(), "sub_sections.json");
+        this.mSectionsSource = gson.fromJson(temp, listType);
+        this.mSectionAdapterSource = new DragAdapter(this.getActivity(), this.mSectionsSource);
+        ///this.mSectionAdapterSource.notifyDataSetChanged();
 
         sections_view = inflater.inflate(R.layout.item_layout_main_sections, null);
         this.mSectionsPanel = (Panel) sections_view.findViewById(R.id.layout_main_sections);
@@ -103,28 +114,6 @@ public class SectionViewPagerFragment extends Fragment implements
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         this.mLayoutBottom.addView(this.mSectionsPanel, params);
-
-        // test code
-        for(int i=0; i<6; i++) {
-            Section s = new Section();
-            s.setId(i);
-            s.setName("Section" + i);
-
-            this.mSectionsCurrent.add(s);
-        }
-        this.mSectionAdapterCurrent.notifyDataSetChanged();
-        // end test code
-
-        // test code
-        for(int i=0; i<6; i++) {
-            Section s = new Section();
-            s.setId(i);
-            s.setName("Section" + i);
-
-            this.mSectionsSource.add(s);
-        }
-        this.mSectionAdapterSource.notifyDataSetChanged();
-        // end test code
 
         this.mViewPager = (ViewPager) parent_view.findViewById(R.id.main_tab_pager);
         if (this.mViewPager.getAdapter() == null &&

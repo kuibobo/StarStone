@@ -13,6 +13,7 @@ import apollo.app.wofang.R;
 import apollo.data.model.Section;
 import apollo.fragments.WebViewBaseFragment;
 import apollo.util.Regex;
+import apollo.widget.StatusLayout;
 
 /**
  * Created by kuibo on 2015/8/8.
@@ -31,16 +32,12 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_section_content, container, false);
 
-        Button btn = (Button) view.findViewById(R.id.button);
-        btn.setText(this.toString());
-
-        Log.i("SectionContentFragment", "onCreateView" + this.toString());
-
         initViews(view);
         return view;
     }
 
     private void initViews(View view) {
+        mStatusLayout = (StatusLayout) view.findViewById(R.id.layout_status);
         mWebView = (WebView)view.findViewById(R.id.webview);
     }
 
@@ -80,6 +77,9 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
 
     @Override
     protected void sendRequestData() {
-        mHttpContentTask.execute("http://m.wofang.com");
+        String url = super.getEntity().getUrl();
+
+        mStatusLayout.setErrorType(StatusLayout.NETWORK_LOADING);
+        mHttpContentTask.execute(url);
     }
 }
