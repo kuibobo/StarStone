@@ -2,10 +2,13 @@ package apollo.widget;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import apollo.data.model.Entity;
 import apollo.fragments.EntityBaseFragment;
 
 
@@ -60,17 +63,22 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentPagerAdapter {
         this.notifyDataSetChanged();
     }
 
+
     public void swap(int index1, int index2) {
-        EntityBaseFragment ebf = this.getItem(index1);
+        //Collections.swap(this.mFragments, index1, index2);
+        EntityBaseFragment<T> ebf1 = null;
+        EntityBaseFragment<T> ebf2 = null;
+        T e1 = null;
+        T e2 = null;
 
+        ebf1 = this.getItem(index1);
+        ebf2 = this.getItem(index2);
 
-        if (index1 < index2) {
-            this.mFragments.add(index2 + 1, ebf);
-            this.mFragments.remove(index1);
-        } else {
-            this.mFragments.add(index2, ebf);
-            this.mFragments.remove(index1 + 1);
-        }
+        e1 = ebf1.getEntity();
+        e2 = ebf2.getEntity();
+
+        ebf1.setEntity(e2);
+        ebf2.setEntity(e1);
         notifyDataSetChanged();
     }
 }

@@ -82,6 +82,8 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
     protected void sendRequestData() {
         String url = super.getEntity().getUrl();
 
+        Log.i(this.getClass().getName(), super.getEntity().getName());
+
         mStatusLayout.setStatus(StatusLayout.NETWORK_LOADING);
 
         if (mHttpContentTask != null && mHttpContentTask.getStatus() != AsyncTask.Status.FINISHED)

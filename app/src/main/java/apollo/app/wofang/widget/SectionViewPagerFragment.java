@@ -120,7 +120,7 @@ public class SectionViewPagerFragment extends Fragment implements
                     SectionContentFragment.class,
                     this.mSectionsCurrent);
         }
-        //this.mViewPager.setOffscreenPageLimit(1);
+        this.mViewPager.setOffscreenPageLimit(0);
         this.mViewPager.setAdapter(this.mTabAdapter);
 
         this.initListener(parent_view);
