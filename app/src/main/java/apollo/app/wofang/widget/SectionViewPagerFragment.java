@@ -56,9 +56,10 @@ public class SectionViewPagerFragment extends Fragment implements
     private Panel mSectionsPanel = null;
 
 
-    private List<Section> mSectionsCurrent = null;
-    private List<Section> mSectionsSource = null;
+    private List<Section> mRecommSections = null;
+    private List<Section> mSubSections = null;
 
+    private int mCurTab = 0;
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -86,12 +87,12 @@ public class SectionViewPagerFragment extends Fragment implements
         Type listType = new TypeToken<ArrayList<Section>>(){}.getType();
         String temp = ResUtil.read(super.getActivity().getAssets(), "recomm_sections.json");
 
-        this.mSectionsCurrent = gson.fromJson(temp, listType);
-        this.mRecommSectionAdapter = new DragAdapter(this.getActivity(), this.mSectionsCurrent);
+        this.mRecommSections = gson.fromJson(temp, listType);
+        this.mRecommSectionAdapter = new DragAdapter(this.getActivity(), this.mRecommSections);
 
         temp = ResUtil.read(super.getActivity().getAssets(), "sub_sections.json");
-        this.mSectionsSource = gson.fromJson(temp, listType);
-        this.mSubSectionAdapter = new DragAdapter(this.getActivity(), this.mSectionsSource);
+        this.mSubSections = gson.fromJson(temp, listType);
+        this.mSubSectionAdapter = new DragAdapter(this.getActivity(), this.mSubSections);
 
         sections_view = inflater.inflate(R.layout.item_layout_main_sections, null);
         this.mSectionsPanel = (Panel) sections_view.findViewById(R.id.layout_main_sections);
@@ -113,18 +114,54 @@ public class SectionViewPagerFragment extends Fragment implements
                 ViewGroup.LayoutParams.MATCH_PARENT);
         this.mLayoutBottom.addView(this.mSectionsPanel, params);
 
+        this.mTabAdapter = new SectionPagerAdapter(super.getChildFragmentManager(),
+                this.getActivity(), SectionContentFragment.class);
+        this.mTabAdapter.refresh(this.mRecommSections);
+
         this.mViewPager = (ViewPager) parent_view.findViewById(R.id.main_tab_pager);
-        if (this.mViewPager.getAdapter() == null &&
-                this.mTabAdapter == null) {
-            this.mTabAdapter = new SectionPagerAdapter(super.getChildFragmentManager(),
-                    SectionContentFragment.class,
-                    this.mSectionsCurrent);
-        }
-        this.mViewPager.setOffscreenPageLimit(0);
+        this.mViewPager.setOffscreenPageLimit(3);
         this.mViewPager.setAdapter(this.mTabAdapter);
 
         this.initListener(parent_view);
+        this.setSectionsView();
         return parent_view;
+    }
+
+    private void setChangelViewUpdate() {
+        this.saveSections();
+        this.setSectionsView();
+        this.mTabAdapter.refresh(this.mRecommSections);
+        this.selectTab(mCurTab);
+        this.mViewPager.setCurrentItem(mCurTab);
+    }
+
+    private void saveSections() {
+        
+    }
+
+    private void selectTab(int position) {
+        this.mCurTab = position;
+    }
+
+    private void setSectionsView() {
+        initColumnData();
+        initFragment();
+    }
+
+    private void initColumnData() {
+        Type listType = new TypeToken<ArrayList<Section>>(){}.getType();
+        String temp = ResUtil.read(super.getActivity().getAssets(), "recomm_sections.json");
+        Gson gson = new Gson();
+        List<Section> entities = gson.fromJson(temp, listType);
+
+        this.mRecommSections.clear();
+        this.mRecommSections.addAll(entities);
+        this.mRecommSectionAdapter.notifyDataSetChanged();
+    }
+
+
+    private void initFragment() {
+        this.mTabAdapter.refresh(this.mRecommSections);
     }
 
     private void initListener(View view) {
@@ -146,6 +183,8 @@ public class SectionViewPagerFragment extends Fragment implements
             public void onClick(View v) {
                 if (mSectionsPanel.isOpen()) {
                     mSectionsPanel.setOpen(false, true);
+
+                    setChangelViewUpdate();
                 } else {
                     mSectionsPanel.setOpen(true, true);
                 }
@@ -156,7 +195,7 @@ public class SectionViewPagerFragment extends Fragment implements
 
             @Override
             public void swap(int index1, int index2) {
-                mTabAdapter.swap(index1, index2);
+                ///mTabAdapter.swap(index1, index2);
             }
         });
 
@@ -171,7 +210,7 @@ public class SectionViewPagerFragment extends Fragment implements
 
                 mRecommSectionAdapter.addItem(section);
                 mRecommSectionAdapter.setLastItemVisibility(View.GONE);
-                mTabAdapter.addItem(section);
+                ///mTabAdapter.addItem(section);
                 new Handler().post(new Runnable() {
 
                     @Override

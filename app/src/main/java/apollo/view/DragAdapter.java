@@ -81,19 +81,9 @@ public class DragAdapter extends BaseAdapter {
 	}
 	
 	public void swap(int index1, int index2) {
-//		Section s = (Section) getItem(index1);
-//
-//		this.mSelectedItemPosition = index2;
-//		if (index1 < index2) {
-//			this.mItems.add(index2 + 1, s);
-//			this.mItems.remove(index1);
-//		} else {
-//			this.mItems.add(index2, s);
-//			this.mItems.remove(index1 + 1);
-//		}
 		this.mSelectedItemPosition = index2;
 		Collections.swap(this.mItems, index1, index2);
-		notifyDataSetChanged();
+		this.notifyDataSetChanged();
 	}
 	
 	public void addItem(Section s) {

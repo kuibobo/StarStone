@@ -1,12 +1,17 @@
 package apollo.widget;
 
+import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import apollo.data.model.Entity;
 import apollo.fragments.EntityBaseFragment;
@@ -15,29 +20,33 @@ import apollo.fragments.EntityBaseFragment;
 /**
  * Created by kuibo on 2015/8/8.
  */
-public abstract class BaseFragmentPagerAdapter<T> extends FragmentPagerAdapter {
+public abstract class BaseFragmentPagerAdapter<T> extends FragmentStatePagerAdapter {
 
-    protected List<EntityBaseFragment> mFragments;
-    private Class<?> mFragment;
+    private Context mContext = null;
+    private FragmentManager mManager = null;
+    private List<Entity> mEntities = null;
+    private WeakHashMap<Integer, EntityBaseFragment> mFragments = null;
+    private Class<?> mClazz = null;
 
-    public BaseFragmentPagerAdapter(FragmentManager fm, Class<?> fragment, List<T> items) {
-        super(fm);
+    public BaseFragmentPagerAdapter(FragmentManager m, Context c, Class<?> clazz) {
+        super(m);
 
-        EntityBaseFragment ebf = null;
-        this.mFragments = new ArrayList<EntityBaseFragment>();
-        this.mFragment = fragment;
-        for(int i=0; i<items.size();i++) {
-            try {
-                ebf = (EntityBaseFragment) fragment.newInstance();
-                this.mFragments.add(ebf);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+        this.mContext = c;
+        this.mManager = m;
+        this.mClazz = clazz;
+        this.mEntities = new ArrayList<Entity>();
+        this.mFragments = new WeakHashMap<Integer, EntityBaseFragment>();
+    }
 
-            ebf.setEntity(items.get(i));
+    private EntityBaseFragment getFragmentFromCache(Entity e) {
+        EntityBaseFragment f = null;
+
+        f = this.mFragments.get(e.getId());
+        if (f == null) {
+            try {f = (EntityBaseFragment) mClazz.newInstance();} catch(Exception ex){};
+            f.setEntity(e);
         }
+        return f;
     }
 
     @Override
@@ -46,39 +55,45 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentPagerAdapter {
     }
 
     @Override
-    public EntityBaseFragment<T> getItem(int position) {
-        return this.mFragments.get(position);
+    public int getItemPosition(Object obj) {
+        return POSITION_NONE;
     }
 
-    public void addItem(T t) {
-        EntityBaseFragment ebf = null;
+    @Override
+    public EntityBaseFragment getItem(int location) {
+        return getFragmentFromCache(this.mEntities.get(location));
+    }
 
-        try {
-            ebf = (EntityBaseFragment) this.mFragment.newInstance();
-            ebf.setEntity(t);
-            this.mFragments.add(ebf);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    public int getCustomPager(Entity e) {
+        if (e == null)
+            return 0;
+
+        for(int i=0; i<this.mEntities.size(); i++) {
+            if (this.mEntities.get(i).getId() == e.getId())
+                return i;
         }
-        this.notifyDataSetChanged();
+        return 0;
     }
 
+    public void refresh(List<Entity> entities) {
+        if (entities != null && entities.size() > 0) {
+            this.mEntities.clear();
+            this.mEntities.addAll(entities);
+            this.notifyDataSetChanged();
+        }
 
-    public void swap(int index1, int index2) {
-        //Collections.swap(this.mFragments, index1, index2);
-        EntityBaseFragment<T> ebf1 = null;
-        EntityBaseFragment<T> ebf2 = null;
-        T e1 = null;
-        T e2 = null;
 
-        ebf1 = this.getItem(index1);
-        ebf2 = this.getItem(index2);
+        Iterator<Entity> itor = null;
+        Entity e = null;
+        EntityBaseFragment f = null;
 
-        e1 = ebf1.getEntity();
-        e2 = ebf2.getEntity();
+        itor = this.mEntities.iterator();
+        while(itor.hasNext()) {
+            e = itor.next();
+            f = getFragmentFromCache(e);
 
-        ebf1.setEntity(e2);
-        ebf2.setEntity(e1);
-        notifyDataSetChanged();
+            this.mFragments.put(e.getId(), f);
+        }
     }
+
 }

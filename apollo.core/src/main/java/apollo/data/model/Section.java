@@ -9,6 +9,8 @@ public class Section extends Entity {
 	public static class Columns implements BaseColumns {
 		public static String ID = "_id";
 		public static String NAME = "name";
+		public static String URL = "url";
+		public static String LOCKED = "locked";
 	}
 	
     public static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {
