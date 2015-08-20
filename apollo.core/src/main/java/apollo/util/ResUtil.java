@@ -3,11 +3,16 @@ package apollo.util;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.TextPaint;
 import android.util.Log;
+
+import com.google.gson.Gson;
+
+import apollo.core.ApolloApplication;
 
 /**
  * Created by kuibo on 2015/8/12.
@@ -42,7 +47,18 @@ public class ResUtil {
         return context.getResources().getDisplayMetrics().widthPixels;
     }
 
-    public static String read(AssetManager assets, String file) {
+    public static <T> T readAsset(String file, Type type) {
+        String str = readAsset(file);
+        Gson gson = new Gson();
+
+        return gson.fromJson(str, type);
+    }
+
+    public static String readAsset(String file) {
+        return readAsset(ApolloApplication.app().getApplicationContext().getAssets(), file);
+    }
+
+    public static String readAsset(AssetManager assets, String file) {
         InputStream is = null;
         ByteArrayOutputStream baos = null;
         byte buf[] = null;

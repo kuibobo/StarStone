@@ -1,5 +1,6 @@
 package apollo.app;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -14,7 +15,9 @@ import android.widget.ImageView;
 
 import java.lang.reflect.Method;
 
+import apollo.core.ApolloApplication;
 import apollo.core.R;
+import apollo.util.ConfigUtil;
 import apollo.util.ImageUtil;
 
 public class SplashActivity extends BaseActivity {
@@ -44,16 +47,15 @@ public class SplashActivity extends BaseActivity {
 		mBitmap = ImageUtil.getResBitmap(this, R.drawable.bg_splash_logo);
 		this.mImage = (ImageView) super.findViewById(R.id.iv_splash_logo);
 		this.mImage.setImageBitmap(mBitmap);
-		
-		ActivityInfo info = null;
+
 		long duration = 300L;
 		String activity_main = null;
 
 		try {
-			info = this.getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+			ComponentName cm = getComponentName();
 
-			duration = info.metaData.getInt("duration");//Long.parseLong(info.metaData.getString("duration"));
-			activity_main = info.metaData.getString("android.activity.MAIN");
+			duration = ConfigUtil.getIntMetaValue("duration");//info.metaData.getInt("duration");//Long.parseLong(info.metaData.getString("duration"));
+			activity_main = ConfigUtil.getMetaValue("android.activity.MAIN");//info.metaData.getString("android.activity.MAIN");
 		} catch (Exception ex) {
 			Log.e("SplachActivity", ex.getMessage());
 		}
@@ -112,14 +114,18 @@ public class SplashActivity extends BaseActivity {
 	}
 	
 	private void startApp() {
-		//ApolloApplication.app().startMainActivity(this);
 		Method m = null;
 
-		try {
-			m = mMainActivityClass.getMethod("startActivity", new Class[]{Context.class});
-			m.invoke(mMainActivityClass, new Object[]{this});
-		} catch (Exception ex) {
-			Log.e("SplachActivity", ex.getMessage());
+		if (ApolloApplication.app().isFirstUse()) {
+			ApolloApplication.app().setUsed();
+			GuideActivity.startActivity(this);
+		} else {
+			try {
+				m = mMainActivityClass.getMethod("startActivity", new Class[]{Context.class});
+				m.invoke(mMainActivityClass, new Object[]{this});
+			} catch (Exception ex) {
+				Log.e("SplachActivity", ex.getMessage());
+			}
 		}
 
 		super.finish();

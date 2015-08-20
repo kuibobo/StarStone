@@ -23,131 +23,6 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         super(Application.class);
     }
 
-    public void testAreaJson() {
-        List<Section> ss = null;
-        Section s = null;
-        Gson gson = new Gson();
-
-        ss = new ArrayList<Section>();
-
-        s = new Section();
-        s.setName("海口");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_38/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("三亚");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_39/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("琼海");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_318/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("儋州");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_322/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("博鳌");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_3241/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("陵水");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_330/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("澄迈");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_317/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("万宁");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_319/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("临高");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_323/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("定安");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_325/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("保亭");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_331/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("五指山");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_320/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("乐东");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_332/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("屯昌");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_326/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("东方");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_321/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("琼中");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_329/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("五指山");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_320/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("昌江");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_327/");
-        ss.add(s);
-
-        s = new Section();
-        s.setName("白沙");
-        s.setLocked(false);
-        s.setUrl("http://m.wofang.com/building/ct_328/");
-        ss.add(s);
-
-        String str = gson.toJson(ss);
-        Log.i("Test", str);
-    }
-
     public void testRecommJson() {
         List<Section> ss = null;
         Section s = null;
@@ -159,49 +34,189 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         s.setName("主页");
         s.setLocked(true);
         s.setUrl("http://m.wofang.com");
+        s.setType(0);
         ss.add(s);
 
         s = new Section();
         s.setName("新房");
         s.setLocked(false);
         s.setUrl("http://m.wofang.com/building/");
+        s.setType(0);
         ss.add(s);
 
         s = new Section();
         s.setName("二手房");
         s.setLocked(false);
         s.setUrl("http://m.wofang.com/sale/");
+        s.setType(0);
         ss.add(s);
 
         s = new Section();
         s.setName("租房");
         s.setLocked(false);
         s.setUrl("http://m.wofang.com/hire/");
+        s.setType(0);
         ss.add(s);
 
         s = new Section();
         s.setName("资讯");
         s.setLocked(false);
         s.setUrl("http://m.wofang.com/news/");
+        s.setType(0);
         ss.add(s);
 
         s = new Section();
         s.setName("问答");
         s.setLocked(false);
         s.setUrl("http://m.wofang.com/asks/");
+        s.setType(0);
         ss.add(s);
 
         s = new Section();
         s.setName("看房团");
         s.setLocked(false);
         s.setUrl("http://m.wofang.com/tuan/");
+        s.setType(0);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("海口");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_38/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("三亚");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_39/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("琼海");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_318/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("儋州");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_322/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("博鳌");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_3241/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("陵水");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_330/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("澄迈");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_317/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("万宁");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_319/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("临高");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_323/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("定安");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_325/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("保亭");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_331/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("五指山");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_320/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("乐东");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_332/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("屯昌");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_326/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("东方");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_321/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("琼中");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_329/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("五指山");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_320/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("昌江");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_327/");
+        s.setType(1);
+        ss.add(s);
+
+        s = new Section();
+        s.setName("白沙");
+        s.setLocked(false);
+        s.setUrl("http://m.wofang.com/building/ct_328/");
+        s.setType(1);
         ss.add(s);
 
         String str = gson.toJson(ss);
         Log.i("Test", str);
 
         Context context = getContext();
-        str = ResUtil.read(context.getAssets(), "recomm_sections.json");
+        str = ResUtil.readAsset(context.getAssets(), "sections.json");
 
         Type listType = new TypeToken<ArrayList<Section>>(){}.getType();
         ss = null;

@@ -19,18 +19,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.miscwidgets.widget.Panel;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import apollo.app.wofang.R;
+import apollo.app.wofang.bll.Sections;
 import apollo.data.model.Section;
-import apollo.util.ResUtil;
 import apollo.view.DragAdapter;
 import apollo.view.DragGridView;
 import apollo.widget.SectionPagerAdapter;
@@ -83,15 +79,11 @@ public class SectionViewPagerFragment extends Fragment implements
 
         parent_view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<Section>>(){}.getType();
-        String temp = ResUtil.read(super.getActivity().getAssets(), "recomm_sections.json");
 
-        this.mRecommSections = gson.fromJson(temp, listType);
+        this.mRecommSections = new ArrayList<Section>();
         this.mRecommSectionAdapter = new DragAdapter(this.getActivity(), this.mRecommSections);
 
-        temp = ResUtil.read(super.getActivity().getAssets(), "sub_sections.json");
-        this.mSubSections = gson.fromJson(temp, listType);
+        this.mSubSections = new ArrayList<Section>();
         this.mSubSectionAdapter = new DragAdapter(this.getActivity(), this.mSubSections);
 
         sections_view = inflater.inflate(R.layout.item_layout_main_sections, null);
@@ -136,7 +128,8 @@ public class SectionViewPagerFragment extends Fragment implements
     }
 
     private void saveSections() {
-        
+        Sections.saveRecommendSections(this.mRecommSections);
+        Sections.saveSubSections(this.mSubSections);
     }
 
     private void selectTab(int position) {
@@ -144,19 +137,21 @@ public class SectionViewPagerFragment extends Fragment implements
     }
 
     private void setSectionsView() {
-        initColumnData();
+        initSectionData();
         initFragment();
     }
 
-    private void initColumnData() {
-        Type listType = new TypeToken<ArrayList<Section>>(){}.getType();
-        String temp = ResUtil.read(super.getActivity().getAssets(), "recomm_sections.json");
-        Gson gson = new Gson();
-        List<Section> entities = gson.fromJson(temp, listType);
+    private void initSectionData() {
+        List<Section> recom_entities = Sections.getRecommendSections();
+        List<Section> sub_entities = Sections.getSubSections();
 
         this.mRecommSections.clear();
-        this.mRecommSections.addAll(entities);
+        this.mRecommSections.addAll(recom_entities);
         this.mRecommSectionAdapter.notifyDataSetChanged();
+
+        this.mSubSections.clear();
+        this.mSubSections.addAll(sub_entities);
+        this.mSubSectionAdapter.notifyDataSetChanged();
     }
 
 

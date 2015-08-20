@@ -1,31 +1,36 @@
 package apollo.app.wofang.data.dao.sqldal;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import apollo.data.model.Section;
+import apollo.data.model.User;
+import apollo.util.DataSet;
 
 /**
  * Created by Texel on 2015/8/19.
  */
-public class SectionDAO {
-    private static SectionDAO inst = null;
+public class SectionDao {
+    private static SectionDao inst = null;
 
-    public static SectionDAO getInstance() {
+    private SectionDao() {}
+
+    public static SectionDao getInstance() {
+        if (inst == null)
+            inst = new SectionDao();
         return inst;
     }
 
-    public void saveRecommendSections(List<Section> sections) {
-        saveSections(DatabaseHelper.APOLLO_WF_DATA_TABLE_RECOMMSECTION, sections);
+    public void delete(int id) {}
+
+    public void update(List<Section> sections) {
     }
 
-    public void saveSubSections(List<Section> sections) {
-        saveSections(DatabaseHelper.APOLLO_WF_DATA_TABLE_SUBSECTION, sections);
-    }
-
-    public void saveSections(String tab, List<Section> sections) {
+    public void add(List<Section> sections) {
         SQLiteDatabase db = null;
         ContentValues values = null;
 
@@ -37,9 +42,62 @@ public class SectionDAO {
             values.put(Section.Columns.NAME, s.getName());
             values.put(Section.Columns.URL, s.getUrl());
             values.put(Section.Columns.LOCKED, s.isLocked());
+            values.put(Section.Columns.TYPE, s.getType());
 
-            db.insert(tab, null, values);
+            db.insert(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, null, values);
         }
         db.close();
     }
+
+    public DataSet<Section> getSections(int type, int pageIndex, int pageSize) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        DataSet<Section> datas = null;
+        List<Section> sections = null;
+        Section s = null;
+        String[] columns = null;
+        String[] selectionArgs = null;
+        String selection = null;
+        String orderBy = null;
+        String limit = null;
+
+        sections = new ArrayList<Section>();
+        datas = new DataSet<Section>();
+        datas.setObjects(sections);
+
+        db = DatabaseHelper.getReadDatabase();
+
+        selection = Section.Columns.TYPE + "=?";
+        selectionArgs = new String[]{Integer.toString(type)};
+
+        columns = new String[] {Section.Columns.ID, Section.Columns.NAME, Section.Columns.URL, Section.Columns.LOCKED};
+        orderBy = Section.Columns.ID + " asc";
+        limit = (pageIndex - 1) * pageSize + "," + pageSize;
+
+        cursor = db.query(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, columns, selection, selectionArgs, null, null, orderBy, limit);
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                s = new Section();
+
+                s.setId(cursor.getInt(0));
+                s.setName(cursor.getString(1));
+                s.setUrl(cursor.getString(2));
+                s.setLocked(cursor.getInt(3) == 1);
+                sections.add(s);
+            }
+            cursor.close();
+        }
+
+        columns = new String[] {"count(0)"};
+        cursor = db.query(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, columns, null, null, null, null, null, null);
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                datas.setTotalRecords(cursor.getInt(0));
+            }
+            cursor.close();
+        }
+        db.close();
+        return datas;
+    }
+
 }

@@ -11,7 +11,10 @@ public class Section extends Entity {
 		public static String NAME = "name";
 		public static String URL = "url";
 		public static String LOCKED = "locked";
+		public static String TYPE = "type";
 	}
+
+	private int type;
 	
     public static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {
 		@Override
@@ -30,6 +33,14 @@ public class Section extends Entity {
     public Section(Parcel in) {
     	super(in);
     }
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
 
 	@Override
 	public int describeContents() {
