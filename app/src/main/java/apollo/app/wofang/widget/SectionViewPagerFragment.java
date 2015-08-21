@@ -128,8 +128,8 @@ public class SectionViewPagerFragment extends Fragment implements
     }
 
     private void saveSections() {
-        Sections.saveRecommendSections(this.mRecommSections);
-        Sections.saveSubSections(this.mSubSections);
+        Sections.updateRecommendSections(this.mRecommSections);
+        Sections.updateSubSections(this.mSubSections);
     }
 
     private void selectTab(int position) {
@@ -147,11 +147,14 @@ public class SectionViewPagerFragment extends Fragment implements
 
         this.mRecommSections.clear();
         this.mRecommSections.addAll(recom_entities);
+        this.mTabAdapter.refresh(this.mRecommSections);
         this.mRecommSectionAdapter.notifyDataSetChanged();
 
         this.mSubSections.clear();
         this.mSubSections.addAll(sub_entities);
         this.mSubSectionAdapter.notifyDataSetChanged();
+
+        this.mTabAdapter.notifyDataSetChanged();
     }
 
 

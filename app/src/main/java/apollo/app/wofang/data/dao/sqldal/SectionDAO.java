@@ -25,9 +25,42 @@ public class SectionDao {
         return inst;
     }
 
-    public void delete(int id) {}
+    public void delete(int id) {
+        SQLiteDatabase db = null;
+        String whereClause = null;
+        String[] whereArgs = null;
 
-    public void update(List<Section> sections) {
+        whereClause = Section.Columns.ID + "=?";
+        whereArgs = new String[]{Integer.toString(id)};
+        db = DatabaseHelper.getWriteDatabase();
+        db.delete(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, whereClause, whereArgs);
+        db.close();
+    }
+
+    public int[] update(List<Section> sections) {
+        SQLiteDatabase db = null;
+        ContentValues values = null;
+        String whereClause = null;
+        String[] whereArgs = null;
+        int[] ids = null;
+        int i = 0;
+
+        db = DatabaseHelper.getWriteDatabase();
+        ids = new int[sections.size()];
+        for(Section s:sections) {
+            values = new ContentValues(4);
+            values.put(Section.Columns.NAME, s.getName());
+            values.put(Section.Columns.URL, s.getUrl());
+            values.put(Section.Columns.LOCKED, s.isLocked());
+            values.put(Section.Columns.TYPE, s.getType());
+
+            whereClause = Section.Columns.ID + "=?";
+            whereArgs = new String[]{Integer.toString(s.getId())};
+            ids[i++] = db.update(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, values, whereClause, whereArgs);
+        }
+        db.close();
+
+        return ids;
     }
 
     public void add(List<Section> sections) {
@@ -36,9 +69,7 @@ public class SectionDao {
 
         db = DatabaseHelper.getWriteDatabase();
         for(Section s:sections) {
-            values = new ContentValues(2);
-            values.put(Section.Columns.ID, s.getId());
-            values.put(Section.Columns.NAME, s.getName());
+            values = new ContentValues(4);
             values.put(Section.Columns.NAME, s.getName());
             values.put(Section.Columns.URL, s.getUrl());
             values.put(Section.Columns.LOCKED, s.isLocked());
@@ -67,11 +98,13 @@ public class SectionDao {
 
         db = DatabaseHelper.getReadDatabase();
 
-        selection = Section.Columns.TYPE + "=?";
-        selectionArgs = new String[]{Integer.toString(type)};
+        if (type != -1) {
+            selection = Section.Columns.TYPE + "=?";
+            selectionArgs = new String[]{Integer.toString(type)};
+        }
 
         columns = new String[] {Section.Columns.ID, Section.Columns.NAME, Section.Columns.URL, Section.Columns.LOCKED};
-        orderBy = Section.Columns.ID + " asc";
+        //orderBy = Section.Columns.ID + " asc";
         limit = (pageIndex - 1) * pageSize + "," + pageSize;
 
         cursor = db.query(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, columns, selection, selectionArgs, null, null, orderBy, limit);

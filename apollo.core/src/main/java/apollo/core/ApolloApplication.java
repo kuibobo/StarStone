@@ -29,7 +29,7 @@ public abstract class ApolloApplication extends Application {
 
 	private void initVersion() {
 		try {
-			ConfigUtil.VERSION = getPackageManager().getPackageInfo("apollo.app", PackageManager.GET_CONFIGURATIONS).versionName;
+			ConfigUtil.VERSION = getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.GET_CONFIGURATIONS).versionName;
 		} catch (PackageManager.NameNotFoundException ex) {
 			Log.e(getClass().getName(), "InitVersion" + ex.getMessage());
 			ConfigUtil.VERSION = "";
