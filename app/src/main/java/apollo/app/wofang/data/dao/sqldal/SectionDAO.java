@@ -25,16 +25,19 @@ public class SectionDao {
         return inst;
     }
 
-    public void delete(int id) {
+    public int delete(int id) {
         SQLiteDatabase db = null;
         String whereClause = null;
         String[] whereArgs = null;
+        int r = -1;
 
         whereClause = Section.Columns.ID + "=?";
         whereArgs = new String[]{Integer.toString(id)};
         db = DatabaseHelper.getWriteDatabase();
-        db.delete(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, whereClause, whereArgs);
+        r = db.delete(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, whereClause, whereArgs);
         db.close();
+
+        return r;
     }
 
     public int[] update(List<Section> sections) {
@@ -63,10 +66,13 @@ public class SectionDao {
         return ids;
     }
 
-    public void add(List<Section> sections) {
+    public long[] add(List<Section> sections) {
         SQLiteDatabase db = null;
         ContentValues values = null;
+        long[] ids = null;
+        int i = 0;
 
+        ids = new long[sections.size()];
         db = DatabaseHelper.getWriteDatabase();
         for(Section s:sections) {
             values = new ContentValues(4);
@@ -75,9 +81,10 @@ public class SectionDao {
             values.put(Section.Columns.LOCKED, s.isLocked());
             values.put(Section.Columns.TYPE, s.getType());
 
-            db.insert(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, null, values);
+            ids[i++] = db.insert(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, null, values);
         }
         db.close();
+        return ids;
     }
 
     public DataSet<Section> getSections(int type, int pageIndex, int pageSize) {
@@ -103,7 +110,7 @@ public class SectionDao {
             selectionArgs = new String[]{Integer.toString(type)};
         }
 
-        columns = new String[] {Section.Columns.ID, Section.Columns.NAME, Section.Columns.URL, Section.Columns.LOCKED};
+        columns = new String[] {Section.Columns.ID, Section.Columns.NAME, Section.Columns.URL, Section.Columns.LOCKED, Section.Columns.TYPE};
         //orderBy = Section.Columns.ID + " asc";
         limit = (pageIndex - 1) * pageSize + "," + pageSize;
 
@@ -116,6 +123,7 @@ public class SectionDao {
                 s.setName(cursor.getString(1));
                 s.setUrl(cursor.getString(2));
                 s.setLocked(cursor.getInt(3) == 1);
+                s.setType(cursor.getInt(4));
                 sections.add(s);
             }
             cursor.close();

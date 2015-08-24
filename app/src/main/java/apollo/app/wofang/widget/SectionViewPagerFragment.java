@@ -108,7 +108,7 @@ public class SectionViewPagerFragment extends Fragment implements
 
         this.mTabAdapter = new SectionPagerAdapter(super.getChildFragmentManager(),
                 this.getActivity(), SectionContentFragment.class);
-        this.mTabAdapter.refresh(this.mRecommSections);
+        ///this.mTabAdapter.refresh(Sections.getRecommendSections());
 
         this.mViewPager = (ViewPager) parent_view.findViewById(R.id.main_tab_pager);
         this.mViewPager.setOffscreenPageLimit(3);
@@ -154,7 +154,7 @@ public class SectionViewPagerFragment extends Fragment implements
         this.mSubSections.addAll(sub_entities);
         this.mSubSectionAdapter.notifyDataSetChanged();
 
-        this.mTabAdapter.notifyDataSetChanged();
+        //this.mTabAdapter.notifyDataSetChanged();
     }
 
 
@@ -206,6 +206,7 @@ public class SectionViewPagerFragment extends Fragment implements
                 final Section section = (Section) textView.getTag();
                 final ImageView img = buildImageView(view);
 
+                section.setType(Section.TYPE_RECOMMEND);
                 mRecommSectionAdapter.addItem(section);
                 mRecommSectionAdapter.setLastItemVisibility(View.GONE);
                 ///mTabAdapter.addItem(section);

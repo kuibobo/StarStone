@@ -44,7 +44,7 @@ public class Sections {
         for(Section s:ss) {
             SectionDao.getInstance().delete(s.getId());
         }
-        SectionDao.getInstance().update(sections);
+        SectionDao.getInstance().add(sections);
     }
 
     public static void updateSubSections(List<Section> sections) {
@@ -54,7 +54,7 @@ public class Sections {
         for(Section s:ss) {
             SectionDao.getInstance().delete(s.getId());
         }
-        SectionDao.getInstance().update(sections);
+        SectionDao.getInstance().add(sections);
     }
 
     public static List<Section> getRecommendSections() {

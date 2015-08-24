@@ -20,11 +20,13 @@ import apollo.widget.StatusLayout;
  */
 public class SectionContentFragment extends WebViewBaseFragment<Section> {
 
+    private static final String TAG = SectionContentFragment.class.getName();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i("SectionContentFragment", "onCreate" + this.toString());
+        Log.i(TAG, "onCreate" + this.toString());
     }
 
     @Override
@@ -67,6 +69,8 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
         content = Regex.replace(content, "(?s)<div class=\"footer\">.*</span></div>", "");
 
         //content += "<style>.header,.footer,.footer_from{display:none;}</style>";
+
+        Log.i(TAG, content);
         mWebView.loadDataWithBaseURL(
                 "wei://base", content, "text/html", "UTF-8", null);
 

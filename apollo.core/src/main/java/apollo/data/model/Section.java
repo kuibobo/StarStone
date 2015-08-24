@@ -6,6 +6,9 @@ import android.provider.BaseColumns;
 
 public class Section extends Entity {
 
+	public static final int TYPE_RECOMMEND = 0;
+	public static final int TYPE_SUB = 1;
+
 	public static class Columns implements BaseColumns {
 		public static String ID = "_id";
 		public static String NAME = "name";
