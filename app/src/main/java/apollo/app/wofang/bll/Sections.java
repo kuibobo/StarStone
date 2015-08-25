@@ -21,10 +21,15 @@ public class Sections {
         List<Section> sections = null;
 
         sections = getSections(-1);
+        remove(sections);
+    }
+
+    private static void remove(List<Section> sections) {
         for(Section s:sections) {
             SectionDao.getInstance().delete(s.getId());
         }
     }
+
 
     private static void init() {
         List<Section> sections = null;

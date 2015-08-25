@@ -70,7 +70,6 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
 
         //content += "<style>.header,.footer,.footer_from{display:none;}</style>";
 
-        Log.i(TAG, content);
         mWebView.loadDataWithBaseURL(
                 "wei://base", content, "text/html", "UTF-8", null);
 

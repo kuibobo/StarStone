@@ -45,13 +45,14 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentStatePagerAdap
         if (f == null) {
             try {f = (EntityBaseFragment) mClazz.newInstance();} catch(Exception ex){};
             f.setEntity(e);
+            this.mFragments.put(e.getId(), f);
         }
         return f;
     }
 
     @Override
     public int getCount() {
-        return this.mFragments.size();
+        return this.mEntities.size();
     }
 
     @Override
