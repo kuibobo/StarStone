@@ -149,8 +149,6 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
         if (this.mWebView != null) {
             this.mWebView.setVisibility(View.GONE);
             this.mWebView.removeAllViews();
-            this.mWebView.destroy();
-            this.mWebView = null;
         }
     }
 
