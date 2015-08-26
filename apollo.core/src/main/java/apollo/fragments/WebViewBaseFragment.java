@@ -92,6 +92,7 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            sendRequestData(url);
             return true;
         }
 
@@ -112,9 +113,9 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
     protected StatusLayout mStatusLayout;
 
     protected abstract String getCacheKey();
-
+    protected abstract void sendRequestData();
+    protected abstract void sendRequestData(String url);
     protected abstract void executeOnLoadDataSuccess(String content);
-
     protected abstract void executeOnLoadDataError(String content);
 
     protected void saveCache(Entity entity) {
@@ -161,8 +162,6 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
             readCacheData(key);
         }
     }
-
-    protected abstract void sendRequestData();
 
     protected void readCacheData(String key) {
         cancelReadCacheTask();

@@ -62,4 +62,9 @@ public class MainDetailFragment extends WebViewBaseFragment {
     protected void sendRequestData() {
 
     }
+
+    @Override
+    protected void sendRequestData(String url) {
+
+    }
 }

@@ -25,8 +25,6 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.i(TAG, "onCreate" + this.toString());
     }
 
     @Override
@@ -42,6 +40,8 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
         this.mStatusLayout = (StatusLayout) view.findViewById(R.id.layout_status);
         this.mWebView = (WebView)view.findViewById(R.id.webview);
         this.mWebView.setWebViewClient(super.mWebViewClient);
+
+        super.initWebViews(mWebView);
     }
 
 
@@ -70,8 +70,9 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
 
         //content += "<style>.header,.footer,.footer_from{display:none;}</style>";
 
+        Log.i(TAG, content);
         mWebView.loadDataWithBaseURL(
-                "wei://base", content, "text/html", "UTF-8", null);
+                "http://m.wofang.com", content, "text/html", "UTF-8", null);
 
         mStatusLayout.setStatus(StatusLayout.HIDE_LAYOUT);
     }
@@ -85,7 +86,12 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
     protected void sendRequestData() {
         String url = super.getEntity().getUrl();
 
-        Log.i(this.getClass().getName(), super.getEntity().getName());
+        sendRequestData(url);
+    }
+
+    @Override
+    protected void sendRequestData(String url) {
+        Log.i(TAG, "sendRequestData:" + super.getEntity().getName() + "#" + url);
 
         mStatusLayout.setStatus(StatusLayout.NETWORK_LOADING);
 
