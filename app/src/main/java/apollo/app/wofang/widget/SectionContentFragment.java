@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.Button;
 
 import apollo.app.wofang.R;
 import apollo.data.model.Section;
@@ -30,7 +29,7 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_section_content, container, false);
+        View view = inflater.inflate(R.layout.fragment_web_content, container, false);
 
         initViews(view);
         return view;
