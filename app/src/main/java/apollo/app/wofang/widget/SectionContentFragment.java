@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import apollo.app.wofang.R;
+import apollo.app.wofang.activity.WebContentFragmentActivity;
 import apollo.data.model.Section;
 import apollo.fragments.WebViewBaseFragment;
 import apollo.util.Regex;
@@ -67,6 +68,8 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
         content = Regex.replace(content, "<div class=\"footer_from\">.*?</form></div>", "");
         content = Regex.replace(content, "(?s)<div class=\"footer\">.*</span></div>", "");
 
+        content = Regex.replace(content, "(?s)<a class=\"more\"[^>]*?>.*?</a>", "");
+
         //content += "<style>.header,.footer,.footer_from{display:none;}</style>";
 
         Log.i(TAG, content);
@@ -100,4 +103,10 @@ public class SectionContentFragment extends WebViewBaseFragment<Section> {
         mHttpContentTask = new HttpContentAsyncTask();
         mHttpContentTask.execute(url);
     }
+
+    @Override
+    protected void onUrlClick(String url) {
+        WebContentFragmentActivity.startActivity(super.getActivity(), url);
+    }
+
 }
