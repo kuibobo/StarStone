@@ -27,22 +27,7 @@ public class MainContentFragment extends WebViewBaseFragment<Section> {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-            savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_web_content, container, false);
 
-        initViews(view);
-        return view;
-    }
-
-    private void initViews(View view) {
-        this.mStatusLayout = (StatusLayout) view.findViewById(R.id.layout_status);
-        this.mWebView = (WebView)view.findViewById(R.id.webview);
-        this.mWebView.setWebViewClient(super.mWebViewClient);
-
-        super.initWebViews(mWebView);
-    }
 
 
     @Override

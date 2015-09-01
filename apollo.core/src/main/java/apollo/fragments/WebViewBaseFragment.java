@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 
 import apollo.cache.AppCache;
+import apollo.core.R;
 import apollo.data.model.Entity;
 import apollo.net.SyncHttpClient;
 import apollo.util.CompatibleUtil;
@@ -124,6 +125,23 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
 
     protected void saveCache(Entity entity) {
         new SaveCacheTask(entity, getCacheKey()).execute();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_web_content, container, false);
+
+        initViews(view);
+        return view;
+    }
+
+    private void initViews(View view) {
+        this.mStatusLayout = (StatusLayout) view.findViewById(R.id.layout_status);
+        this.mWebView = (WebView)view.findViewById(R.id.webview);
+        this.mWebView.setWebViewClient(this.mWebViewClient);
+
+        this.initWebViews(mWebView);
     }
 
     @Override

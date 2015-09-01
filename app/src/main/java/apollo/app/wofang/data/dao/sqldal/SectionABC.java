@@ -8,20 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import apollo.data.model.Section;
-import apollo.data.model.User;
 import apollo.util.DataSet;
 
 /**
  * Created by Texel on 2015/8/19.
  */
-public class SectionDao {
-    private static SectionDao inst = null;
+public class SectionABC {
+    private static SectionABC inst = null;
 
-    private SectionDao() {}
+    private SectionABC() {}
 
-    public static SectionDao getInstance() {
+    public static SectionABC getInstance() {
         if (inst == null)
-            inst = new SectionDao();
+            inst = new SectionABC();
         return inst;
     }
 
