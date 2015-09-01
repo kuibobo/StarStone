@@ -90,6 +90,7 @@ public class WebContentFragment extends WebViewBaseFragment {
 
     @Override
     protected void onUrlClick(String url) {
-        WebContentFragmentActivity.startActivity(super.getActivity(), url);
+        //WebContentFragmentActivity.startActivity(super.getActivity(), url)
+        sendRequestData(url);
     }
 }

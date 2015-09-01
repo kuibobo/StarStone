@@ -107,7 +107,7 @@ public class SectionViewPagerFragment extends Fragment implements
         this.mLayoutBottom.addView(this.mSectionsPanel, params);
 
         this.mTabAdapter = new SectionPagerAdapter(super.getChildFragmentManager(),
-                this.getActivity(), SectionContentFragment.class);
+                this.getActivity(), MainContentFragment.class);
         ///this.mTabAdapter.refresh(Sections.getRecommendSections());
 
         this.mViewPager = (ViewPager) parent_view.findViewById(R.id.main_tab_pager);

@@ -15,6 +15,7 @@ public class Section extends Entity {
 		public static String URL = "url";
 		public static String LOCKED = "locked";
 		public static String TYPE = "type";
+		public static String GUID = "guid";
 	}
 
 	private int type;

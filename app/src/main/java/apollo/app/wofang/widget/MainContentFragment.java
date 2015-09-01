@@ -18,9 +18,9 @@ import apollo.widget.StatusLayout;
 /**
  * Created by kuibo on 2015/8/8.
  */
-public class SectionContentFragment extends WebViewBaseFragment<Section> {
+public class MainContentFragment extends WebViewBaseFragment<Section> {
 
-    private static final String TAG = SectionContentFragment.class.getName();
+    private static final String TAG = MainContentFragment.class.getName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

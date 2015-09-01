@@ -49,6 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         buf1.append(" varchar(16),");
         buf1.append(Section.Columns.URL);
         buf1.append(" varchar(1024),");
+        buf1.append(Section.Columns.GUID);
+        buf1.append(" varchar(128),");
         buf1.append(Section.Columns.TYPE);
         buf1.append(" integer,");
         buf1.append(Section.Columns.LOCKED);

@@ -56,6 +56,7 @@ public class SectionDao {
             values.put(Section.Columns.URL, s.getUrl());
             values.put(Section.Columns.LOCKED, s.isLocked());
             values.put(Section.Columns.TYPE, s.getType());
+            values.put(Section.Columns.GUID, s.getGuid());
 
             whereClause = Section.Columns.ID + "=?";
             whereArgs = new String[]{Integer.toString(s.getId())};
@@ -80,6 +81,7 @@ public class SectionDao {
             values.put(Section.Columns.URL, s.getUrl());
             values.put(Section.Columns.LOCKED, s.isLocked());
             values.put(Section.Columns.TYPE, s.getType());
+            values.put(Section.Columns.GUID, s.getGuid());
 
             ids[i++] = db.insert(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, null, values);
         }
@@ -110,7 +112,7 @@ public class SectionDao {
             selectionArgs = new String[]{Integer.toString(type)};
         }
 
-        columns = new String[] {Section.Columns.ID, Section.Columns.NAME, Section.Columns.URL, Section.Columns.LOCKED, Section.Columns.TYPE};
+        columns = new String[] {Section.Columns.ID, Section.Columns.NAME, Section.Columns.URL, Section.Columns.LOCKED, Section.Columns.TYPE, Section.Columns.GUID};
         //orderBy = Section.Columns.ID + " asc";
         limit = (pageIndex - 1) * pageSize + "," + pageSize;
 
@@ -124,6 +126,7 @@ public class SectionDao {
                 s.setUrl(cursor.getString(2));
                 s.setLocked(cursor.getInt(3) == 1);
                 s.setType(cursor.getInt(4));
+                s.setGuid(cursor.getString(5));
                 sections.add(s);
             }
             cursor.close();
