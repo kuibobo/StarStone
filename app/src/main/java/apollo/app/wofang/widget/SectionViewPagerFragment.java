@@ -29,7 +29,6 @@ import apollo.app.wofang.bll.Sections;
 import apollo.data.model.Section;
 import apollo.view.DragAdapter;
 import apollo.view.DragGridView;
-import apollo.widget.SectionPagerAdapter;
 import apollo.widget.HorizontalListView;
 
 /**
@@ -107,8 +106,7 @@ public class SectionViewPagerFragment extends Fragment implements
         this.mLayoutBottom.addView(this.mSectionsPanel, params);
 
         this.mTabAdapter = new SectionPagerAdapter(super.getChildFragmentManager(),
-                this.getActivity(), MainContentFragment.class);
-        ///this.mTabAdapter.refresh(Sections.getRecommendSections());
+                this.getActivity());
 
         this.mViewPager = (ViewPager) parent_view.findViewById(R.id.main_tab_pager);
         this.mViewPager.setOffscreenPageLimit(3);
@@ -153,8 +151,6 @@ public class SectionViewPagerFragment extends Fragment implements
         this.mSubSections.clear();
         this.mSubSections.addAll(sub_entities);
         this.mSubSectionAdapter.notifyDataSetChanged();
-
-        //this.mTabAdapter.notifyDataSetChanged();
     }
 
 

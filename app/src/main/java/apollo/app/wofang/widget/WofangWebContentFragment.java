@@ -6,11 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
-import apollo.app.wofang.R;
 import apollo.app.wofang.activity.WebContentFragmentActivity;
-import apollo.data.model.Entity;
+import apollo.data.model.Section;
 import apollo.fragments.WebViewBaseFragment;
 import apollo.util.Regex;
 import apollo.widget.StatusLayout;
@@ -19,9 +17,10 @@ import apollo.widget.StatusLayout;
  * Created by Texel on 2015/8/5.
  */
 
-public class WebContentFragment extends WebViewBaseFragment {
-    private static final String TAG = WebContentFragment.class.getName();
+public class WofangWebContentFragment extends WebViewBaseFragment<Section> {
+    private static final String TAG = WofangWebContentFragment.class.getName();
     private String mUrl = null;
+
     @Override
     protected String getCacheKey() {
         return "WCF";
@@ -45,30 +44,21 @@ public class WebContentFragment extends WebViewBaseFragment {
 
     @Override
     protected void executeOnLoadDataError(String object) {
-
+        mStatusLayout.setStatus(StatusLayout.NETWORK_ERROR);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_web_content, container, false);
         Bundle args = null;
-
 
         args = super.getArguments();
         if (args != null) {
             mUrl = args.getString(WebContentFragmentActivity.BUNDLE_KEY_URL);
         }
-        initViews(view);
-        return view;
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private void initViews(View view) {
-        this.mStatusLayout = (StatusLayout) view.findViewById(R.id.layout_status);
-        this.mWebView = (WebView)view.findViewById(R.id.webview);
-        this.mWebView.setWebViewClient(super.mWebViewClient);
-
-        super.initWebViews(mWebView);
-    }
 
     @Override
     protected void sendRequestData() {

@@ -1,24 +1,16 @@
 package apollo.app.wofang.widget;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
 
-import apollo.app.wofang.R;
 import apollo.app.wofang.activity.WebContentFragmentActivity;
-import apollo.data.model.Section;
-import apollo.fragments.WebViewBaseFragment;
 import apollo.util.Regex;
 import apollo.widget.StatusLayout;
 
 /**
  * Created by kuibo on 2015/8/8.
  */
-public class MainContentFragment extends WebViewBaseFragment<Section> {
+public class MainContentFragment extends WofangWebContentFragment {
 
     private static final String TAG = MainContentFragment.class.getName();
 
@@ -26,9 +18,6 @@ public class MainContentFragment extends WebViewBaseFragment<Section> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-
-
 
     @Override
     protected String getCacheKey() {
@@ -64,29 +53,12 @@ public class MainContentFragment extends WebViewBaseFragment<Section> {
         mStatusLayout.setStatus(StatusLayout.HIDE_LAYOUT);
     }
 
-    @Override
-    protected void executeOnLoadDataError(String content) {
-        mStatusLayout.setStatus(StatusLayout.NETWORK_ERROR);
-    }
 
     @Override
     protected void sendRequestData() {
         String url = super.getEntity().getUrl();
 
         sendRequestData(url);
-    }
-
-    @Override
-    protected void sendRequestData(String url) {
-        Log.i(TAG, "sendRequestData:" + super.getEntity().getName() + "#" + url);
-
-        mStatusLayout.setStatus(StatusLayout.NETWORK_LOADING);
-
-        if (mHttpContentTask != null && mHttpContentTask.getStatus() != AsyncTask.Status.FINISHED)
-            mHttpContentTask.cancel(true);
-
-        mHttpContentTask = new HttpContentAsyncTask();
-        mHttpContentTask.execute(url);
     }
 
     @Override

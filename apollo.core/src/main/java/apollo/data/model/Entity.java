@@ -16,6 +16,7 @@ public abstract class Entity implements Serializable, Parcelable {
     private String body;
     private String icon;
     private String url;
+    private String refer;
     private boolean locked;
 
     public int getId() {
@@ -72,6 +73,14 @@ public abstract class Entity implements Serializable, Parcelable {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public String getRefer() {
+        return refer;
+    }
+
+    public void setRefer(String refer) {
+        this.refer = refer;
     }
 
     public Entity() {

@@ -15,6 +15,7 @@ import java.util.WeakHashMap;
 
 import apollo.data.model.Entity;
 import apollo.fragments.EntityBaseFragment;
+import apollo.fragments.WebViewBaseFragment;
 
 
 /**
@@ -26,14 +27,14 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentStatePagerAdap
     private FragmentManager mManager = null;
     private List<Entity> mEntities = null;
     private WeakHashMap<Integer, EntityBaseFragment> mFragments = null;
-    private Class<?> mClazz = null;
 
-    public BaseFragmentPagerAdapter(FragmentManager m, Context c, Class<?> clazz) {
+    public abstract Class<?> getFragmentClass();
+
+    public BaseFragmentPagerAdapter(FragmentManager m, Context c) {
         super(m);
 
         this.mContext = c;
         this.mManager = m;
-        this.mClazz = clazz;
         this.mEntities = new ArrayList<Entity>();
         this.mFragments = new WeakHashMap<Integer, EntityBaseFragment>();
     }
@@ -41,9 +42,18 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentStatePagerAdap
     private EntityBaseFragment getFragmentFromCache(Entity e) {
         EntityBaseFragment f = null;
 
+
         f = this.mFragments.get(e.getId());
         if (f == null) {
-            try {f = (EntityBaseFragment) mClazz.newInstance();} catch(Exception ex){};
+            String name = null;
+            Class<?> clazz = null;
+
+            name = e.getRefer();
+            try {clazz = Class.forName(name);} catch (ClassNotFoundException ex) {}
+            if (clazz == null)
+                clazz = this.getFragmentClass().getClass();
+
+            try {f = (EntityBaseFragment) clazz.newInstance();} catch(Exception ex){};
             f.setEntity(e);
             this.mFragments.put(e.getId(), f);
         }

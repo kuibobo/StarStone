@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
-import java.lang.ref.WeakReference;
-
 import apollo.activity.BaseShareFragmentActivity;
 import apollo.app.wofang.R;
-import apollo.app.wofang.widget.WebContentFragment;
+import apollo.app.wofang.widget.WofangWebContentFragment;
 
 /**
  * Created by Texel on 2015/8/28.
@@ -46,7 +44,7 @@ public class WebContentFragmentActivity extends BaseShareFragmentActivity {
     }
 
     private void initViews() {
-        Fragment fragment = new WebContentFragment();
+        Fragment fragment = new WofangWebContentFragment();
         Intent data = super.getIntent();
 
         Bundle args = new Bundle();

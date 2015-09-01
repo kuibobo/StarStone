@@ -13,14 +13,14 @@ import apollo.util.DataSet;
 /**
  * Created by Texel on 2015/8/19.
  */
-public class SectionABC {
-    private static SectionABC inst = null;
+public class SectionDao {
+    private static SectionDao inst = null;
 
-    private SectionABC() {}
+    private SectionDao() {}
 
-    public static SectionABC getInstance() {
+    public static SectionDao getInstance() {
         if (inst == null)
-            inst = new SectionABC();
+            inst = new SectionDao();
         return inst;
     }
 
