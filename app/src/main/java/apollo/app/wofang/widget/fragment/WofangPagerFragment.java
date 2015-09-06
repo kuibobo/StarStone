@@ -35,7 +35,7 @@ import apollo.widget.HorizontalListView;
 /**
  * Created by Texel on 2015/8/6.
  */
-public class SectionViewPagerFragment extends Fragment implements
+public class WofangPagerFragment extends Fragment implements
         ViewPager.OnPageChangeListener {
 
     private ViewPager mViewPager = null;
