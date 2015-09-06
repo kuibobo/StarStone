@@ -5,10 +5,14 @@
     android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
         android:name=".WoFangApplication"
@@ -25,11 +29,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data
-                android:name="duration"
-                android:value="1200" />
+            <meta-data android:name="duration" android:value="1000" />
+            <meta-data android:name="android.activity.MAIN" android:value="apollo.app.wofang.home.MainActivity" />
         </activity>
+        <activity android:name="apollo.app.GuideActivity" />
+        <activity android:name="apollo.app.CollapseActivity" />
         <activity android:name="apollo.app.wofang.home.MainActivity" />
+        <activity android:name="apollo.app.wofang.activity.WofangWebContentFragmentActivity" />
         <activity android:name="apollo.app.wofang.home.TestActivity" />
     </application>
 

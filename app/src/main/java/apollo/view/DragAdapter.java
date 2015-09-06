@@ -1,8 +1,5 @@
 package apollo.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,8 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import apollo.app.wofang.R;
-import apollo.model.Section;
+import apollo.data.model.Section;
 
 public class DragAdapter extends BaseAdapter {
 
@@ -75,22 +77,13 @@ public class DragAdapter extends BaseAdapter {
 		if (position == this.mSelectedItemPosition) {
 			convertView.setVisibility(this.mSelectedItemVisibility);
 		}
-		Log.i("Info", section.getName());
 		return convertView;
 	}
 	
 	public void swap(int index1, int index2) {
-		Section s = (Section) getItem(index1);
-		
 		this.mSelectedItemPosition = index2;
-		if (index1 < index2) {
-			this.mItems.add(index2 + 1, s);
-			this.mItems.remove(index1);
-		} else {
-			this.mItems.add(index2, s);
-			this.mItems.remove(index1 + 1);
-		}
-		notifyDataSetChanged();
+		Collections.swap(this.mItems, index1, index2);
+		this.notifyDataSetChanged();
 	}
 	
 	public void addItem(Section s) {

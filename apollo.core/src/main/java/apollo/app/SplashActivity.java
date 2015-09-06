@@ -1,22 +1,31 @@
 package apollo.app;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+
+import java.lang.reflect.Method;
+
+import apollo.core.ApolloApplication;
 import apollo.core.R;
-import apollo.utils.ImageUtil;
+import apollo.util.ConfigUtil;
+import apollo.util.ImageUtil;
 
 public class SplashActivity extends BaseActivity {
 
 	private AlphaAnimation mAnim = null;
 	private ImageView mImage = null;
 	private Handler mHandler;
+	private Class mMainActivityClass = null;
 
 	private boolean mHaveFinishiAnim = false;
 	private boolean mHaveInitData = false;
@@ -38,17 +47,24 @@ public class SplashActivity extends BaseActivity {
 		mBitmap = ImageUtil.getResBitmap(this, R.drawable.bg_splash_logo);
 		this.mImage = (ImageView) super.findViewById(R.id.iv_splash_logo);
 		this.mImage.setImageBitmap(mBitmap);
-		
-		ActivityInfo info = null;
+
 		long duration = 300L;
+		String activity_main = null;
 
 		try {
-			info = this.getPackageManager().getActivityInfo(getComponentName(),
-					PackageManager.GET_META_DATA);
-			duration = Long.parseLong(info.metaData.getString("duration"));
+			ComponentName cm = getComponentName();
+
+			duration = ConfigUtil.getIntMetaValue("duration");//info.metaData.getInt("duration");//Long.parseLong(info.metaData.getString("duration"));
+			activity_main = ConfigUtil.getMetaValue("android.activity.MAIN");//info.metaData.getString("android.activity.MAIN");
 		} catch (Exception ex) {
+			Log.e("SplachActivity", ex.getMessage());
 		}
-		
+
+		try {
+			mMainActivityClass = (Class) Class.forName(activity_main);
+		} catch (Exception ex) {
+			Log.e("SplachActivity", ex.getMessage());
+		}
 
 		this.mAnim = new AlphaAnimation(0.5F, 1.0F);
 		this.mAnim.setDuration(duration);
@@ -98,7 +114,20 @@ public class SplashActivity extends BaseActivity {
 	}
 	
 	private void startApp() {
-		ApolloApplication.app().startMainActivity(this);
+		Method m = null;
+
+		if (ApolloApplication.app().isFirstUse()) {
+			ApolloApplication.app().setUsed();
+			GuideActivity.startActivity(this);
+		} else {
+			try {
+				m = mMainActivityClass.getMethod("startActivity", new Class[]{Context.class});
+				m.invoke(mMainActivityClass, new Object[]{this});
+			} catch (Exception ex) {
+				Log.e("SplachActivity", ex.getMessage());
+			}
+		}
+
 		super.finish();
 	}
 }
