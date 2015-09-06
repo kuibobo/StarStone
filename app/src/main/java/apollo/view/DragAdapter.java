@@ -1,7 +1,6 @@
 package apollo.view;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +54,7 @@ public class DragAdapter extends BaseAdapter {
 		Section section = null;
 		
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_grid_main_section, null);
+			convertView = mInflater.inflate(R.layout.item_tab_section_item, null);
 			
 			holder = new SectionViewHolder();
 			holder.sectionName = (TextView) convertView.findViewById(R.id.section_name);

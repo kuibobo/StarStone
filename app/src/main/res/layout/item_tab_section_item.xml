@@ -7,13 +7,7 @@
     android:gravity="center" >
 
     <TextView
+        style="@style/AppTabItemText"
         android:id="@+id/section_name"
-        android:background="@drawable/tv_grid_sections"
-        android:textAppearance="@style/tv_gruid_sections"
-        android:textColor="@color/tv_grid_sections"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" />
-
+        />
 </LinearLayout>

@@ -16,10 +16,18 @@
     <style name="AppTheme" parent="AppBaseTheme">
     </style>
 
-    <style name="tv_gruid_sections">
+    <!-- Tab Sections Item Text -->
+    <style name="AppTabItemText">
         <item name="android:textSize">14.0dip</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
+        <!--
+        <item name="android:background">@drawable/tv_grid_sections</item>
+        <item name="android:textColor">@color/tv_grid_sections</item>-->
     </style>
 
 </resources>
