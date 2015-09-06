@@ -8,44 +8,61 @@ import android.support.v4.app.FragmentTransaction;
 
 import apollo.activity.BaseShareFragmentActivity;
 import apollo.app.wofang.R;
-import apollo.app.wofang.widget.WofangWebContentFragment;
+import apollo.app.wofang.widget.fragment.WofangWebContentFragment;
 
 /**
  * Created by Texel on 2015/8/28.
  */
-public class WebContentFragmentActivity extends BaseShareFragmentActivity {
+public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity {
 
-    private static final String TAG = WebContentFragmentActivity.class.getName();
-
+    private static final String TAG = WofangWebContentFragmentActivity.class.getName();
     public static final String BUNDLE_KEY_URL = "URL";
+    public static final String BUNDLE_KEY_FRAGMENT_CLASS = "FRAGMENT_CLASS";
+
+    private Class<?> mFragment = null;
 
     private String mUrl;
 
     public static void startActivity(Activity activity, String url) {
-        Intent i = null;
+        startActivity(activity, url, WofangWebContentFragment.class);
+    }
 
-        i = new Intent(activity, WebContentFragmentActivity.class);
-        i.putExtra(BUNDLE_KEY_URL, url);
+    public static void startActivity(Activity activity, String url, Class<?> fragment) {
+        Intent i = null;
+        Bundle b = null;
+
+        b = new Bundle();
+        b.putString(BUNDLE_KEY_URL, url);
+        b.putSerializable(BUNDLE_KEY_FRAGMENT_CLASS, fragment);
+
+        i = new Intent(activity, WofangWebContentFragmentActivity.class);
+        i.putExtras(b);
+
         activity.startActivity(i);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Intent data = null;
+        Intent i = null;
 
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_webcontent_fragment);
 
-        data = super.getIntent();
-        this.mUrl = data.getStringExtra(BUNDLE_KEY_URL);
+        i = super.getIntent();
+
+        this.mUrl = i.getStringExtra(BUNDLE_KEY_URL);
+        this.mFragment = (Class) i.getSerializableExtra(BUNDLE_KEY_FRAGMENT_CLASS);
 
         this.initViews();
         this.initListener();
     }
 
     private void initViews() {
-        Fragment fragment = new WofangWebContentFragment();
-        Intent data = super.getIntent();
+        Fragment fragment = null;
+
+        try { fragment = (Fragment)this.mFragment.newInstance();} catch (Exception ex) {}
+        if (fragment == null)
+            fragment = new WofangWebContentFragment();
 
         Bundle args = new Bundle();
         args.putString(BUNDLE_KEY_URL, this.mUrl);
@@ -55,7 +72,6 @@ public class WebContentFragmentActivity extends BaseShareFragmentActivity {
                 .beginTransaction();
         trans.replace(R.id.frame_content, fragment, TAG);
         trans.commit();
-
     }
 
     private void initListener() {}

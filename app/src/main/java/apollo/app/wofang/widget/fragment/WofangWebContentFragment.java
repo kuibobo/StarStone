@@ -1,5 +1,7 @@
-package apollo.app.wofang.widget;
+package apollo.app.wofang.widget.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import apollo.app.wofang.activity.WebContentFragmentActivity;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import apollo.app.wofang.activity.WofangWebContentFragmentActivity;
 import apollo.data.model.Section;
 import apollo.fragments.WebViewBaseFragment;
 import apollo.util.Regex;
@@ -18,12 +23,19 @@ import apollo.widget.StatusLayout;
  */
 
 public class WofangWebContentFragment extends WebViewBaseFragment<Section> {
+
     private static final String TAG = WofangWebContentFragment.class.getName();
+
     private String mUrl = null;
 
     @Override
     protected String getCacheKey() {
         return "WCF";
+    }
+
+    @Override
+    protected String getBaseUrl() {
+        return "http://m.wofang.com";
     }
 
     @Override
@@ -37,7 +49,7 @@ public class WofangWebContentFragment extends WebViewBaseFragment<Section> {
         content = Regex.replace(content, "(?s)<div class=\"footer\">.*</span></div>", "");
 
         mWebView.loadDataWithBaseURL(
-                "http://m.wofang.com", content, "text/html", "UTF-8", null);
+                this.getBaseUrl(), content, "text/html", "UTF-8", null);
 
         mStatusLayout.setStatus(StatusLayout.HIDE_LAYOUT);
     }
@@ -53,7 +65,7 @@ public class WofangWebContentFragment extends WebViewBaseFragment<Section> {
 
         args = super.getArguments();
         if (args != null) {
-            mUrl = args.getString(WebContentFragmentActivity.BUNDLE_KEY_URL);
+            mUrl = args.getString(WofangWebContentFragmentActivity.BUNDLE_KEY_URL);
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -79,8 +91,33 @@ public class WofangWebContentFragment extends WebViewBaseFragment<Section> {
     }
 
     @Override
-    protected void onUrlClick(String url) {
-        //WebContentFragmentActivity.startActivity(super.getActivity(), url)
-        sendRequestData(url);
+    protected boolean onUrlClick(String url) {
+        Pattern pattern = null;
+        Matcher matcher = null;
+
+        Log.i(TAG, "onUrlClick:" + url);
+
+        pattern = Pattern.compile("m.wofang.com/building");
+        matcher = pattern.matcher(url);
+        if (matcher.find()) {
+            WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, SearchContentFragment.class);
+            return true;
+        }
+
+        pattern = Pattern.compile("m.wofang.com/news");
+        matcher = pattern.matcher(url);
+        if (matcher.find()) {
+            WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, NewsContentFragment.class);
+            return true;
+        }
+
+        if (url.startsWith("tel:")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+            return true;
+        }
+
+        this.sendRequestData(url);
+        return true;
     }
 }

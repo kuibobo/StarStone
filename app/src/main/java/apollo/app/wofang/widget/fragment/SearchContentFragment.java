@@ -1,4 +1,4 @@
-package apollo.app.wofang.widget;
+package apollo.app.wofang.widget.fragment;
 
 
 /**

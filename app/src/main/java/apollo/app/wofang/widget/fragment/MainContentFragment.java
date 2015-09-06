@@ -1,9 +1,8 @@
-package apollo.app.wofang.widget;
+package apollo.app.wofang.widget.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
 
-import apollo.app.wofang.activity.WebContentFragmentActivity;
 import apollo.util.Regex;
 import apollo.widget.StatusLayout;
 
@@ -27,14 +26,14 @@ public class MainContentFragment extends WofangWebContentFragment {
     @Override
     protected void executeOnLoadDataSuccess(String content) {
         // fix css
-        content = Regex.replace(content,
-                "<link\\s.*?href=\"([^\"]+)\"[^>]*/>",
-                "<link href=\"http://m.wofang.com$1\" rel=\"stylesheet\" type=\"text/css\" />");
-
-        // fix js
-        content = Regex.replace(content,
-                "<script\\s.*?src=\"([^\"]+)\"[^>]*></script>",
-                "<script src=\"http://m.wofang.com$1\"></script>");
+//        content = Regex.replace(content,
+//                "<link\\s.*?href=\"([^\"]+)\"[^>]*/>",
+//                "<link href=\"http://m.wofang.com$1\" rel=\"stylesheet\" type=\"text/css\" />");
+//
+//        // fix js
+//        content = Regex.replace(content,
+//                "<script\\s.*?src=\"([^\"]+)\"[^>]*></script>",
+//                "<script src=\"http://m.wofang.com$1\"></script>");
 
         // remove element
         content = Regex.replace(content, "(?s)<div class=\"header\">.*</form></div></div>", "");
@@ -48,7 +47,7 @@ public class MainContentFragment extends WofangWebContentFragment {
 
         Log.i(TAG, content);
         mWebView.loadDataWithBaseURL(
-                "http://m.wofang.com", content, "text/html", "UTF-8", null);
+                this.getBaseUrl(), content, "text/html", "UTF-8", null);
 
         mStatusLayout.setStatus(StatusLayout.HIDE_LAYOUT);
     }
@@ -60,10 +59,4 @@ public class MainContentFragment extends WofangWebContentFragment {
 
         sendRequestData(url);
     }
-
-    @Override
-    protected void onUrlClick(String url) {
-        WebContentFragmentActivity.startActivity(super.getActivity(), url);
-    }
-
 }

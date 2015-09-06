@@ -35,7 +35,7 @@
         <activity android:name="apollo.app.GuideActivity" />
         <activity android:name="apollo.app.CollapseActivity" />
         <activity android:name="apollo.app.wofang.home.MainActivity" />
-        <activity android:name="apollo.app.wofang.activity.WebContentFragmentActivity" />
+        <activity android:name="apollo.app.wofang.activity.WofangWebContentFragmentActivity" />
         <activity android:name="apollo.app.wofang.home.TestActivity" />
     </application>
 

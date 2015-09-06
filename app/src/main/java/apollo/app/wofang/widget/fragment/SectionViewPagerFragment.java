@@ -1,4 +1,4 @@
-package apollo.app.wofang.widget;
+package apollo.app.wofang.widget.fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -26,6 +26,7 @@ import java.util.List;
 
 import apollo.app.wofang.R;
 import apollo.app.wofang.bll.Sections;
+import apollo.app.wofang.widget.SectionPagerAdapter;
 import apollo.data.model.Section;
 import apollo.view.DragAdapter;
 import apollo.view.DragGridView;

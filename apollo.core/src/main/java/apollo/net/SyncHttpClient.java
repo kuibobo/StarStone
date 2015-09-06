@@ -1,5 +1,7 @@
 package apollo.net;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +13,7 @@ import apollo.exception.SystemException;
  * Created by bourne on 2015/7/11.
  */
 public class SyncHttpClient {
-
+    private static final String TAG = SyncHttpClient.class.getName();
     private static SyncHttpClient instance = null;
 
     public static SyncHttpClient getInstance() {
@@ -49,8 +51,8 @@ public class SyncHttpClient {
         if (propertys == null)
             propertys = new HashMap<String, String>();
 
-        if (propertys.containsKey("Referer") == false)
-            propertys.put("Referer", "http://www.tianya.cn");
+        //if (propertys.containsKey("Referer") == false)
+        //    propertys.put("Referer", "http://www.tianya.cn");
 
         if (propertys.containsKey("Accept-Language") == false)
             propertys.put("Accept-Language", "zh-CN,en-US;q=0.8,en;q=0.6");
@@ -65,6 +67,7 @@ public class SyncHttpClient {
             _resp = _req.create(url, params, propertys);
             body = new String(_resp.getContent(), _resp.getContentCharset());
         } catch (IOException ex) {
+            Log.e(TAG, "getContent excerpt:" + url);
             throw new SystemException(ex.getMessage());
         }
         return body;

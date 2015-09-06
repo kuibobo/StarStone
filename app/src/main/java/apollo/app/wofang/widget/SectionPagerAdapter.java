@@ -3,10 +3,7 @@ package apollo.app.wofang.widget;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
-import java.util.List;
-
-import apollo.data.model.Section;
-import apollo.fragments.WebViewBaseFragment;
+import apollo.app.wofang.widget.fragment.MainContentFragment;
 import apollo.widget.BaseFragmentPagerAdapter;
 
 /**
