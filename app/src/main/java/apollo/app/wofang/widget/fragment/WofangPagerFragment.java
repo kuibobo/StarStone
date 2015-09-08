@@ -179,9 +179,12 @@ public class WofangPagerFragment extends Fragment implements
                 if (mSectionsPanel.isOpen()) {
                     mSectionsPanel.setOpen(false, true);
 
+                    mBtnSecitonDropDown.setSelected(false);
                     setChangelViewUpdate();
                 } else {
                     mSectionsPanel.setOpen(true, true);
+
+                    mBtnSecitonDropDown.setSelected(true);
                 }
             }
         });
