@@ -23,10 +23,10 @@
         <item name="android:textStyle">normal</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">10dip</item>
-        <item name="android:paddingRight">10dip</item>
-        <item name="android:paddingTop">14dip</item>
-        <item name="android:paddingBottom">14dip</item>
+        <item name="android:paddingLeft">18dip</item>
+        <item name="android:paddingRight">18dip</item>
+        <item name="android:paddingTop">10dip</item>
+        <item name="android:paddingBottom">10dip</item>
         <item name="android:background">@drawable/tv_grid_sections</item>
         <item name="android:textColor">@color/tv_grid_sections</item>
     </style>
