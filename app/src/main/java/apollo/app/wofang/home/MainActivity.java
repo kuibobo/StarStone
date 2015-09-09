@@ -41,8 +41,6 @@ public class MainActivity extends DrawerActivity {
 	private LinearLayout mLayoutSections = null; 
 	private DrawerLayout mLayoutMain = null;
 
-	//private LinearLayout mLayoutTop = null;
-
 	public static void startActivity(Context context) {
 		Intent intent = null;
 		
@@ -64,44 +62,8 @@ public class MainActivity extends DrawerActivity {
 	@SuppressLint("InflateParams")
 	private void initView() {
 		this.mLayoutSections = (LinearLayout) super.findViewById(R.id.layout_sections);
-		//this.mLayoutTop = (LinearLayout) super.findViewById(R.id.layout_top);
 	}
 	
 	private void initListener() {
-
-		
-//		this.mDragGridViewCurrent.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View view,
-//					int position, long id) {
-//				final TextView textView = (TextView) view.findViewById(R.id.section_name);
-//				final Section section = (Section)textView.getTag();
-//				final ImageView img = buildImageView(view);
-//				
-//				MainActivity.this.mSectionAdapterSource.addItem(section);
-//				MainActivity.this.mSectionAdapterSource.setLastItemVisibility(View.GONE);
-//				
-//				new Handler().post(new Runnable(){
-//
-//					@Override
-//					public void run() {
-//						View v = null;
-//						int[] location = new int[2];
-//						int[] target_location = new int[2];
-//						
-//						textView.getLocationInWindow(location);
-//						v = MainActivity.this.mDragGridViewSource.getChildAt(MainActivity.this.mDragGridViewSource.getLastVisiblePosition());
-//						v.getLocationInWindow(target_location);
-//												
-//						MainActivity.this.doMoveAnimation(img, MainActivity.this.mDragGridViewSource, 
-//								location[0], location[1], target_location[0], target_location[1]);						
-//						MainActivity.this.mSectionAdapterCurrent.removeItem(section);
-//					}
-//					
-//				});
-//			}
-//			
-//		});
 	}
 }

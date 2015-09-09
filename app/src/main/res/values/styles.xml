@@ -18,11 +18,13 @@
 
     <!-- Tab Sections Item Text -->
     <style name="AppTabItemText">
-        <item name="android:textSize">16.0dip</item>
+        <item name="android:textSize">14.0dip</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:layout_width">76dip</item>
-        <item name="android:layout_height">48dip</item>
+        <item name="android:layout_width">46dip</item>
+        <item name="android:layout_height">30dip</item>
+        <item name="android:layout_marginLeft">8dip</item>
+        <item name="android:layout_marginRight">8dip</item>
         <item name="android:background">@drawable/tv_grid_sections</item>
         <item name="android:textColor">@color/tv_grid_sections</item>
     </style>
