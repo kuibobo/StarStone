@@ -1,5 +1,6 @@
 package apollo.app.wofang.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import android.widget.RadioButton;
 import android.widget.TabHost;
 
 import apollo.activity.NightModeTabActivity;
+import apollo.app.wofang.R;
 import apollo.widget.AnimationTabHost;
 
 /**
@@ -15,7 +17,7 @@ import apollo.widget.AnimationTabHost;
  */
 public class MainTabActivity extends NightModeTabActivity implements  CompoundButton.OnCheckedChangeListener {
 
-    public static final String TAB_MAIN = "TAB_MAIN";
+    public static final String TAB_Home = "TAB_Home";
     public static final String TAB_TOPIC = "TAB_TOPIC";
     public static final String TAB_VIDEO = "TAB_VIDEO";
     public static final String TAB_SETTING = "TAB_SETTING";
@@ -23,14 +25,23 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
     public static final String TAGET_TAB = "taget_tab";
 
     private AnimationTabHost mHost;
-    private RadioButton mMainButton;
+    private RadioButton mHomeButton;
     private RadioButton mTopicButton;
     private RadioButton mVideoButton;
     private RadioButton mSettingButton;
 
+
+    public static void startActivity(Context context) {
+        Intent intent = null;
+
+        intent = new Intent(context, MainTabActivity.class);
+        context.startActivity(intent);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setContentView(R.layout.activity_maintabs);
 
         this.initView();
         this.initListener();
@@ -52,7 +63,7 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
     }
 
     private TabHost.TabSpec buildTab(String str, Intent intent) {
-        return mHost.newTabSpec(str).setContent(intent).setIndicator("", getResources().getDrawable(R.drawable.icon));
+        return mHost.newTabSpec(str).setContent(intent).setIndicator("", getResources().getDrawable(R.drawable.ic_launcher));
     }
 
     private void initView() {
@@ -61,13 +72,13 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
         mHost = (AnimationTabHost) findViewById(android.R.id.tabhost);
         mHost.setOpenAnimation(true);
 
-        mMainButton = (RadioButton) findViewById(R.id.radio_main);
+        mHomeButton = (RadioButton) findViewById(R.id.radio_home);
         mTopicButton = (RadioButton) findViewById(R.id.radio_topic);
         mVideoButton = (RadioButton) findViewById(R.id.radio_video);
         mSettingButton = (RadioButton) findViewById(R.id.radio_setting);
 
-        intent = new Intent(this, MainActivity.class);
-        mHost.addTab(buildTab(TAB_MAIN, intent));
+        intent = new Intent(this, HomeActivity.class);
+        mHost.addTab(buildTab(TAB_Home, intent));
 
         intent = new Intent(this, TopicActivity.class);
         mHost.addTab(buildTab(TAB_TOPIC, intent));
@@ -80,7 +91,7 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
     }
 
     private void initListener() {
-        mMainButton.setOnCheckedChangeListener(this);
+        mHomeButton.setOnCheckedChangeListener(this);
         mTopicButton.setOnCheckedChangeListener(this);
         mVideoButton.setOnCheckedChangeListener(this);
         mSettingButton.setOnCheckedChangeListener(this);

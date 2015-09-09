@@ -30,13 +30,15 @@
             </intent-filter>
 
             <meta-data android:name="duration" android:value="1000" />
-            <meta-data android:name="android.activity.MAIN" android:value="apollo.app.wofang.home.MainActivity" />
+            <meta-data android:name="android.activity.MAIN" android:value="apollo.app.wofang.home.MainTabActivity" />
         </activity>
         <activity android:name="apollo.app.GuideActivity" />
         <activity android:name="apollo.app.CollapseActivity" />
-        <activity android:name="apollo.app.wofang.home.MainActivity" />
-        <activity android:name="apollo.app.wofang.activity.WofangWebContentFragmentActivity" />
-        <activity android:name="apollo.app.wofang.home.TestActivity" />
+
+        <activity android:name=".activity.WofangWebContentFragmentActivity" />
+        <activity android:name=".home.HomeActivity" />
+        <activity android:name=".home.MainTabActivity"/>
+        <activity android:name=".home.TestActivity" />
     </application>
 
 </manifest>

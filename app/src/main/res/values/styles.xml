@@ -29,4 +29,21 @@
         <item name="android:textColor">@color/tv_grid_sections</item>
     </style>
 
+    <style name="MainTabBottom">
+        <item name="android:textSize">12.0sp</item>
+        <item name="android:textColor">@color/main_button_color</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/tabs_btn_bg</item>
+        <item name="android:paddingTop">8.0dip</item>
+        <item name="android:paddingBottom">4.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginTop">0.0dip</item>
+        <item name="android:layout_marginBottom">0.0dip</item>
+        <item name="android:button">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:drawablePadding">5.0dip</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+
 </resources>

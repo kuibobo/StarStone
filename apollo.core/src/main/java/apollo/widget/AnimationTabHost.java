@@ -5,23 +5,24 @@ import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TabHost;
-import apollo.app.R;
+
+import apollo.core.R;
 
 public class AnimationTabHost extends TabHost {
 
-	private Animation slideLeftIn;// ´ÓÆÁÄ»×ó±ß½øÀ´
-	private Animation slideLeftOut;// ´ÓÆÁÄ»×ó±ß³öÈ¥
-	private Animation slideRightIn;// ´ÓÆÁÄ»ÓÒ±ß½øÀ´
-	private Animation slideRightOut;// ´ÓÆÁÄ»ÓÒ±ß³öÈ¥
+	private Animation slideLeftIn;// ä»å±å¹•å·¦è¾¹è¿›æ¥
+	private Animation slideLeftOut;// ä»å±å¹•å·¦è¾¹å‡ºå»
+	private Animation slideRightIn;// ä»å±å¹•å³è¾¹è¿›æ¥
+	private Animation slideRightOut;// ä»å±å¹•å³è¾¹å‡ºå»
 
-	/** ¼ÇÂ¼ÊÇ·ñ´ò¿ª¶¯»­Ğ§¹û */
+	/** è®°å½•æ˜¯å¦æ‰“å¼€åŠ¨ç”»æ•ˆæœ */
 	private boolean isOpenAnimation;
-	/** ¼ÇÂ¼µ±Ç°±êÇ©Ò³µÄ×ÜÊı */
+	/** è®°å½•å½“å‰æ ‡ç­¾é¡µçš„æ€»æ•° */
 	private int mTabCount;
 
 	public AnimationTabHost(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		/** ³õÊ¼»¯Ä¬ÈÏ¶¯»­ */
+		/** åˆå§‹åŒ–é»˜è®¤åŠ¨ç”» */
 		slideLeftIn = AnimationUtils.loadAnimation(context,
 				R.anim.slide_left_in);
 		slideLeftOut = AnimationUtils.loadAnimation(context,
@@ -30,15 +31,15 @@ public class AnimationTabHost extends TabHost {
 				R.anim.slide_right_in);
 		slideRightOut = AnimationUtils.loadAnimation(context,
 				R.anim.slide_right_out);
-		isOpenAnimation = false;// ¶¯»­Ä¬ÈÏ¹Ø±Õ
+		isOpenAnimation = false;// åŠ¨ç”»é»˜è®¤å…³é—­
 
 	}
 
 	/**
-	 * ÉèÖÃÊÇ·ñ´ò¿ª¶¯»­Ğ§¹û
+	 * è®¾ç½®æ˜¯å¦æ‰“å¼€åŠ¨ç”»æ•ˆæœ
 	 * 
 	 * @param isOpenAnimation
-	 *            true£º´ò¿ª
+	 *            trueï¼šæ‰“å¼€
 	 */
 	public void setOpenAnimation(boolean isOpenAnimation) {
 		this.isOpenAnimation = isOpenAnimation;
@@ -46,7 +47,7 @@ public class AnimationTabHost extends TabHost {
 
 	/**
 	 * 
-	 * @return ·µ»Øµ±Ç°±êÇ©Ò³µÄ×ÜÊı
+	 * @return è¿”å›å½“å‰æ ‡ç­¾é¡µçš„æ€»æ•°
 	 */
 
 	public int getTabCount() {
@@ -59,51 +60,51 @@ public class AnimationTabHost extends TabHost {
 		super.addTab(tabSpec);
 	}
 
-	// ÖØĞ´setCurrentTab(int index) ·½·¨£¬ÕâÀï¼ÓÈë¶¯»­£¡¹Ø¼üµã¾ÍÔÚÕâ¡£
+	// é‡å†™setCurrentTab(int index) æ–¹æ³•ï¼Œè¿™é‡ŒåŠ å…¥åŠ¨ç”»ï¼å…³é”®ç‚¹å°±åœ¨è¿™ã€‚
 	@Override
 	public void setCurrentTab(int index) {
-		// ÇĞ»»Ç°ËùÔÚÒ³µÄÒ³Ãæ
+		// åˆ‡æ¢å‰æ‰€åœ¨é¡µçš„é¡µé¢
 		int mCurrentTabID = getCurrentTab();
 		if (null != getCurrentView()) {
-			// µÚÒ»´ÎÉèÖÃ Tab Ê±£¬¸ÃÖµÎª null¡£
+			// ç¬¬ä¸€æ¬¡è®¾ç½® Tab æ—¶ï¼Œè¯¥å€¼ä¸º nullã€‚
 			if (isOpenAnimation) {
-				// Àë¿ªµÄÒ³Ãæ
-				// Ñ­»·Ê±£¬Ä©Ò³µ½µÚÒ»Ò³(±ß½ç´¦Àí)
+				// ç¦»å¼€çš„é¡µé¢
+				// å¾ªç¯æ—¶ï¼Œæœ«é¡µåˆ°ç¬¬ä¸€é¡µ(è¾¹ç•Œå¤„ç†)
 				if (mCurrentTabID == (mTabCount - 1) && index == 0) {
 					getCurrentView().startAnimation(slideLeftOut);
 				}
-				// Ñ­»·Ê±£¬Ê×Ò³µ½Ä©Ò³
+				// å¾ªç¯æ—¶ï¼Œé¦–é¡µåˆ°æœ«é¡µ
 				else if (mCurrentTabID == 0 && index == (mTabCount - 1)) {
 					getCurrentView().startAnimation(slideRightOut);
 				}
-				// ÇĞ»»µ½ÓÒ±ßµÄ½çÃæ£¬´Ó×ó±ßÀë¿ª
+				// åˆ‡æ¢åˆ°å³è¾¹çš„ç•Œé¢ï¼Œä»å·¦è¾¹ç¦»å¼€
 				else if (index > mCurrentTabID) {
 					getCurrentView().startAnimation(slideLeftOut);
 				}
-				// ÇĞ»»µ½×ó±ßµÄ½çÃæ£¬´ÓÓÒ±ßÀë¿ª
+				// åˆ‡æ¢åˆ°å·¦è¾¹çš„ç•Œé¢ï¼Œä»å³è¾¹ç¦»å¼€
 				else if (index < mCurrentTabID) {
 					getCurrentView().startAnimation(slideRightOut);
 				}
 			}
 		}
-		// ÉèÖÃµ±Ç°Ò³
+		// è®¾ç½®å½“å‰é¡µ
 		super.setCurrentTab(index);
 
 		if (isOpenAnimation) {
-			// µ±Ç°Ò³½øÀ´ÊÇ¶¯»­
-			// Ñ­»·Ê±£¬Ä©Ò³µ½µÚÒ»Ò³
+			// å½“å‰é¡µè¿›æ¥æ˜¯åŠ¨ç”»
+			// å¾ªç¯æ—¶ï¼Œæœ«é¡µåˆ°ç¬¬ä¸€é¡µ
 			if (mCurrentTabID == (mTabCount - 1) && index == 0) {
 				getCurrentView().startAnimation(slideRightIn);
 			}
-			// Ñ­»·Ê±£¬Ê×Ò³µ½Ä©Ò³(±ß½ç´¦Àí)
+			// å¾ªç¯æ—¶ï¼Œé¦–é¡µåˆ°æœ«é¡µ(è¾¹ç•Œå¤„ç†)
 			else if (mCurrentTabID == 0 && index == (mTabCount - 1)) {
 				getCurrentView().startAnimation(slideLeftIn);
 			}
-			// ÇĞ»»µ½ÓÒ±ßµÄ½çÃæ£¬´ÓÓÒ±ß½øÀ´
+			// åˆ‡æ¢åˆ°å³è¾¹çš„ç•Œé¢ï¼Œä»å³è¾¹è¿›æ¥
 			else if (index > mCurrentTabID) {
 				getCurrentView().startAnimation(slideRightIn);
 			}
-			// ÇĞ»»µ½×ó±ßµÄ½çÃæ£¬´Ó×ó±ß½øÀ´
+			// åˆ‡æ¢åˆ°å·¦è¾¹çš„ç•Œé¢ï¼Œä»å·¦è¾¹è¿›æ¥
 			else if (index < mCurrentTabID) {
 				getCurrentView().startAnimation(slideLeftIn);
 			}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apollo.widget.AnimationTabHost xmlns:android="http://schemas.android.com/apk/res/android" android:id="@android:id/tabhost" android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <FrameLayout android:id="@android:id/tabcontent" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
+        <TabWidget android:id="@android:id/tabs" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="0.0" />
+        <FrameLayout android:layout_gravity="bottom" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="-4.0px">
+            <RadioGroup android:gravity="center_vertical" android:orientation="horizontal" android:id="@+id/main_radio" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <RadioButton android:id="@+id/radio_home" android:text="@string/maintab_home" android:drawableTop="@drawable/tabs_home" style="@style/MainTabBottom" />
+                <RadioButton android:id="@+id/radio_topic" android:text="@string/maintab_topic" android:drawableTop="@drawable/tabs_topic" style="@style/MainTabBottom" />
+                <RadioButton android:id="@+id/radio_video" android:text="@string/maintab_video" android:drawableTop="@drawable/tabs_video" style="@style/MainTabBottom" />
+                <RadioButton android:id="@+id/radio_setting" android:text="@string/maintab_setting" android:drawableTop="@drawable/tabs_setting" style="@style/MainTabBottom" />
+            </RadioGroup>
+        </FrameLayout>
+    </LinearLayout>
+</apollo.widget.AnimationTabHost>
