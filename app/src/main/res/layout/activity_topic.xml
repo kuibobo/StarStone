@@ -5,8 +5,9 @@
 
     <include android:id="@+id/layout_top" layout="@layout/item_layout_titlebar" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <FrameLayout
+        android:id="@+id/frame_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@id/layout_top" />
 </LinearLayout>

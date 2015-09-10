@@ -10,11 +10,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import apollo.activity.NightModeFragmentActivity;
 import apollo.app.wofang.R;
 
 /// 取消使用 左右滑动菜单。。。
 ///public class HomeActivity extends DrawerActivity {
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends NightModeFragmentActivity {
 
 	private ViewPager mViewPager = null;
 	private View mView = null;
