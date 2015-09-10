@@ -17,7 +17,7 @@ import apollo.widget.AnimationTabHost;
  */
 public class MainTabActivity extends NightModeTabActivity implements  CompoundButton.OnCheckedChangeListener {
 
-    public static final String TAB_Home = "TAB_Home";
+    public static final String TAB_Home = "TAB_HOME";
     public static final String TAB_TOPIC = "TAB_TOPIC";
     public static final String TAB_VIDEO = "TAB_VIDEO";
     public static final String TAB_SETTING = "TAB_SETTING";
@@ -49,12 +49,41 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked == true) {
+            switch(buttonView.getId()) {
+                case R.id.radio_home:
+                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_Home);
+                    break;
 
+                case R.id.radio_topic:
+                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_TOPIC);
+                    break;
+
+                case R.id.radio_video:
+                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_VIDEO);
+                    break;
+
+                case R.id.radio_setting:
+                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_SETTING);
+                    break;
+            }
+        }
     }
 
     @Override
     public void onNewIntent(Intent intent) {
+        String taget_tab = null;
+
         super.onNewIntent(intent);
+        taget_tab = intent.getStringExtra(TAGET_TAB);
+        if (MainTabActivity.TAB_Home.equals(taget_tab))
+            this.mHomeButton.setChecked(true);
+        else if (MainTabActivity.TAB_TOPIC.equals(taget_tab))
+            this.mTopicButton.setChecked(true);
+        else if (MainTabActivity.TAB_VIDEO.equals(taget_tab))
+            this.mVideoButton.setChecked(true);
+        else if (MainTabActivity.TAB_SETTING.equals(taget_tab))
+            this.mSettingButton.setChecked(true);
     }
 
     @Override
@@ -76,6 +105,7 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
         mTopicButton = (RadioButton) findViewById(R.id.radio_topic);
         mVideoButton = (RadioButton) findViewById(R.id.radio_video);
         mSettingButton = (RadioButton) findViewById(R.id.radio_setting);
+        mHomeButton.setChecked(true);
 
         intent = new Intent(this, HomeActivity.class);
         mHost.addTab(buildTab(TAB_Home, intent));
@@ -95,14 +125,5 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
         mTopicButton.setOnCheckedChangeListener(this);
         mVideoButton.setOnCheckedChangeListener(this);
         mSettingButton.setOnCheckedChangeListener(this);
-    }
-
-    private void selectTab() {
-        String taget_tab = null;
-
-        taget_tab = getIntent().getStringExtra(TAGET_TAB);
-        if (TextUtils.isEmpty(taget_tab)) {
-
-        }
     }
 }

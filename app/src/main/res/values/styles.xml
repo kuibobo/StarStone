@@ -22,7 +22,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textStyle">normal</item>
         <item name="android:layout_width">46dip</item>
-        <item name="android:layout_height">30dip</item>
+        <item name="android:layout_height">48dip</item>
         <item name="android:layout_marginLeft">8dip</item>
         <item name="android:layout_marginRight">8dip</item>
         <item name="android:background">@drawable/tv_grid_sections</item>
@@ -31,7 +31,7 @@
 
     <style name="MainTabBottom">
         <item name="android:textSize">12.0sp</item>
-        <item name="android:textColor">@color/main_button_color</item>
+        <item name="android:textColor">@color/main_tab_button_color</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:background">@drawable/tabs_btn_bg</item>
         <item name="android:paddingTop">8.0dip</item>
@@ -44,6 +44,20 @@
         <item name="android:singleLine">true</item>
         <item name="android:drawablePadding">5.0dip</item>
         <item name="android:layout_weight">1.0</item>
+    </style>
+
+    <style name="LayoutTitleBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dip</item>
+        <item name="android:background">#ffa0a0a0</item>
+    </style>
+
+    <style name="ButtonArrow">
+        <item name="android:layout_width">48dip</item>
+        <item name="android:layout_height">48dip</item>
+        <item name="android:layout_margin">10dip</item>
+        <item name="android:background">@drawable/main_btn_tab_arrow</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
 </resources>

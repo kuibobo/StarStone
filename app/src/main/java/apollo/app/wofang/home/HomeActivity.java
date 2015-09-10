@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
@@ -11,8 +12,9 @@ import android.widget.LinearLayout;
 
 import apollo.app.wofang.R;
 
-public class HomeActivity extends DrawerActivity {
-	
+/// 取消使用 左右滑动菜单。。。
+///public class HomeActivity extends DrawerActivity {
+public class HomeActivity extends FragmentActivity {
 
 	private ViewPager mViewPager = null;
 	private View mView = null;
@@ -31,7 +33,8 @@ public class HomeActivity extends DrawerActivity {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.activity_main);
 
-		super.init();
+		/// 继承DrawerActivity时用
+		///super.init();
 		this.initView();
 		this.initListener();
 	}

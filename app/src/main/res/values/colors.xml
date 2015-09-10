@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_button_color">#ffbbbbbb</color>
-
     <color name="subscribe_item_text_color_pressed_night">#ff303030</color>
     <color name="subscribe_item_selected_stroke_night">#ffbc494d</color>
     <color name="subscribe_item_drag_stroke">#ffd2d2d2</color>

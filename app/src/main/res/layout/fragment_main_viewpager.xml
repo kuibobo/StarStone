@@ -6,14 +6,13 @@
 
     <LinearLayout
         android:id="@+id/layout_sections"
-        android:layout_width="match_parent"
-        android:layout_height="30dip"
         android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        style="@style/LayoutTitleBar">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="30dip"
+            android:layout_height="match_parent"
             android:layout_weight="1.0" >
 
             <apollo.widget.HorizontalListView
@@ -26,15 +25,11 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dip" >
+            android:layout_height="match_parent" >
 
             <Button
                 android:id="@+id/btn_section_drop_down"
-                android:layout_width="30dip"
-                android:layout_height="30dip"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="10dip"
-                android:background="@drawable/main_btn_tab_arrow" />
+                style="@style/ButtonArrow" />
         </LinearLayout>
 
     </LinearLayout>
