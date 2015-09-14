@@ -20,9 +20,6 @@ public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity 
     public static final String BUNDLE_KEY_FRAGMENT_CLASS = "FRAGMENT_CLASS";
 
     private Class<?> mFragment = null;
-
-    private String mUrl;
-
     public static void startActivity(Activity activity, String url) {
         startActivity(activity, url, WofangWebContentFragment.class);
     }
@@ -53,11 +50,11 @@ public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity 
         this.mUrl = i.getStringExtra(BUNDLE_KEY_URL);
         this.mFragment = (Class) i.getSerializableExtra(BUNDLE_KEY_FRAGMENT_CLASS);
 
-        this.initViews();
-        this.initListener();
+        this.initFragment();
     }
 
-    private void initViews() {
+    @Override
+    protected void initFragment() {
         Fragment fragment = null;
 
         try { fragment = (Fragment)this.mFragment.newInstance();} catch (Exception ex) {}
@@ -73,6 +70,4 @@ public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity 
         trans.replace(R.id.frame_content, fragment, TAG);
         trans.commit();
     }
-
-    private void initListener() {}
 }

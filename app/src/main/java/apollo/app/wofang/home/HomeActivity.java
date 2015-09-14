@@ -39,8 +39,10 @@ public class HomeActivity extends NightModeFragmentActivity {
 		this.initView();
 		this.initListener();
 	}
-	
-	
+
+	@Override
+	protected void initFragment() {}
+
 	@SuppressLint("InflateParams")
 	private void initView() {
 		this.mLayoutSections = (LinearLayout) super.findViewById(R.id.layout_sections);

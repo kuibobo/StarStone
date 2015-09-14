@@ -23,5 +23,9 @@ public class TopicActivity extends WofangWebContentFragmentActivity {
         super.setContentView(R.layout.activity_topic);
     }
 
-
+    @Override
+    protected void initFragment() {
+        super.mUrl = "http://m.wofang.com/asks/";
+        super.initFragment();
+    }
 }
