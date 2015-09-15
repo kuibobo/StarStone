@@ -8,7 +8,7 @@
                 <RadioButton android:id="@+id/radio_home" android:text="@string/maintab_home" android:drawableTop="@drawable/tabs_home" style="@style/MainTabBottom" />
                 <RadioButton android:id="@+id/radio_topic" android:text="@string/maintab_topic" android:drawableTop="@drawable/tabs_topic" style="@style/MainTabBottom" />
                 <RadioButton android:id="@+id/radio_video" android:text="@string/maintab_video" android:drawableTop="@drawable/tabs_video" style="@style/MainTabBottom" />
-                <RadioButton android:id="@+id/radio_setting" android:text="@string/maintab_setting" android:drawableTop="@drawable/tabs_setting" style="@style/MainTabBottom" />
+                <RadioButton android:id="@+id/radio_person" android:text="@string/maintab_setting" android:drawableTop="@drawable/tabs_setting" style="@style/MainTabBottom" />
             </RadioGroup>
         </FrameLayout>
     </LinearLayout>

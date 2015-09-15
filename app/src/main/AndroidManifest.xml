@@ -39,7 +39,7 @@
         <activity android:name=".home.HomeActivity" />
         <activity android:name=".home.TopicActivity" />
         <activity android:name=".home.VideoActivity" />
-        <activity android:name=".home.SettingActivity" />
+        <activity android:name=".home.PersongActivity" />
         <activity android:name=".home.MainTabActivity"/>
         <activity android:name=".home.TestActivity" />
     </application>

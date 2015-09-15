@@ -60,4 +60,17 @@
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
+    <style name="TextPersonProfile">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textColor">#ff4a4a4a</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextPersonItem">
+        <item name="android:textSize">17.0sp</item>
+        <item name="android:textColor">#ff4a4a4a</item>
+    </style>
+
 </resources>
