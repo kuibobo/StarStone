@@ -45,7 +45,6 @@ public class MainContentFragment extends WofangWebContentFragment {
 
         //content += "<style>.header,.footer,.footer_from{display:none;}</style>";
 
-        Log.i(TAG, content);
         mWebView.loadDataWithBaseURL(
                 this.getBaseUrl(), content, "text/html", "UTF-8", null);
 

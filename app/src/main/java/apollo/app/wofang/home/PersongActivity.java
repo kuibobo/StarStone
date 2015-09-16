@@ -13,6 +13,6 @@ public class PersongActivity extends NightModeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.activity_topic);
+        super.setContentView(R.layout.activity_person);
     }
 }

@@ -16,7 +16,7 @@ import apollo.widget.AnimationTabHost;
  */
 public class MainTabActivity extends NightModeTabActivity implements  CompoundButton.OnCheckedChangeListener {
 
-    public static final String TAB_Home = "TAB_HOME";
+    public static final String TAB_HOME = "TAB_HOME";
     public static final String TAB_TOPIC = "TAB_TOPIC";
     public static final String TAB_VIDEO = "TAB_VIDEO";
     public static final String TAB_PERSON = "TAB_PERSON";
@@ -51,7 +51,7 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
         if (isChecked == true) {
             switch(buttonView.getId()) {
                 case R.id.radio_home:
-                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_Home);
+                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_HOME);
                     break;
 
                 case R.id.radio_topic:
@@ -75,7 +75,7 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
 
         super.onNewIntent(intent);
         taget_tab = intent.getStringExtra(TAGET_TAB);
-        if (MainTabActivity.TAB_Home.equals(taget_tab))
+        if (MainTabActivity.TAB_HOME.equals(taget_tab))
             this.mHomeButton.setChecked(true);
         else if (MainTabActivity.TAB_TOPIC.equals(taget_tab))
             this.mTopicButton.setChecked(true);
@@ -103,11 +103,11 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
         mHomeButton = (RadioButton) findViewById(R.id.radio_home);
         mTopicButton = (RadioButton) findViewById(R.id.radio_topic);
         mVideoButton = (RadioButton) findViewById(R.id.radio_video);
-        mPersonButton = (RadioButton) findViewById(R.id.radio_setting);
+        mPersonButton = (RadioButton) findViewById(R.id.radio_person);
         mHomeButton.setChecked(true);
 
         intent = new Intent(this, HomeActivity.class);
-        mHost.addTab(buildTab(TAB_Home, intent));
+        mHost.addTab(buildTab(TAB_HOME, intent));
 
         intent = new Intent(this, TopicActivity.class);
         mHost.addTab(buildTab(TAB_TOPIC, intent));

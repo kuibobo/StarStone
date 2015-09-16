@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="drawable" name="person_item_bg_normal">#ffffffff</item>
+    <item type="drawable" name="person_item_bg_pressed">#ffdedede</item>
+
+    <item type="drawable" name="person_item_bg_normal_recommend">#ffdedede</item>
+</resources>
