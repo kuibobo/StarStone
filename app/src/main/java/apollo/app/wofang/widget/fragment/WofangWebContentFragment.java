@@ -24,7 +24,7 @@ import apollo.widget.StatusLayout;
 
 public class WofangWebContentFragment extends WebViewBaseFragment<Section> {
 
-    private static final String TAG = WofangWebContentFragment.class.getName();
+    private final String TAG = this.getClass().getName();
 
     private String mUrl = null;
 
@@ -92,24 +92,7 @@ public class WofangWebContentFragment extends WebViewBaseFragment<Section> {
 
     @Override
     protected boolean onUrlClick(String url) {
-        Pattern pattern = null;
-        Matcher matcher = null;
-
         Log.i(TAG, "onUrlClick:" + url);
-
-        pattern = Pattern.compile("m.wofang.com/building");
-        matcher = pattern.matcher(url);
-        if (matcher.find()) {
-            WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, SearchContentFragment.class);
-            return true;
-        }
-
-        pattern = Pattern.compile("m.wofang.com/news");
-        matcher = pattern.matcher(url);
-        if (matcher.find()) {
-            WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, NewsContentFragment.class);
-            return true;
-        }
 
         if (url.startsWith("tel:")) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -117,7 +100,7 @@ public class WofangWebContentFragment extends WebViewBaseFragment<Section> {
             return true;
         }
 
-        this.sendRequestData(url);
+        WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankContentFragment.class);
         return true;
     }
 }
