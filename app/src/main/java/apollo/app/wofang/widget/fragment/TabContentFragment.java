@@ -64,15 +64,9 @@ public class TabContentFragment extends WofangWebContentFragment {
 
     @Override
     protected boolean onUrlClick(String url) {
-        Log.i(TAG, "onUrlClick:" + url);
+        if (super.onUrlClick(url) == false)
+            WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankContentFragment.class);
 
-        if (url.startsWith("tel:")) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-            return true;
-        }
-
-        WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankContentFragment.class);
         return true;
     }
 }

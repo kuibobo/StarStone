@@ -12,24 +12,12 @@ import apollo.app.wofang.activity.WofangWebContentFragmentActivity;
  */
 public class BlankContentFragment extends WofangWebContentFragment {
     private final String TAG = this.getClass().getName();
-    
-    @Override
-    protected void sendRequestData() {
-        String url = super.getEntity().getUrl();
-
-        sendRequestData(url);
-    }
 
     @Override
     protected boolean onUrlClick(String url) {
-        Log.i(TAG, "onUrlClick:" + url);
+        if (super.onUrlClick(url) == false)
+            this.sendRequestData(url);
 
-        if (url.startsWith("tel:")) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-            return true;
-        }
-        this.sendRequestData(url);
         return true;
     }
 }

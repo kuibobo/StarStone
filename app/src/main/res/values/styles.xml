@@ -49,7 +49,7 @@
     <style name="LayoutTitleBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dip</item>
-        <item name="android:background">#ffa0a0a0</item>
+        <item name="android:background">#ff292f3c</item>
     </style>
 
     <style name="ButtonArrow">
@@ -71,6 +71,11 @@
     <style name="TextPersonItem">
         <item name="android:textSize">17.0sp</item>
         <item name="android:textColor">#ff4a4a4a</item>
+    </style>
+
+    <style name="ButtonTitleBarBack">
+        <item name="android:layout_width">48dip</item>
+        <item name="android:layout_height">48dip</item>
     </style>
 
 </resources>

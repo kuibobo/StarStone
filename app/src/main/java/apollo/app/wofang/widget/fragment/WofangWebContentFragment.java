@@ -100,7 +100,6 @@ public class WofangWebContentFragment extends WebViewBaseFragment<Section> {
             return true;
         }
 
-        WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankContentFragment.class);
-        return true;
+        return false;
     }
 }
