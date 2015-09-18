@@ -43,6 +43,11 @@ public class HomeActivity extends NightModeFragmentActivity {
 	@Override
 	protected void initFragment() {}
 
+
+	@Override
+	protected void initActionBar() {
+	}
+
 	@SuppressLint("InflateParams")
 	private void initView() {
 		this.mLayoutSections = (LinearLayout) super.findViewById(R.id.layout_sections);

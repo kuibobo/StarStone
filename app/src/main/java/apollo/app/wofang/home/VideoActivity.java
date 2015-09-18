@@ -13,8 +13,10 @@ public class VideoActivity extends WofangWebContentFragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.mLayoutResId = R.layout.activity_topic;
+
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.activity_topic);
+        super.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
