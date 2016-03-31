@@ -58,8 +58,10 @@ public class GuideActivity extends Activity {
         public Object instantiateItem(View view, int i) {
             ((ViewPager) view).addView(mHotspotViews.get(i), 0);
             mStartButton = (Button) findViewById(R.id.enter);
-            if (mStartButton != null)
+            if (mStartButton != null) {
+                mStartButton.setText(R.string.app_guide_enter);
                 mStartButton.setOnClickListener(mStartOnClickListener);
+            }
             return mHotspotViews.get(i);
         }
     }
