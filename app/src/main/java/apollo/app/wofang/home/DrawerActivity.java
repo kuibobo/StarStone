@@ -15,12 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.IconTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.joanzapata.android.iconify.IconDrawable;
-import com.joanzapata.android.iconify.Iconify;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -261,13 +262,13 @@ public class DrawerActivity extends ActionBarActivity {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 
         menu.findItem(R.id.action_menu_search).setIcon(
-				new IconDrawable(this, Iconify.IconValue.fa_search)
+				new IconDrawable(this, FontAwesomeIcons.fa_search)
 						.colorRes(R.color.toolbar_text_color)
 						.sizeDp(22)
 		);
 
         menu.findItem(R.id.action_menu_favor).setIcon(
-				new IconDrawable(this, Iconify.IconValue.fa_star)
+				new IconDrawable(this, FontAwesomeIcons.fa_star)
 						.colorRes(R.color.toolbar_text_color)
 						.actionBarSize()
 		);

@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
-import com.joanzapata.android.iconify.IconDrawable;
-import com.joanzapata.android.iconify.Iconify;
-
 import apollo.app.wofang.R;
 import apollo.app.wofang.activity.WofangWebContentFragmentActivity;
 

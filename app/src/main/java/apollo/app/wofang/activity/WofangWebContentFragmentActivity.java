@@ -9,8 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.joanzapata.android.iconify.IconDrawable;
-import com.joanzapata.android.iconify.Iconify;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import apollo.activity.BaseShareFragmentActivity;
 import apollo.app.wofang.R;
@@ -95,13 +96,13 @@ public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity 
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         menu.findItem(R.id.action_menu_search).setIcon(
-                new IconDrawable(this, Iconify.IconValue.fa_search)
+                new IconDrawable(this, FontAwesomeIcons.fa_search)
                         .colorRes(R.color.toolbar_text_color)
                         .sizeDp(20)
         );
 
         menu.findItem(R.id.action_menu_favor).setIcon(
-                new IconDrawable(this, Iconify.IconValue.fa_star)
+                new IconDrawable(this, FontAwesomeIcons.fa_star)
                         .colorRes(R.color.toolbar_text_color)
                         .actionBarSize()
         );
