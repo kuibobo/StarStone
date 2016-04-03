@@ -17,16 +17,16 @@ import apollo.widget.AnimationTabHost;
 public class MainTabActivity extends NightModeTabActivity implements  CompoundButton.OnCheckedChangeListener {
 
     public static final String TAB_HOME = "TAB_HOME";
-    public static final String TAB_TOPIC = "TAB_TOPIC";
-    public static final String TAB_VIDEO = "TAB_VIDEO";
+    public static final String TAB_NEWS = "TAB_NEWS";
+    public static final String TAB_QUESTION = "TAB_QUESTION";
     public static final String TAB_PERSON = "TAB_PERSON";
 
     public static final String TAGET_TAB = "taget_tab";
 
     private AnimationTabHost mHost;
     private RadioButton mHomeButton;
-    private RadioButton mTopicButton;
-    private RadioButton mVideoButton;
+    private RadioButton mNewsButton;
+    private RadioButton mQuestionButton;
     private RadioButton mPersonButton;
 
 
@@ -54,12 +54,12 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
                     this.mHost.setCurrentTabByTag(MainTabActivity.TAB_HOME);
                     break;
 
-                case R.id.radio_topic:
-                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_TOPIC);
+                case R.id.radio_news:
+                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_NEWS);
                     break;
 
-                case R.id.radio_video:
-                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_VIDEO);
+                case R.id.radio_question:
+                    this.mHost.setCurrentTabByTag(MainTabActivity.TAB_QUESTION);
                     break;
 
                 case R.id.radio_person:
@@ -77,10 +77,10 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
         taget_tab = intent.getStringExtra(TAGET_TAB);
         if (MainTabActivity.TAB_HOME.equals(taget_tab))
             this.mHomeButton.setChecked(true);
-        else if (MainTabActivity.TAB_TOPIC.equals(taget_tab))
-            this.mTopicButton.setChecked(true);
-        else if (MainTabActivity.TAB_VIDEO.equals(taget_tab))
-            this.mVideoButton.setChecked(true);
+        else if (MainTabActivity.TAB_NEWS.equals(taget_tab))
+            this.mNewsButton.setChecked(true);
+        else if (MainTabActivity.TAB_QUESTION.equals(taget_tab))
+            this.mQuestionButton.setChecked(true);
         else if (MainTabActivity.TAB_PERSON.equals(taget_tab))
             this.mPersonButton.setChecked(true);
     }
@@ -101,8 +101,8 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
         mHost.setOpenAnimation(true);
 
         mHomeButton = (RadioButton) findViewById(R.id.radio_home);
-        mTopicButton = (RadioButton) findViewById(R.id.radio_topic);
-        mVideoButton = (RadioButton) findViewById(R.id.radio_video);
+        mNewsButton = (RadioButton) findViewById(R.id.radio_news);
+        mQuestionButton = (RadioButton) findViewById(R.id.radio_question);
         mPersonButton = (RadioButton) findViewById(R.id.radio_person);
         mHomeButton.setChecked(true);
 
@@ -110,19 +110,19 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
         mHost.addTab(buildTab(TAB_HOME, intent));
 
         intent = new Intent(this, TopicActivity.class);
-        mHost.addTab(buildTab(TAB_TOPIC, intent));
+        mHost.addTab(buildTab(TAB_NEWS, intent));
 
         intent = new Intent(this, VideoActivity.class);
-        mHost.addTab(buildTab(TAB_VIDEO, intent));
+        mHost.addTab(buildTab(TAB_QUESTION, intent));
 
-        intent = new Intent(this, PersongActivity.class);
+        intent = new Intent(this, PersonActivity.class);
         mHost.addTab(buildTab(TAB_PERSON, intent));
     }
 
     private void initListener() {
         mHomeButton.setOnCheckedChangeListener(this);
-        mTopicButton.setOnCheckedChangeListener(this);
-        mVideoButton.setOnCheckedChangeListener(this);
+        mNewsButton.setOnCheckedChangeListener(this);
+        mQuestionButton.setOnCheckedChangeListener(this);
         mPersonButton.setOnCheckedChangeListener(this);
     }
 }

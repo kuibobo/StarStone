@@ -11,8 +11,8 @@
     <string name="click_to_refresh">click_to_refresh</string>
 
     <string name="maintab_home">主页</string>
-    <string name="maintab_video">视频</string>
-    <string name="maintab_topic">聊天</string>
+    <string name="maintab_news">新闻</string>
+    <string name="maintab_question">问答</string>
     <string name="maintab_setting">我的</string>
 
 </resources>

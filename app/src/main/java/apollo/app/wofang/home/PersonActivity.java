@@ -8,7 +8,7 @@ import apollo.app.wofang.R;
 /**
  * Created by kuibo on 2015/9/9.
  */
-public class PersongActivity extends NightModeActivity {
+public class PersonActivity extends NightModeActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
