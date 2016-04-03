@@ -42,7 +42,7 @@
 
     <ListView
         android:id="@+id/list_menu"
-        tools:listitem="@layout/activity_main_drawer_left_list_item"
+        tools:listitem="@layout/item_layout_drawer_list_item"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
