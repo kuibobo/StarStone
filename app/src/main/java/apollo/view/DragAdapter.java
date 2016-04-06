@@ -66,7 +66,7 @@ public class DragAdapter extends BaseAdapter {
 		section = (Section) this.getItem(position);
 		holder.sectionName.setText(section.getName());
 		holder.sectionName.setTag(section);
-		
+
 		convertView.setVisibility(View.VISIBLE);
 		
 		if (position == (this.getCount() - 1)) {

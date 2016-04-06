@@ -85,11 +85,14 @@ public class DragGridView extends GridView {
 	public DragGridView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DragGridView);
+		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DragGridView);
 		
-		this.mDuration = a.getInteger(R.styleable.DragGridView_animationDuration, 750);	
-		this.mDragEnable = a.getBoolean(R.styleable.DragGridView_dragEnable, true);
-		
+		this.mDuration = ta.getInteger(R.styleable.DragGridView_animationDuration, 750);
+		this.mDragEnable = ta.getBoolean(R.styleable.DragGridView_dragEnable, true);
+
+		if (isInEditMode())
+			return ;
+
 		this.mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		this.mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 	}

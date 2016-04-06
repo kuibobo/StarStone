@@ -42,7 +42,6 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentStatePagerAdap
     private EntityBaseFragment getFragmentFromCache(Entity e) {
         EntityBaseFragment f = null;
 
-
         f = this.mFragments.get(e.getId());
         if (f == null) {
             String name = null;
@@ -92,7 +91,6 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentStatePagerAdap
             this.mEntities.addAll(entities);
             this.notifyDataSetChanged();
         }
-
 
         Iterator<Entity> itor = null;
         Entity e = null;

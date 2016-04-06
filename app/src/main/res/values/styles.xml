@@ -16,19 +16,6 @@
     <style name="AppTheme" parent="AppBaseTheme">
     </style>
 
-    <!-- Tab Sections Item Text -->
-    <style name="AppTabItemText">
-        <item name="android:textSize">14.0dip</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:layout_width">46dip</item>
-        <item name="android:layout_height">48dip</item>
-        <item name="android:layout_marginLeft">8dip</item>
-        <item name="android:layout_marginRight">8dip</item>
-        <item name="android:background">@drawable/tv_grid_sections</item>
-        <item name="android:textColor">@color/tv_grid_sections</item>
-    </style>
-
     <style name="MainTabBottom">
         <item name="android:textSize">12.0sp</item>
         <item name="android:textColor">@color/main_tab_button_color</item>
@@ -47,8 +34,8 @@
 
     <style name="LayoutTitleBar">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dip</item>
-        <item name="android:background">#ff292f3c</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">#ff2196F3</item>
     </style>
 
     <style name="ButtonArrow">
@@ -57,6 +44,25 @@
         <item name="android:layout_margin">10dip</item>
         <item name="android:background">@drawable/main_btn_tab_arrow</item>
         <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="PanelLayoutSections">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#ff2196F3</item>
+    </style>
+
+    <!-- Tab Sections Item Text -->
+    <style name="TextLayoutNavBarItem">
+        <item name="android:textSize">15.0dip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_width">80dip</item>
+        <item name="android:layout_height">30dip</item>
+        <item name="android:layout_marginLeft">0dip</item>
+        <item name="android:layout_marginRight">0dip</item>
+        <item name="android:background">@drawable/tv_grid_sections</item>
+        <item name="android:textColor">@color/tv_grid_sections</item>
     </style>
 
     <style name="TextPersonProfile">
@@ -75,6 +81,33 @@
     <style name="ButtonTitleBarBack">
         <item name="android:layout_width">48dip</item>
         <item name="android:layout_height">48dip</item>
+    </style>
+
+    <style name="LayoutMainTopSection">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dip</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:background">#fffafafa</item>
+    </style>
+
+    <style name="DragGridSectionTop">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">8dip</item>
+        <item name="android:paddingBottom">8dip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:horizontalSpacing">0dip</item>
+        <item name="android:listSelector">@android:color/transparent</item>
+        <item name="android:numColumns">4</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:stretchMode">columnWidth</item>
+        <item name="android:verticalSpacing">5dip</item>
+        <item name="android:background">#ffffffff</item>
+    </style>
+
+    <style name="DragGridSectionBottom" parent="DragGridSectionTop">
+        <item name="android:background">#fff8f8f8</item>
     </style>
 
 </resources>
