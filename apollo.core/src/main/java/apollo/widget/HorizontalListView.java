@@ -28,6 +28,7 @@ package apollo.widget;
  */ 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -39,7 +40,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.Scroller;
-  
+
+import apollo.core.R;
+
 
 public class HorizontalListView extends AdapterView<ListAdapter> implements
 		OnGestureListener, OnDoubleTapListener {
@@ -56,6 +59,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
 	private int mNextX = 0;
 	private int mMaxX = 0;
 	private int mDisplayOffset = 0;
+	private int mRequestedHorizontalSpacing = 0;
 	private boolean mDataChanged = false;
 	
 	private DataSetObserver mDataObserver = new DataSetObserver(){
@@ -77,19 +81,29 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
 	};
 	
 	public HorizontalListView(Context context) {  
-        super(context);  
-        this.initViews();
+        this(context, null);
     }  
   
     public HorizontalListView(Context context, AttributeSet attrs) {  
-        super(context, attrs); 
-        this.initViews();
-    }  
-  
-    public HorizontalListView(Context context, AttributeSet attrs, int defStyle) {  
-        super(context, attrs, defStyle);  
-        this.initViews();
+        this(context, attrs, 0);
     }
+
+	public HorizontalListView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+
+		TypedArray a = null;//context.obtainStyledAttributes(attrs, R.styleable.HorizontalListView);
+
+		///int hSpacing = a.getDimensionPixelOffset(
+		//		//R.styleable.HorizontalListView_horizontalSpacing, 0);
+		//this.setHorizontalSpacing(hSpacing);
+		//String str = a.getString(R.styleable.HorizontalListView_horizontalSpacing);
+		//str = null;
+
+		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DragGridView);
+
+		int mDuration = ta.getInteger(R.styleable.DragGridView_animationDuration, 750);
+		this.initViews();
+	}
 
 	@Override
 	public ListAdapter getAdapter() {
@@ -280,7 +294,26 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
 		handled |= this.mGesture.onTouchEvent(event);
 		return handled;
 	}
-	
+
+	public void setHorizontalSpacing(int horizontalSpacing) {
+		if (horizontalSpacing != mRequestedHorizontalSpacing) {
+			mRequestedHorizontalSpacing = horizontalSpacing;
+			requestLayoutIfNecessary();
+		}
+	}
+
+	public int getRequestedHorizontalSpacing() {
+		return mRequestedHorizontalSpacing;
+	}
+
+	void requestLayoutIfNecessary() {
+		if (getChildCount() > 0) {
+			reset();
+			requestLayout();
+			invalidate();
+		}
+	}
+
 	private boolean isEventWithinView(MotionEvent e, View view) {
 		Rect viewRect = new Rect();
 		int[] childPosition = new int[2];
@@ -404,7 +437,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
     	left = (mDisplayOffset += offset);
     	for(int i=0; i<super.getChildCount(); i++) {
     		View v = super.getChildAt(i);
-    		int width = v.getMeasuredWidth();
+    		int width = v.getMeasuredWidth() + this.mRequestedHorizontalSpacing;
     		int height = v.getMeasuredHeight();
     		
     		v.layout(left,  top, left + width, top + height);

@@ -16,9 +16,13 @@
             android:layout_weight="1.0" >
 
             <apollo.widget.HorizontalListView
+                xmlns:hlv="http://schemas.android.com/apk/res/apollo.app.wofang"
                 android:id="@+id/section_list"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                xmlns:draggridview="http://schemas.android.com/apk/res/apollo.app.wofang"
+                draggridview:animationDuration="350"
+                hlv:horizontalSpacing="10dip">
             </apollo.widget.HorizontalListView>
 
         </RelativeLayout>

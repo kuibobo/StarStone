@@ -35,4 +35,5 @@
        <attr name="dragEnable" format="boolean" />
        
     </declare-styleable>
+
 </resources>
