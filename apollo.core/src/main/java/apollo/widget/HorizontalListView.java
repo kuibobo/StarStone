@@ -32,6 +32,7 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.GestureDetector.OnGestureListener;
@@ -39,6 +40,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
 import apollo.core.R;
@@ -84,24 +86,13 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
         this(context, null);
     }  
   
-    public HorizontalListView(Context context, AttributeSet attrs) {  
-        this(context, attrs, 0);
-    }
+    public HorizontalListView(Context context, AttributeSet attrs) {
+        super(context, attrs);
 
-	public HorizontalListView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-
-		TypedArray a = null;//context.obtainStyledAttributes(attrs, R.styleable.HorizontalListView);
-
-		///int hSpacing = a.getDimensionPixelOffset(
-		//		//R.styleable.HorizontalListView_horizontalSpacing, 0);
-		//this.setHorizontalSpacing(hSpacing);
-		//String str = a.getString(R.styleable.HorizontalListView_horizontalSpacing);
-		//str = null;
-
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DragGridView);
-
-		int mDuration = ta.getInteger(R.styleable.DragGridView_animationDuration, 750);
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.HorizontalListView);
+		int hSpacing = a.getDimensionPixelOffset(
+				R.styleable.HorizontalListView_horizontalSpacing, 0);
+		this.setHorizontalSpacing(hSpacing);
 		this.initViews();
 	}
 
@@ -421,7 +412,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
     	
     	params = view.getLayoutParams();
     	if (params == null) {
-    		params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
     	}
     	super.addViewInLayout(view, index, params, true);
     	
@@ -433,8 +424,8 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
     private void positionItems(int offset) {
     	int top = 0;
     	int left = 0;
-    	
-    	left = (mDisplayOffset += offset);
+
+		left = (mDisplayOffset += offset) - (this.mRequestedHorizontalSpacing >> 1);
     	for(int i=0; i<super.getChildCount(); i++) {
     		View v = super.getChildAt(i);
     		int width = v.getMeasuredWidth() + this.mRequestedHorizontalSpacing;

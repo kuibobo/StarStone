@@ -84,7 +84,7 @@ public class DragGridView extends GridView {
 	
 	public DragGridView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
+
 		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DragGridView);
 		
 		this.mDuration = ta.getInteger(R.styleable.DragGridView_animationDuration, 750);
