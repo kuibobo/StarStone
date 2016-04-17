@@ -84,11 +84,12 @@ public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity 
 
     protected void initActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.actionBar);
+
+        setSupportActionBar(toolbar);
         toolbar.setTitle("");
         toolbar.setNavigationIcon(R.drawable.main_top_toolbar_icon);
-        setSupportActionBar(toolbar);
 
-        super.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        super.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
