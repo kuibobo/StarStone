@@ -19,7 +19,6 @@ public class HomeActivity extends NightModeFragmentActivity {
 
 	private ViewPager mViewPager = null;
 	private View mView = null;
-	private LinearLayout mLayoutSections = null; 
 	private DrawerLayout mLayoutMain = null;
 
 	public static void startActivity(Context context) {
@@ -50,7 +49,6 @@ public class HomeActivity extends NightModeFragmentActivity {
 
 	@SuppressLint("InflateParams")
 	private void initView() {
-		this.mLayoutSections = (LinearLayout) super.findViewById(R.id.layout_sections);
 	}
 	
 	private void initListener() {

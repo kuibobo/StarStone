@@ -5,36 +5,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layout_sections"
         android:orientation="horizontal"
         android:baselineAligned="false"
         style="@style/LayoutMainTopSection">
 
-        <RelativeLayout
+        <apollo.widget.HorizontalListView
+            android:id="@+id/section_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.0" >
+            horizontallistview:horizontalSpacing="16dip"
+            android:layout_toStartOf="@+id/btn_section_drop_down">
 
-            <apollo.widget.HorizontalListView
-                android:id="@+id/section_list"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                horizontallistview:horizontalSpacing="16dip">
-            </apollo.widget.HorizontalListView>
 
-        </RelativeLayout>
+        </apollo.widget.HorizontalListView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" >
+        <Button
+            android:id="@+id/btn_section_drop_down"
+            style="@style/MainTopSectionArrow"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
 
-            <Button
-                android:id="@+id/btn_section_drop_down"
-                style="@style/ButtonArrow" />
-        </LinearLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_bottom"

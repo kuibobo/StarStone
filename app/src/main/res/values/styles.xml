@@ -38,12 +38,13 @@
         <item name="android:background">#ff2196F3</item>
     </style>
 
-    <style name="ButtonArrow">
-        <item name="android:layout_width">48dip</item>
-        <item name="android:layout_height">48dip</item>
-        <item name="android:layout_margin">10dip</item>
-        <item name="android:background">@drawable/main_btn_tab_arrow</item>
-        <item name="android:layout_gravity">center_vertical</item>
+    <style name="MainTopSectionArrow">
+        <item name="android:layout_width">16dip</item>
+        <item name="android:layout_height">16dip</item>
+        <item name="android:layout_marginTop">8dip</item>
+        <item name="android:layout_marginLeft">12dip</item>
+        <item name="android:layout_marginRight">12dip</item>
+        <item name="android:background">@drawable/main_top_section_arrow</item>
     </style>
 
     <style name="PanelLayoutSections">
