@@ -1,56 +1,20 @@
 package apollo.app.wofang.home;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.view.View;
-import android.widget.LinearLayout;
-
-import apollo.activity.NightModeFragmentActivity;
 import apollo.app.wofang.R;
+import apollo.app.wofang.activity.WofangWebContentFragmentActivity;
 
-/// 取消使用 左右滑动菜单。。。
-///public class HomeActivity extends DrawerActivity {
-public class HomeActivity extends NightModeFragmentActivity {
+public class HomeActivity extends WofangWebContentFragmentActivity {
 
-	private ViewPager mViewPager = null;
-	private View mView = null;
-	private DrawerLayout mLayoutMain = null;
-
-	public static void startActivity(Context context) {
-		Intent intent = null;
-		
-		intent = new Intent(context, HomeActivity.class);
-		context.startActivity(intent);
-	}
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.mLayoutResId = R.layout.activity_main;
+
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.activity_main);
-
-		/// 继承DrawerActivity时用
-		///super.init();
-		this.initView();
-		this.initListener();
+		super.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 	}
 
 	@Override
-	protected void initFragment() {}
-
-
-	@Override
-	protected void initActionBar() {
-	}
-
-	@SuppressLint("InflateParams")
-	private void initView() {
-	}
-	
-	private void initListener() {
+	protected void initFragment() {
 	}
 }
