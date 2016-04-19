@@ -14,6 +14,7 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import apollo.activity.BaseShareFragmentActivity;
+import apollo.activity.DrawerNightModeTabActivity;
 import apollo.app.wofang.R;
 import apollo.app.wofang.widget.fragment.WofangWebContentFragment;
 
@@ -116,8 +117,11 @@ public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity 
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                if (!this.isFinishing())
-                    this.finish();
+//                if (!this.isFinishing())
+//                    this.finish();
+                DrawerNightModeTabActivity activity = (DrawerNightModeTabActivity) this.getParent();
+                activity.openLeftDrawer();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

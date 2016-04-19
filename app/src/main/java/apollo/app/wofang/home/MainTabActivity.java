@@ -3,10 +3,13 @@ package apollo.app.wofang.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TabHost;
 
+import apollo.activity.DrawerNightModeTabActivity;
 import apollo.activity.NightModeTabActivity;
 import apollo.app.wofang.R;
 import apollo.widget.AnimationTabHost;
@@ -14,7 +17,7 @@ import apollo.widget.AnimationTabHost;
 /**
  * Created by Texel on 2015/9/9.
  */
-public class MainTabActivity extends NightModeTabActivity implements  CompoundButton.OnCheckedChangeListener {
+public class MainTabActivity extends DrawerNightModeTabActivity implements  CompoundButton.OnCheckedChangeListener {
 
     public static final String TAB_HOME = "TAB_HOME";
     public static final String TAB_NEWS = "TAB_NEWS";
@@ -29,6 +32,8 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
     private RadioButton mQuestionButton;
     private RadioButton mPersonButton;
 
+    private DrawerLayout mDrawerLayout;
+    private LinearLayout mDrawerLeft;
 
     public static void startActivity(Context context) {
         Intent intent = null;
@@ -97,6 +102,9 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
     private void initView() {
         Intent intent = null;
 
+        mDrawerLayout = (DrawerLayout) super.findViewById(R.id.layout_main);
+        mDrawerLeft = (LinearLayout) super.findViewById(R.id.layout_drawer_left);
+
         mHost = (AnimationTabHost) findViewById(android.R.id.tabhost);
         mHost.setOpenAnimation(true);
 
@@ -124,5 +132,15 @@ public class MainTabActivity extends NightModeTabActivity implements  CompoundBu
         mNewsButton.setOnCheckedChangeListener(this);
         mQuestionButton.setOnCheckedChangeListener(this);
         mPersonButton.setOnCheckedChangeListener(this);
+    }
+
+    @Override
+    public void openLeftDrawer() {
+        mDrawerLayout.openDrawer(mDrawerLeft);
+    }
+
+    @Override
+    public void openRightDrawer() {
+
     }
 }

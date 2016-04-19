@@ -146,7 +146,7 @@ public class DrawerActivity extends ActionBarActivity {
 	@SuppressLint("InflateParams")
 	private void initView() {
 		this.mLayoutMain = (DrawerLayout) super.findViewById(R.id.layout_main);
-		this.mLayoutLeft = (View) super.findViewById(R.id.layout_left);
+		this.mLayoutLeft = (View) super.findViewById(R.id.layout_drawer_left);
 		this.mLayoutRight = (View) super.findViewById(R.id.layout_right);
 
 		this.mActionBar = super.getSupportActionBar();
