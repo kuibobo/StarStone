@@ -54,7 +54,7 @@
     </style>
 
     <!-- Tab Sections Item Text -->
-    <style name="TextLayoutNavBarItem">
+    <style name="TextViewNavBarItem">
         <item name="android:textSize">15.0dip</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">normal</item>
@@ -62,8 +62,8 @@
         <item name="android:layout_height">30dip</item>
         <item name="android:layout_marginLeft">0dip</item>
         <item name="android:layout_marginRight">0dip</item>
-        <item name="android:background">@drawable/tv_grid_sections</item>
-        <item name="android:textColor">@color/tv_grid_sections</item>
+        <item name="android:background">@drawable/main_section_tab_text</item>
+        <item name="android:textColor">@color/main_tab_section_tab_text</item>
     </style>
 
     <style name="TextPersonProfile">
