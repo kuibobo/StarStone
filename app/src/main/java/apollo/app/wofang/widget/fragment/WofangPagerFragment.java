@@ -79,7 +79,6 @@ public class WofangPagerFragment extends Fragment implements
 
         parent_view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
 
-
         this.mRecommSections = new ArrayList<Section>();
         this.mRecommSectionAdapter = new DragAdapter(this.getActivity(), this.mRecommSections);
 
@@ -89,10 +88,10 @@ public class WofangPagerFragment extends Fragment implements
         sections_view = inflater.inflate(R.layout.item_layout_main_sections, null);
         this.mSectionsPanel = (Panel) sections_view.findViewById(R.id.layout_main_sections);
 
-        this.mRecommDragGridView = (DragGridView) sections_view.findViewById(R.id.grid_current);
+        this.mRecommDragGridView = (DragGridView) sections_view.findViewById(R.id.grid_recomm);
         this.mRecommDragGridView.setAdapter(this.mRecommSectionAdapter);
 
-        this.mSubDragGridView = (DragGridView) sections_view.findViewById(R.id.grid_source);
+        this.mSubDragGridView = (DragGridView) sections_view.findViewById(R.id.grid_sub);
         this.mSubDragGridView.setAdapter(this.mSubSectionAdapter);
 
         this.mBtnSecitonDropDown = (Button) parent_view.findViewById(R.id.btn_section_drop_down);

@@ -88,8 +88,9 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentStatePagerAdap
     public void refresh(List<Entity> entities) {
         if (entities != null && entities.size() > 0) {
             this.mEntities.clear();
-            this.mEntities.addAll(entities);
             this.notifyDataSetChanged();
+
+            this.mEntities.addAll(entities);
         }
 
         Iterator<Entity> itor = null;
@@ -103,6 +104,7 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentStatePagerAdap
 
             this.mFragments.put(e.getId(), f);
         }
+        this.notifyDataSetChanged();
     }
 
 }

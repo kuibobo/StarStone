@@ -23,13 +23,13 @@
             <apollo.view.DragGridView
                 xmlns:draggridview="http://schemas.android.com/apk/res/apollo.app.wofang"
                 draggridview:animationDuration="350"
-                android:id="@+id/grid_current"
+                android:id="@+id/grid_recomm"
                 style="@style/DragGridSectionTop"/>
 
             <apollo.view.DragGridView
                 xmlns:draggridview="http://schemas.android.com/apk/res/apollo.app.wofang"
                 draggridview:dragEnable="false"
-                android:id="@+id/grid_source"
+                android:id="@+id/grid_sub"
                 style="@style/DragGridSectionBottom"/>
 
         </LinearLayout>
