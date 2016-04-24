@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,22 +17,34 @@ import apollo.data.model.Section;
 
 public class DragAdapter extends BaseAdapter {
 
+	public interface CloseHandle {
+		void close(int position);
+	}
+
 	private List<Section> mItems = new ArrayList<Section>();
 	private LayoutInflater mInflater = null;
 	
 	private int mLastItemVisibility = View.VISIBLE;
 	private int mSelectedItemVisibility = View.VISIBLE;
 	private int mSelectedItemPosition;
-	
+	private boolean mIsEditMode = false;
+
+	private CloseHandle mCloseHandle;
+
 	class SectionViewHolder {
 		TextView sectionName;
+		ImageView closeButton;
 	}
 	
 	public DragAdapter(Context context, List<Section> items) {
 		this.mItems = items;
 		this.mInflater = LayoutInflater.from(context);
 	}
-	
+
+	public void setCloseHandle(CloseHandle handle) {
+		this.mCloseHandle = handle;
+	}
+
 	@Override
 	public int getCount() {
 		return this.mItems.size();
@@ -47,9 +60,12 @@ public class DragAdapter extends BaseAdapter {
 		return ((Section) this.getItem(position)).getId();
 	}
 	
-	
+	public void setEditMode(boolean b) {
+		this.mIsEditMode = b;
+	}
+
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		SectionViewHolder holder = null;
 		Section section = null;
 		
@@ -58,6 +74,15 @@ public class DragAdapter extends BaseAdapter {
 			
 			holder = new SectionViewHolder();
 			holder.sectionName = (TextView) convertView.findViewById(R.id.section_name);
+			holder.closeButton = (ImageView) convertView.findViewById(R.id.btn_close);
+			holder.closeButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (mCloseHandle != null)
+						mCloseHandle.close(position);
+				}
+			});
+
 			convertView.setTag(holder);
 		} else {
 			holder = (SectionViewHolder) convertView.getTag();
@@ -66,6 +91,7 @@ public class DragAdapter extends BaseAdapter {
 		section = (Section) this.getItem(position);
 		holder.sectionName.setText(section.getName());
 		holder.sectionName.setTag(section);
+		holder.closeButton.setVisibility(this.mIsEditMode ? View.VISIBLE : View.GONE);
 
 		convertView.setVisibility(View.VISIBLE);
 		

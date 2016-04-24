@@ -7,6 +7,7 @@ import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+
 import apollo.app.wofang.R;
 
 public class DragGridView extends GridView {
@@ -57,6 +60,9 @@ public class DragGridView extends GridView {
 	
 	/** 是否允许拖拽 **/
 	private boolean mDragEnable;
+
+	/** 是否处于拖拽模式 **/
+	private boolean mIsDragMode;
 	
 	/** WindowManager管理器 */
 	private WindowManager mWindowManager;
@@ -74,8 +80,7 @@ public class DragGridView extends GridView {
 	private Bitmap mDragBmp;
 	
 	private String mLastAnimation;
-	
-	
+
 	/** 振动器 **/
 	private Vibrator mVibrator; 
 	
@@ -96,7 +101,19 @@ public class DragGridView extends GridView {
 		this.mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		this.mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 	}
-	
+
+	@Override
+	public void setAdapter(ListAdapter adapter) {
+		super.setAdapter(adapter);
+
+		((DragAdapter) getAdapter()).setCloseHandle(new DragAdapter.CloseHandle() {
+			@Override
+			public void close(int position) {
+				Log.i("DragGridView", "close: " + position + "#" + System.currentTimeMillis());
+			}
+		});
+	}
+
 	@Override
 	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		int heightSpec;
@@ -113,54 +130,67 @@ public class DragGridView extends GridView {
 		}
 		super.onMeasure(widthMeasureSpec, heightSpec);
 	}
-	
+
 	@Override
-	public boolean onInterceptTouchEvent(final MotionEvent ev) {
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		Log.i("DragGridView", "onInterceptTouchEvent" + System.currentTimeMillis());
+
 		if (this.mDragEnable == true && ev.getAction() == MotionEvent.ACTION_DOWN) {
-			
-			this.mDownX = (int)ev.getX();
-			this.mDownY = (int)ev.getY();
-			
-			this.mCurrentItemPosition = pointToPosition(mDownX, mDownY);
-			this.setOnItemLongClickListener(new OnItemLongClickListener() {
-				@Override
-				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-					DragAdapter adapter = (DragAdapter) getAdapter();
-					
-					// 将当前按下的Item设置不显示, 需要在停止拖放onDrop的时候还原
-					adapter.setSelectedItemPosition(position);
-					adapter.setSelectedItemVisibility(View.GONE);
-					adapter.notifyDataSetChanged();
-					
-					mCurrentItemPosition = position;
-					mCurrentItemView = getChildAt(mCurrentItemPosition - getFirstVisiblePosition());
-					mCurrentItemView.setSelected(true);
-					
+			if (this.mIsDragMode == true) {
+				DragAdapter adapter = (DragAdapter) getAdapter();
+
+				this.mDownX = (int) ev.getX();
+				this.mDownY = (int) ev.getY();
+
+				this.mCurrentItemPosition = pointToPosition(mDownX, mDownY);
+
+				// 将当前按下的Item设置不显示, 需要在停止拖放onDrop的时候还原
+				adapter.setSelectedItemPosition(this.mCurrentItemPosition);
+				adapter.setSelectedItemVisibility(View.GONE);
+				adapter.notifyDataSetChanged();
+
+				mCurrentItemView = getChildAt(mCurrentItemPosition - getFirstVisiblePosition());
+				if (mCurrentItemView != null) {
+					//mCurrentItemView.setSelected(true);
+
 					// 获得当前 point 到 item的偏移量
 					mPoint2ItemOffsetLeft = mDownX - mCurrentItemView.getLeft();
 					mPoint2ItemOffsetTop = mDownY - mCurrentItemView.getTop();
-					
+
 					// 获得 DragGridView 相对屏幕的偏移量
 					mOffsetLeft = (int) (ev.getRawX() - mDownX);
 					mOffsetTop = (int) (ev.getRawY() - mDownY);
-					
+
 					// 小振一下
 					mVibrator.vibrate(50L);
-					
+
 					// 创建一个拖拽的位图
 					mCurrentItemView.destroyDrawingCache();
 					mCurrentItemView.setDrawingCacheEnabled(true);
-		
+
 					mDragBmp = Bitmap.createBitmap(mCurrentItemView.getDrawingCache());
 					mIsMoving = false;
-					startDrag(mDragBmp, 
-							mDownX - mPoint2ItemOffsetLeft + mOffsetLeft,  
+					startDrag(mDragBmp,
+							mDownX - mPoint2ItemOffsetLeft + mOffsetLeft,
 							mDownY - mPoint2ItemOffsetTop + mOffsetTop);
-					
+
 					requestDisallowInterceptTouchEvent(true);
 					return false;
 				}
-			});
+			} else {
+				this.setOnItemLongClickListener(new OnItemLongClickListener() {
+					@Override
+					public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+						DragAdapter adapter = (DragAdapter) getAdapter();
+
+						DragGridView.this.mIsDragMode = true;
+						adapter.setEditMode(true);
+						adapter.notifyDataSetChanged();
+						return false;
+					}
+				});
+				return false;
+			}
 		}
 		return super.onInterceptTouchEvent(ev);
 	}

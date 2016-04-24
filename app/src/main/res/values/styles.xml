@@ -60,7 +60,8 @@
         <item name="android:textStyle">normal</item>
         <item name="android:layout_width">80dip</item>
         <item name="android:layout_height">30dip</item>
-        <item name="android:layout_marginLeft">0dip</item>
+        <item name="android:layout_marginTop">6dip</item>
+        <item name="android:layout_marginLeft">6dip</item>
         <item name="android:layout_marginRight">0dip</item>
         <item name="android:background">@drawable/main_section_tab_text</item>
         <item name="android:textColor">@color/main_tab_section_tab_text</item>
