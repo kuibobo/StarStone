@@ -15,9 +15,8 @@
             android:id="@+id/section_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            horizontallistview:horizontalSpacing="16dip"
+            horizontallistview:horizontalSpacing="4dip"
             android:layout_toStartOf="@+id/btn_section_drop_down">
-
 
         </apollo.widget.HorizontalListView>
 
