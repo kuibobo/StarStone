@@ -189,6 +189,7 @@ public class WofangPagerFragment extends Fragment implements
                     mSectionsPanel.setOpen(false, true);
 
                     mBtnSecitonDropDown.setSelected(false);
+                    mRecommDragGridView.setDragMode(false);
                     setChangelViewUpdate();
                 } else {
                     mSectionsPanel.setOpen(true, true);

@@ -78,6 +78,8 @@ public class DragGridView extends GridView {
 	
 	/** 拖拽的时候显示的位图 **/
 	private Bitmap mDragBmp;
+
+	private DragAdapter mAdapter = null;
 	
 	private String mLastAnimation;
 
@@ -101,16 +103,25 @@ public class DragGridView extends GridView {
 
 		this.mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		this.mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+
+		this.setDragMode(this.mIsDragMode);
+	}
+
+	public void setDragMode(boolean b) {
+		this.mIsDragMode = b;
+
+		if (this.mAdapter != null) {
+			this.mAdapter.setEditMode(this.mIsDragMode);
+			this.mAdapter.notifyDataSetChanged();
+		}
 	}
 
 	@Override
 	public void setAdapter(ListAdapter adapter) {
-		DragAdapter da = null;
-
-		da = (DragAdapter) adapter;
 		super.setAdapter(adapter);
 
-		da.setEditMode(this.mIsDragMode);
+		mAdapter = (DragAdapter) adapter;
+		mAdapter.setEditMode(this.mIsDragMode);
 	}
 
 	@Override
@@ -134,8 +145,6 @@ public class DragGridView extends GridView {
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		if (this.mDragEnable == true && ev.getAction() == MotionEvent.ACTION_DOWN) {
 			if (this.mIsDragMode == true) {
-				DragAdapter adapter = (DragAdapter) getAdapter();
-
 				this.mDownX = (int) ev.getX();
 				this.mDownY = (int) ev.getY();
 
@@ -151,20 +160,17 @@ public class DragGridView extends GridView {
 				mPoint2ItemOffsetTop = mDownY - mCurrentItemView.getTop();
 
 				// 计算点击所属是否是关闭按钮
-				if (adapter.isTouchClose(mCurrentItemView, mPoint2ItemOffsetTop, mPoint2ItemOffsetLeft))
+				if (mAdapter.isTouchClose(mCurrentItemView, mPoint2ItemOffsetTop, mPoint2ItemOffsetLeft))
 					return super.onInterceptTouchEvent(ev);
 
 				// 获得 DragGridView 相对屏幕的偏移量
 				mOffsetLeft = (int) (ev.getRawX() - mDownX);
 				mOffsetTop = (int) (ev.getRawY() - mDownY);
 
-				// 小振一下
-				mVibrator.vibrate(50L);
-
 				// 将当前按下的Item设置不显示, 需要在停止拖放onDrop的时候还原
-				adapter.setSelectedItemPosition(this.mCurrentItemPosition);
-				adapter.setSelectedItemVisibility(View.GONE);
-				adapter.notifyDataSetChanged();
+				mAdapter.setSelectedItemPosition(this.mCurrentItemPosition);
+				mAdapter.setSelectedItemVisibility(View.GONE);
+				mAdapter.notifyDataSetChanged();
 
 				// 创建一个拖拽的位图
 				mCurrentItemView.destroyDrawingCache();
@@ -183,11 +189,12 @@ public class DragGridView extends GridView {
 				this.setOnItemLongClickListener(new OnItemLongClickListener() {
 					@Override
 					public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-						DragAdapter adapter = (DragAdapter) getAdapter();
-
 						DragGridView.this.mIsDragMode = true;
-						adapter.setEditMode(true);
-						adapter.notifyDataSetChanged();
+
+						// 小振一下
+						mVibrator.vibrate(50L);
+						mAdapter.setEditMode(true);
+						mAdapter.notifyDataSetChanged();
 						return false;
 					}
 				});

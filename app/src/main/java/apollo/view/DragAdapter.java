@@ -109,6 +109,8 @@ public class DragAdapter extends BaseAdapter {
 
 		if (this.mIsEditMode) {
 			convertView.setAnimation(mShakeAnimation);
+		} else {
+			convertView.clearAnimation();
 		}
 
 		convertView.setVisibility(View.VISIBLE);
