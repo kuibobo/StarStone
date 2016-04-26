@@ -5,6 +5,8 @@ import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +26,8 @@ public class DragAdapter extends BaseAdapter {
 
 	private List<Section> mItems = new ArrayList<Section>();
 	private LayoutInflater mInflater = null;
-	
+	private Animation mShakeAnimation = null;
+
 	private int mLastItemVisibility = View.VISIBLE;
 	private int mSelectedItemVisibility = View.VISIBLE;
 	private int mSelectedItemPosition;
@@ -40,6 +43,7 @@ public class DragAdapter extends BaseAdapter {
 	public DragAdapter(Context context, List<Section> items) {
 		this.mItems = items;
 		this.mInflater = LayoutInflater.from(context);
+		this.mShakeAnimation = AnimationUtils.loadAnimation(context, R.anim.shake);
 	}
 
 	public void setCloseHandle(CloseHandle handle) {
@@ -103,8 +107,12 @@ public class DragAdapter extends BaseAdapter {
 		holder.sectionName.setTag(section);
 		holder.closeButton.setVisibility(this.mIsEditMode ? View.VISIBLE : View.GONE);
 
+		if (this.mIsEditMode) {
+			convertView.setAnimation(mShakeAnimation);
+		}
+
 		convertView.setVisibility(View.VISIBLE);
-		
+
 		if (position == (this.getCount() - 1)) {
 			convertView.setVisibility(this.mLastItemVisibility);
 		}
