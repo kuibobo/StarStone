@@ -94,6 +94,7 @@ public class DragGridView extends GridView {
 		
 		this.mDuration = ta.getInteger(R.styleable.DragGridView_animationDuration, 750);
 		this.mDragEnable = ta.getBoolean(R.styleable.DragGridView_dragEnable, true);
+		this.mIsDragMode = ta.getBoolean(R.styleable.DragGridView_dragMode, false);
 
 		if (isInEditMode())
 			return ;
@@ -104,14 +105,12 @@ public class DragGridView extends GridView {
 
 	@Override
 	public void setAdapter(ListAdapter adapter) {
+		DragAdapter da = null;
+
+		da = (DragAdapter) adapter;
 		super.setAdapter(adapter);
 
-		((DragAdapter) getAdapter()).setCloseHandle(new DragAdapter.CloseHandle() {
-			@Override
-			public void close(int position) {
-				Log.i("DragGridView", "close: " + position + "#" + System.currentTimeMillis());
-			}
-		});
+		da.setEditMode(this.mIsDragMode);
 	}
 
 	@Override
@@ -133,8 +132,6 @@ public class DragGridView extends GridView {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		Log.i("DragGridView", "onInterceptTouchEvent" + System.currentTimeMillis());
-
 		if (this.mDragEnable == true && ev.getAction() == MotionEvent.ACTION_DOWN) {
 			if (this.mIsDragMode == true) {
 				DragAdapter adapter = (DragAdapter) getAdapter();
@@ -143,40 +140,45 @@ public class DragGridView extends GridView {
 				this.mDownY = (int) ev.getY();
 
 				this.mCurrentItemPosition = pointToPosition(mDownX, mDownY);
+				if (this.mCurrentItemPosition == -1)
+					return super.onInterceptTouchEvent(ev);
+
+				this.mCurrentItemView = getChildAt(mCurrentItemPosition - getFirstVisiblePosition());
+				//mCurrentItemView.setSelected(true);
+
+				// 获得当前 point 到 item的偏移量
+				mPoint2ItemOffsetLeft = mDownX - mCurrentItemView.getLeft();
+				mPoint2ItemOffsetTop = mDownY - mCurrentItemView.getTop();
+
+				// 计算点击所属是否是关闭按钮
+				if (adapter.isTouchClose(mCurrentItemView, mPoint2ItemOffsetTop, mPoint2ItemOffsetLeft))
+					return super.onInterceptTouchEvent(ev);
+
+				// 获得 DragGridView 相对屏幕的偏移量
+				mOffsetLeft = (int) (ev.getRawX() - mDownX);
+				mOffsetTop = (int) (ev.getRawY() - mDownY);
+
+				// 小振一下
+				mVibrator.vibrate(50L);
 
 				// 将当前按下的Item设置不显示, 需要在停止拖放onDrop的时候还原
 				adapter.setSelectedItemPosition(this.mCurrentItemPosition);
 				adapter.setSelectedItemVisibility(View.GONE);
 				adapter.notifyDataSetChanged();
 
-				mCurrentItemView = getChildAt(mCurrentItemPosition - getFirstVisiblePosition());
-				if (mCurrentItemView != null) {
-					//mCurrentItemView.setSelected(true);
+				// 创建一个拖拽的位图
+				mCurrentItemView.destroyDrawingCache();
+				mCurrentItemView.setDrawingCacheEnabled(true);
 
-					// 获得当前 point 到 item的偏移量
-					mPoint2ItemOffsetLeft = mDownX - mCurrentItemView.getLeft();
-					mPoint2ItemOffsetTop = mDownY - mCurrentItemView.getTop();
+				mDragBmp = Bitmap.createBitmap(mCurrentItemView.getDrawingCache());
+				mIsMoving = false;
+				startDrag(mDragBmp,
+						mDownX - mPoint2ItemOffsetLeft + mOffsetLeft,
+						mDownY - mPoint2ItemOffsetTop + mOffsetTop);
 
-					// 获得 DragGridView 相对屏幕的偏移量
-					mOffsetLeft = (int) (ev.getRawX() - mDownX);
-					mOffsetTop = (int) (ev.getRawY() - mDownY);
+				requestDisallowInterceptTouchEvent(true);
+				return false;
 
-					// 小振一下
-					mVibrator.vibrate(50L);
-
-					// 创建一个拖拽的位图
-					mCurrentItemView.destroyDrawingCache();
-					mCurrentItemView.setDrawingCacheEnabled(true);
-
-					mDragBmp = Bitmap.createBitmap(mCurrentItemView.getDrawingCache());
-					mIsMoving = false;
-					startDrag(mDragBmp,
-							mDownX - mPoint2ItemOffsetLeft + mOffsetLeft,
-							mDownY - mPoint2ItemOffsetTop + mOffsetTop);
-
-					requestDisallowInterceptTouchEvent(true);
-					return false;
-				}
 			} else {
 				this.setOnItemLongClickListener(new OnItemLongClickListener() {
 					@Override

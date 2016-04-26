@@ -1,6 +1,7 @@
 package apollo.view;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,13 +65,22 @@ public class DragAdapter extends BaseAdapter {
 		this.mIsEditMode = b;
 	}
 
+	public boolean isTouchClose(View parent, int top, int left) {
+		Rect close_recv = new Rect();
+		View close_view = ((SectionViewHolder)parent.getTag()).closeButton;
+
+		close_view.getDrawingRect(close_recv);
+		return close_recv.left < left && left < close_recv.right &&
+				close_recv.top < top && top < close_recv.bottom ;
+	}
+
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		SectionViewHolder holder = null;
 		Section section = null;
 		
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_tab_section_item, null);
+			convertView = mInflater.inflate(R.layout.item_main_section_grid_item, null);
 			
 			holder = new SectionViewHolder();
 			holder.sectionName = (TextView) convertView.findViewById(R.id.section_name);

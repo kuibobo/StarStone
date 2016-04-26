@@ -53,18 +53,25 @@
         <item name="android:background">#ff2196F3</item>
     </style>
 
-    <!-- Tab Sections Item Text -->
-    <style name="TextViewNavBarItem">
+    <style name="LayoutMainSectionGrid">
+
+    </style>
+
+    <style name="TextViewMainSectionListItem">
         <item name="android:textSize">15.0dip</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:layout_width">80dip</item>
+        <item name="android:layout_width">72dip</item>
         <item name="android:layout_height">30dip</item>
         <item name="android:layout_marginTop">6dip</item>
         <item name="android:layout_marginLeft">6dip</item>
         <item name="android:layout_marginRight">0dip</item>
-        <item name="android:background">@drawable/main_section_tab_text</item>
-        <item name="android:textColor">@color/main_tab_section_tab_text</item>
+        <item name="android:background">@drawable/text_main_section_grid</item>
+        <item name="android:textColor">@color/text_main_section_grid</item>
+    </style>
+
+    <style name="TextViewMainSectionGridItem" parent="TextViewMainSectionListItem">
+
     </style>
 
     <style name="TextPersonProfile">

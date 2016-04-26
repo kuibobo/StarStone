@@ -30,10 +30,9 @@
     </declare-styleable>
     
     <declare-styleable name="DragGridView">
-       <attr name="animationDuration"/>
-       
-       <attr name="dragEnable" format="boolean" />
-       
+        <attr name="animationDuration"/>
+        <attr name="dragEnable" format="boolean" />
+        <attr name="dragMode" format="boolean" />
     </declare-styleable>
 
 </resources>

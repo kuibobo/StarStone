@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,15 @@ public class WofangPagerFragment extends Fragment implements
 
         this.mRecommSections = new ArrayList<Section>();
         this.mRecommSectionAdapter = new DragAdapter(this.getActivity(), this.mRecommSections);
+        this.mRecommSectionAdapter.setCloseHandle(new DragAdapter.CloseHandle() {
+            @Override
+            public void close(int position) {
+                Log.i("DragGridView", "close: " + position + "#" + System.currentTimeMillis());
+
+                mRecommSections.remove(position);
+                mRecommSectionAdapter.notifyDataSetChanged();
+            }
+        });
 
         this.mSubSections = new ArrayList<Section>();
         this.mSubSectionAdapter = new DragAdapter(this.getActivity(), this.mSubSections);
