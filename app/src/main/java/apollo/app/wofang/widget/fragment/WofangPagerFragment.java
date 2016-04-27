@@ -226,10 +226,12 @@ public class WofangPagerFragment extends Fragment implements
                 final Section section = (Section) textView.getTag();
                 final ImageView img = buildImageView(view);
 
+                img.setTag(section);
+
                 section.setType(Section.TYPE_RECOMMEND);
                 mRecommSectionAdapter.addItem(section);
                 mRecommSectionAdapter.setLastItemVisibility(View.GONE);
-                mTabSectionListAdapter.notifyDataSetChanged();
+
                 ///mTabAdapter.addItem(section);
                 new Handler().post(new Runnable() {
 
@@ -242,7 +244,6 @@ public class WofangPagerFragment extends Fragment implements
                         textView.getLocationInWindow(location);
                         v = mRecommDragGridView.getChildAt(mRecommDragGridView.getLastVisiblePosition());
                         v.getLocationInWindow(target_location);
-
                         doSectionItemMoveAnimation(img, location[0], location[1], target_location[0], target_location[1]);
                     }
 
@@ -295,13 +296,15 @@ public class WofangPagerFragment extends Fragment implements
 
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                Section section = (Section) view.getTag();
+
                 mRecommSectionAdapter.setLastItemVisibility(View.VISIBLE);
                 mRecommSectionAdapter.notifyDataSetChanged();
+                mTabSectionListAdapter.notifyDataSetChanged();
 
                 mSubSectionAdapter.removeItem(section);
 
@@ -312,7 +315,6 @@ public class WofangPagerFragment extends Fragment implements
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
-
         });
 
         animationSet.setFillAfter(false);//
