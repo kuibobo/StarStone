@@ -7,7 +7,6 @@ import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 
+import apollo.adapter.SectionAdapter;
 import apollo.app.wofang.R;
 
 public class DragGridView extends GridView {
@@ -79,7 +79,7 @@ public class DragGridView extends GridView {
 	/** 拖拽的时候显示的位图 **/
 	private Bitmap mDragBmp;
 
-	private DragAdapter mAdapter = null;
+	private SectionAdapter mAdapter = null;
 	
 	private String mLastAnimation;
 
@@ -120,7 +120,7 @@ public class DragGridView extends GridView {
 	public void setAdapter(ListAdapter adapter) {
 		super.setAdapter(adapter);
 
-		mAdapter = (DragAdapter) adapter;
+		mAdapter = (SectionAdapter) adapter;
 		mAdapter.setEditMode(this.mIsDragMode);
 	}
 
@@ -303,9 +303,9 @@ public class DragGridView extends GridView {
 						new Handler().postDelayed(new Runnable(){
 							@Override
 							public void run() {
-								DragAdapter adapter = null;
+								SectionAdapter adapter = null;
 								
-								adapter = (DragAdapter) getAdapter();
+								adapter = (SectionAdapter) getAdapter();
 								adapter.swap(mCurrentItemPosition, mMoveOverPosition);
 
 								if (mSwapItemHandle != null)
@@ -347,7 +347,7 @@ public class DragGridView extends GridView {
 	}
 	
 	private void onDrop() {
-		DragAdapter adapter = (DragAdapter) this.getAdapter();
+		SectionAdapter adapter = (SectionAdapter) this.getAdapter();
 		
 		adapter.setSelectedItemPosition(mCurrentItemPosition);
 		adapter.setSelectedItemVisibility(View.VISIBLE);

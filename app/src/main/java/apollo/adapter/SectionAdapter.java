@@ -1,4 +1,4 @@
-package apollo.view;
+package apollo.adapter;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -18,7 +18,7 @@ import java.util.List;
 import apollo.app.wofang.R;
 import apollo.data.model.Section;
 
-public class DragAdapter extends BaseAdapter {
+public class SectionAdapter extends BaseAdapter {
 
 	public interface CloseHandle {
 		void close(int position);
@@ -40,7 +40,7 @@ public class DragAdapter extends BaseAdapter {
 		ImageView closeButton;
 	}
 	
-	public DragAdapter(Context context, List<Section> items) {
+	public SectionAdapter(Context context, List<Section> items) {
 		this.mItems = items;
 		this.mInflater = LayoutInflater.from(context);
 		this.mShakeAnimation = AnimationUtils.loadAnimation(context, R.anim.shake);
@@ -64,7 +64,7 @@ public class DragAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return ((Section) this.getItem(position)).getId();
 	}
-	
+
 	public void setEditMode(boolean b) {
 		this.mIsEditMode = b;
 	}
@@ -107,12 +107,6 @@ public class DragAdapter extends BaseAdapter {
 		holder.sectionName.setTag(section);
 		holder.closeButton.setVisibility(this.mIsEditMode ? View.VISIBLE : View.GONE);
 
-		if (this.mIsEditMode) {
-			convertView.setAnimation(mShakeAnimation);
-		} else {
-			convertView.clearAnimation();
-		}
-
 		convertView.setVisibility(View.VISIBLE);
 
 		if (position == (this.getCount() - 1)) {
@@ -121,6 +115,12 @@ public class DragAdapter extends BaseAdapter {
 		
 		if (position == this.mSelectedItemPosition) {
 			convertView.setVisibility(this.mSelectedItemVisibility);
+		}
+
+		if (this.mIsEditMode && convertView.getVisibility() == View.VISIBLE) {
+			convertView.setAnimation(mShakeAnimation);
+		} else {
+			convertView.clearAnimation();
 		}
 		return convertView;
 	}

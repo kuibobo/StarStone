@@ -29,7 +29,7 @@ import apollo.app.wofang.R;
 import apollo.app.wofang.bll.Sections;
 import apollo.app.wofang.widget.SectionPagerAdapter;
 import apollo.data.model.Section;
-import apollo.view.DragAdapter;
+import apollo.adapter.SectionAdapter;
 import apollo.view.DragGridView;
 import apollo.widget.HorizontalListView;
 
@@ -42,8 +42,10 @@ public class WofangPagerFragment extends Fragment implements
     private ViewPager mViewPager = null;
     private SectionPagerAdapter mTabAdapter = null;
 
-    private DragAdapter mRecommSectionAdapter = null;
-    private DragAdapter mSubSectionAdapter = null;
+    private SectionAdapter mTabSectionListAdapter = null;
+    private SectionAdapter mRecommSectionAdapter = null;
+    private SectionAdapter mSubSectionAdapter = null;
+
     private DragGridView mRecommDragGridView = null;
     private DragGridView mSubDragGridView = null;
 
@@ -52,7 +54,7 @@ public class WofangPagerFragment extends Fragment implements
     private Button mBtnSecitonDropDown = null;
     private Panel mSectionsPanel = null;
 
-
+    private List<Section> mTabSections = null;
     private List<Section> mRecommSections = null;
     private List<Section> mSubSections = null;
 
@@ -80,9 +82,12 @@ public class WofangPagerFragment extends Fragment implements
 
         parent_view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
 
+        this.mTabSections = new ArrayList<Section>();
+        this.mTabSectionListAdapter = new SectionAdapter(this.getActivity(), this.mTabSections);
+
         this.mRecommSections = new ArrayList<Section>();
-        this.mRecommSectionAdapter = new DragAdapter(this.getActivity(), this.mRecommSections);
-        this.mRecommSectionAdapter.setCloseHandle(new DragAdapter.CloseHandle() {
+        this.mRecommSectionAdapter = new SectionAdapter(this.getActivity(), this.mRecommSections);
+        this.mRecommSectionAdapter.setCloseHandle(new SectionAdapter.CloseHandle() {
             @Override
             public void close(int position) {
                 Log.i("DragGridView", "close: " + position + "#" + System.currentTimeMillis());
@@ -93,7 +98,7 @@ public class WofangPagerFragment extends Fragment implements
         });
 
         this.mSubSections = new ArrayList<Section>();
-        this.mSubSectionAdapter = new DragAdapter(this.getActivity(), this.mSubSections);
+        this.mSubSectionAdapter = new SectionAdapter(this.getActivity(), this.mSubSections);
 
         sections_view = inflater.inflate(R.layout.item_layout_main_sections, null);
         this.mSectionsPanel = (Panel) sections_view.findViewById(R.id.layout_main_sections);
@@ -106,7 +111,7 @@ public class WofangPagerFragment extends Fragment implements
 
         this.mBtnSecitonDropDown = (Button) parent_view.findViewById(R.id.btn_section_drop_down);
         this.mSectionListView = (HorizontalListView) parent_view.findViewById(R.id.section_list);
-        this.mSectionListView.setAdapter(this.mRecommSectionAdapter);
+        this.mSectionListView.setAdapter(this.mTabSectionListAdapter);
 
         this.mLayoutBottom = (RelativeLayout) parent_view.findViewById(R.id.layout_bottom);
 
@@ -153,9 +158,14 @@ public class WofangPagerFragment extends Fragment implements
         List<Section> recom_entities = Sections.getRecommendSections();
         List<Section> sub_entities = Sections.getSubSections();
 
+        this.mTabSections.clear();
+        this.mTabSections.addAll(recom_entities);
+        this.mTabSectionListAdapter.notifyDataSetChanged();
+
+        this.mTabAdapter.refresh(this.mTabSections);
+
         this.mRecommSections.clear();
         this.mRecommSections.addAll(recom_entities);
-        this.mTabAdapter.refresh(this.mRecommSections);
         this.mRecommSectionAdapter.notifyDataSetChanged();
 
         this.mSubSections.clear();
@@ -293,7 +303,7 @@ public class WofangPagerFragment extends Fragment implements
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                DragAdapter adapter = (DragAdapter) gridView.getAdapter();
+                SectionAdapter adapter = (SectionAdapter) gridView.getAdapter();
                 adapter.setLastItemVisibility(View.VISIBLE);
                 adapter.notifyDataSetChanged();
             }
