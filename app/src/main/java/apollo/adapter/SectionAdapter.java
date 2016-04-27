@@ -20,8 +20,8 @@ import apollo.data.model.Section;
 
 public class SectionAdapter extends BaseAdapter {
 
-	public interface CloseHandle {
-		void close(int position);
+	public interface RemoveHandle {
+		void remove(int position);
 	}
 
 	private List<Section> mItems = new ArrayList<Section>();
@@ -33,11 +33,11 @@ public class SectionAdapter extends BaseAdapter {
 	private int mSelectedItemPosition;
 	private boolean mIsEditMode = false;
 
-	private CloseHandle mCloseHandle;
+	private RemoveHandle mRemoveHandle;
 
 	class SectionViewHolder {
 		TextView sectionName;
-		ImageView closeButton;
+		ImageView removeButton;
 	}
 	
 	public SectionAdapter(Context context, List<Section> items) {
@@ -46,8 +46,8 @@ public class SectionAdapter extends BaseAdapter {
 		this.mShakeAnimation = AnimationUtils.loadAnimation(context, R.anim.shake);
 	}
 
-	public void setCloseHandle(CloseHandle handle) {
-		this.mCloseHandle = handle;
+	public void setRemoveHandle(RemoveHandle handle) {
+		this.mRemoveHandle = handle;
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class SectionAdapter extends BaseAdapter {
 
 	public boolean isTouchClose(View parent, int top, int left) {
 		Rect close_recv = new Rect();
-		View close_view = ((SectionViewHolder)parent.getTag()).closeButton;
+		View close_view = ((SectionViewHolder)parent.getTag()).removeButton;
 
 		close_view.getDrawingRect(close_recv);
 		return close_recv.left < left && left < close_recv.right &&
@@ -88,12 +88,12 @@ public class SectionAdapter extends BaseAdapter {
 			
 			holder = new SectionViewHolder();
 			holder.sectionName = (TextView) convertView.findViewById(R.id.section_name);
-			holder.closeButton = (ImageView) convertView.findViewById(R.id.btn_close);
-			holder.closeButton.setOnClickListener(new View.OnClickListener() {
+			holder.removeButton = (ImageView) convertView.findViewById(R.id.btn_remove);
+			holder.removeButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (mCloseHandle != null)
-						mCloseHandle.close(position);
+					if (mRemoveHandle != null)
+						mRemoveHandle.remove(position);
 				}
 			});
 
@@ -105,7 +105,7 @@ public class SectionAdapter extends BaseAdapter {
 		section = (Section) this.getItem(position);
 		holder.sectionName.setText(section.getName());
 		holder.sectionName.setTag(section);
-		holder.closeButton.setVisibility(this.mIsEditMode ? View.VISIBLE : View.GONE);
+		holder.removeButton.setVisibility(this.mIsEditMode ? View.VISIBLE : View.GONE);
 
 		convertView.setVisibility(View.VISIBLE);
 

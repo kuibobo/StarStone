@@ -54,7 +54,6 @@ public class WofangPagerFragment extends Fragment implements
     private Button mBtnSecitonDropDown = null;
     private Panel mSectionsPanel = null;
 
-    private List<Section> mTabSections = null;
     private List<Section> mRecommSections = null;
     private List<Section> mSubSections = null;
 
@@ -82,23 +81,29 @@ public class WofangPagerFragment extends Fragment implements
 
         parent_view = inflater.inflate(R.layout.fragment_main_viewpager, container, false);
 
-        this.mTabSections = new ArrayList<Section>();
-        this.mTabSectionListAdapter = new SectionAdapter(this.getActivity(), this.mTabSections);
-
         this.mRecommSections = new ArrayList<Section>();
         this.mRecommSectionAdapter = new SectionAdapter(this.getActivity(), this.mRecommSections);
-        this.mRecommSectionAdapter.setCloseHandle(new SectionAdapter.CloseHandle() {
+        this.mRecommSectionAdapter.setRemoveHandle(new SectionAdapter.RemoveHandle() {
             @Override
-            public void close(int position) {
-                Log.i("DragGridView", "close: " + position + "#" + System.currentTimeMillis());
+            public void remove(int position) {
+                Log.i("DragGridView", "remove: " + position);
+                Section removed_set = null;
 
-                mRecommSections.remove(position);
+                removed_set = mRecommSections.remove(position);
                 mRecommSectionAdapter.notifyDataSetChanged();
+                mTabSectionListAdapter.notifyDataSetChanged();
+
+                mSubSections.add(removed_set);
+                mSubSectionAdapter.notifyDataSetChanged();
+
+                saveSections();
             }
         });
 
         this.mSubSections = new ArrayList<Section>();
         this.mSubSectionAdapter = new SectionAdapter(this.getActivity(), this.mSubSections);
+
+        this.mTabSectionListAdapter = new SectionAdapter(this.getActivity(), this.mRecommSections);
 
         sections_view = inflater.inflate(R.layout.item_layout_main_sections, null);
         this.mSectionsPanel = (Panel) sections_view.findViewById(R.id.layout_main_sections);
@@ -133,8 +138,6 @@ public class WofangPagerFragment extends Fragment implements
     }
 
     private void setChangelViewUpdate() {
-        this.saveSections();
-        this.setSectionsView();
         this.mTabAdapter.refresh(this.mRecommSections);
         this.selectTab(mCurTab);
         this.mViewPager.setCurrentItem(mCurTab);
@@ -158,12 +161,6 @@ public class WofangPagerFragment extends Fragment implements
         List<Section> recom_entities = Sections.getRecommendSections();
         List<Section> sub_entities = Sections.getSubSections();
 
-        this.mTabSections.clear();
-        this.mTabSections.addAll(recom_entities);
-        this.mTabSectionListAdapter.notifyDataSetChanged();
-
-        this.mTabAdapter.refresh(this.mTabSections);
-
         this.mRecommSections.clear();
         this.mRecommSections.addAll(recom_entities);
         this.mRecommSectionAdapter.notifyDataSetChanged();
@@ -171,6 +168,9 @@ public class WofangPagerFragment extends Fragment implements
         this.mSubSections.clear();
         this.mSubSections.addAll(sub_entities);
         this.mSubSectionAdapter.notifyDataSetChanged();
+
+        this.mTabAdapter.refresh(this.mRecommSections);
+        this.mTabSectionListAdapter.notifyDataSetChanged();
     }
 
 
@@ -229,6 +229,7 @@ public class WofangPagerFragment extends Fragment implements
                 section.setType(Section.TYPE_RECOMMEND);
                 mRecommSectionAdapter.addItem(section);
                 mRecommSectionAdapter.setLastItemVisibility(View.GONE);
+                mTabSectionListAdapter.notifyDataSetChanged();
                 ///mTabAdapter.addItem(section);
                 new Handler().post(new Runnable() {
 
@@ -242,9 +243,7 @@ public class WofangPagerFragment extends Fragment implements
                         v = mRecommDragGridView.getChildAt(mRecommDragGridView.getLastVisiblePosition());
                         v.getLocationInWindow(target_location);
 
-                        doMoveAnimation(img, mRecommDragGridView,
-                                location[0], location[1], target_location[0], target_location[1]);
-                        mSubSectionAdapter.removeItem(section);
+                        doSectionItemMoveAnimation(img, location[0], location[1], target_location[0], target_location[1]);
                     }
 
                 });
@@ -270,14 +269,13 @@ public class WofangPagerFragment extends Fragment implements
     }
 
 
-    private void doMoveAnimation(final View view, final DragGridView gridView, int fromXDelta, int fromYDelta,
+    private void doSectionItemMoveAnimation(final View view, int fromXDelta, int fromYDelta,
                                  int toXDelta, int toYDelta) {
         TranslateAnimation animation = null;
         AnimationSet animationSet = null;
         ViewGroup group = null;
         LinearLayout layout = null;
         LinearLayout.LayoutParams params = null;
-
 
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(params);
@@ -288,7 +286,6 @@ public class WofangPagerFragment extends Fragment implements
 
         group = (ViewGroup) this.getActivity().getWindow().getDecorView();
         group.addView(layout);
-
 
         animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
         animation.setDuration(300L);
@@ -303,9 +300,13 @@ public class WofangPagerFragment extends Fragment implements
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                SectionAdapter adapter = (SectionAdapter) gridView.getAdapter();
-                adapter.setLastItemVisibility(View.VISIBLE);
-                adapter.notifyDataSetChanged();
+                mRecommSectionAdapter.setLastItemVisibility(View.VISIBLE);
+                mRecommSectionAdapter.notifyDataSetChanged();
+
+                mSubSectionAdapter.removeItem(section);
+
+                view.destroyDrawingCache();
+                view.setVisibility(View.GONE);
             }
 
             @Override
