@@ -3,6 +3,7 @@ package apollo.app.wofang.data.dao.sqldal;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,19 @@ public class SectionDao {
         if (inst == null)
             inst = new SectionDao();
         return inst;
+    }
+
+    public void clean() {
+        SQLiteDatabase db = null;
+        String whereClause = null;
+        String[] whereArgs = null;
+        int result = -1;
+
+        db = DatabaseHelper.getWriteDatabase();
+        result = db.delete(DatabaseHelper.APOLLO_WF_DATA_TABLE_SECTION, whereClause, whereArgs);
+        db.close();
+
+        Log.i(this.getClass().toString(), "clean section result:" + result);
     }
 
     public int delete(int id) {

@@ -87,16 +87,18 @@ public class WofangPagerFragment extends Fragment implements
             @Override
             public void remove(int position) {
                 Log.i("DragGridView", "remove: " + position);
-                Section removed_set = null;
+                Section removed = null;
 
-                removed_set = mRecommSections.remove(position);
+                removed = mRecommSections.remove(position);
+                removed.setType(Section.TYPE_SUB);
+
                 mRecommSectionAdapter.notifyDataSetChanged();
                 mTabSectionListAdapter.notifyDataSetChanged();
 
-                mSubSections.add(removed_set);
+                mSubSections.add(removed);
                 mSubSectionAdapter.notifyDataSetChanged();
 
-                saveSections();
+                flushSection();
             }
         });
 
@@ -143,9 +145,13 @@ public class WofangPagerFragment extends Fragment implements
         this.mViewPager.setCurrentItem(mCurTab);
     }
 
-    private void saveSections() {
-        Sections.updateRecommendSections(this.mRecommSections);
-        Sections.updateSubSections(this.mSubSections);
+    private void flushSection() {
+        List<Section> new_sections = new ArrayList<Section>();
+
+        new_sections.addAll(this.mRecommSections);
+        new_sections.addAll(this.mSubSections);
+
+        Sections.flushSection(new_sections);
     }
 
     private void selectTab(int position) {
@@ -307,7 +313,8 @@ public class WofangPagerFragment extends Fragment implements
                 mTabSectionListAdapter.notifyDataSetChanged();
 
                 mSubSectionAdapter.removeItem(section);
-
+                flushSection();
+                
                 view.destroyDrawingCache();
                 view.setVisibility(View.GONE);
             }

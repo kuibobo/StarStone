@@ -39,6 +39,12 @@ public class Sections {
         SectionDao.getInstance().add(sections);
     }
 
+    public static void flushSection(List<Section> sections) {
+        SectionDao.getInstance().clean();
+
+        SectionDao.getInstance().add(sections);
+    }
+
 
     public static void updateRecommendSections(List<Section> sections) {
         List<Section> ss = null;
