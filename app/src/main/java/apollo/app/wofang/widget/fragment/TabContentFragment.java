@@ -3,7 +3,9 @@ package apollo.app.wofang.widget.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 
 import apollo.app.wofang.activity.WofangWebContentFragmentActivity;
 import apollo.util.Regex;
@@ -15,7 +17,8 @@ import apollo.widget.StatusLayout;
 public class TabContentFragment extends WofangWebContentFragment {
 
     private final String TAG = this.getClass().getName();
-
+    private boolean mIsVisibleToUser = false;
+    private boolean mViewCreated = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,5 +71,20 @@ public class TabContentFragment extends WofangWebContentFragment {
             WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankContentFragment.class);
 
         return true;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        this.mViewCreated = true;
+        if (this.mIsVisibleToUser)
+            requestData(false);
+    }
+
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        this.mIsVisibleToUser = isVisibleToUser;
+        if (isVisibleToUser && mViewCreated)
+            requestData(false);
     }
 }

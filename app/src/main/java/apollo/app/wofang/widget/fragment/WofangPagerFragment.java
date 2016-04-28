@@ -131,7 +131,7 @@ public class WofangPagerFragment extends Fragment implements
                 this.getActivity());
 
         this.mViewPager = (ViewPager) parent_view.findViewById(R.id.main_tab_pager);
-        this.mViewPager.setOffscreenPageLimit(3);
+        this.mViewPager.setOffscreenPageLimit(0);
         this.mViewPager.setAdapter(this.mTabAdapter);
 
         this.initListener(parent_view);
@@ -142,7 +142,6 @@ public class WofangPagerFragment extends Fragment implements
     private void setChangelViewUpdate() {
         this.mTabAdapter.refresh(this.mRecommSections);
         this.selectTab(mCurTab);
-        this.mViewPager.setCurrentItem(mCurTab);
     }
 
     private void flushSection() {
@@ -156,6 +155,9 @@ public class WofangPagerFragment extends Fragment implements
 
     private void selectTab(int position) {
         this.mCurTab = position;
+        this.mViewPager.setCurrentItem(position);
+
+        this.mTabAdapter.getItem(position).setUserVisibleHint(true);
     }
 
     private void setSectionsView() {
@@ -314,7 +316,7 @@ public class WofangPagerFragment extends Fragment implements
 
                 mSubSectionAdapter.removeItem(section);
                 flushSection();
-                
+
                 view.destroyDrawingCache();
                 view.setVisibility(View.GONE);
             }
