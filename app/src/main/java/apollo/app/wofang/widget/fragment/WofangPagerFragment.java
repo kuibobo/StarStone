@@ -56,7 +56,7 @@ public class WofangPagerFragment extends Fragment {
     private List<Section> mRecommSections = null;
     private List<Section> mSubSections = null;
 
-    private int mCurTab = 0;
+    private int mPagerPosition = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -108,7 +108,7 @@ public class WofangPagerFragment extends Fragment {
 
     private void setChangelViewUpdate() {
         this.mTabAdapter.refresh(this.mRecommSections);
-        this.selectTab(mCurTab);
+        this.selectTab(mPagerPosition);
     }
 
     private void flushSection() {
@@ -121,7 +121,7 @@ public class WofangPagerFragment extends Fragment {
     }
 
     private void selectTab(int position) {
-        this.mCurTab = position;
+        this.mPagerPosition = position;
         this.mViewPager.setCurrentItem(position);
 
         this.mTabAdapter.getItem(position).setUserVisibleHint(true);
@@ -178,6 +178,7 @@ public class WofangPagerFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                mPagerPosition = position;
                 mSectionListView.setSelection(position);
                 mViewPager.setCurrentItem(position);
             }
@@ -254,6 +255,7 @@ public class WofangPagerFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
+                mPagerPosition = position;
                 mSectionListView.setSelection(position);
             }
 
