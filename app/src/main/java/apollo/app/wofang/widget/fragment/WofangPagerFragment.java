@@ -36,8 +36,7 @@ import apollo.widget.HorizontalListView;
 /**
  * Created by Texel on 2015/8/6.
  */
-public class WofangPagerFragment extends Fragment implements
-        ViewPager.OnPageChangeListener {
+public class WofangPagerFragment extends Fragment {
 
     private ViewPager mViewPager = null;
     private SectionPagerAdapter mTabAdapter = null;
@@ -58,20 +57,6 @@ public class WofangPagerFragment extends Fragment implements
     private List<Section> mSubSections = null;
 
     private int mCurTab = 0;
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -83,24 +68,6 @@ public class WofangPagerFragment extends Fragment implements
 
         this.mRecommSections = new ArrayList<Section>();
         this.mRecommSectionAdapter = new SectionAdapter(this.getActivity(), this.mRecommSections);
-        this.mRecommSectionAdapter.setRemoveHandle(new SectionAdapter.RemoveHandle() {
-            @Override
-            public void remove(int position) {
-                Log.i("DragGridView", "remove: " + position);
-                Section removed = null;
-
-                removed = mRecommSections.remove(position);
-                removed.setType(Section.TYPE_SUB);
-
-                mRecommSectionAdapter.notifyDataSetChanged();
-                mTabSectionListAdapter.notifyDataSetChanged();
-
-                mSubSections.add(removed);
-                mSubSectionAdapter.notifyDataSetChanged();
-
-                flushSection();
-            }
-        });
 
         this.mSubSections = new ArrayList<Section>();
         this.mSubSectionAdapter = new SectionAdapter(this.getActivity(), this.mSubSections);
@@ -187,6 +154,25 @@ public class WofangPagerFragment extends Fragment implements
     }
 
     private void initListener(View view) {
+        this.mRecommSectionAdapter.setRemoveHandle(new SectionAdapter.RemoveHandle() {
+            @Override
+            public void remove(int position) {
+                Log.i("DragGridView", "remove: " + position);
+                Section removed = null;
+
+                removed = mRecommSections.remove(position);
+                removed.setType(Section.TYPE_SUB);
+
+                mRecommSectionAdapter.notifyDataSetChanged();
+                mTabSectionListAdapter.notifyDataSetChanged();
+
+                mSubSections.add(removed);
+                mSubSectionAdapter.notifyDataSetChanged();
+
+                flushSection();
+            }
+        });
+
         this.mSectionListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
@@ -221,7 +207,7 @@ public class WofangPagerFragment extends Fragment implements
 
             @Override
             public void swap(int index1, int index2) {
-                ///mTabAdapter.swap(index1, index2);
+                mTabSectionListAdapter.notifyDataSetChanged();
             }
         });
 
@@ -259,6 +245,21 @@ public class WofangPagerFragment extends Fragment implements
             }
 
 
+        });
+
+        this.mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mSectionListView.setSelection(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
         });
     }
 
