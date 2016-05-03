@@ -105,7 +105,7 @@ public class SectionAdapter extends BaseAdapter {
 		section = (Section) this.getItem(position);
 		holder.sectionName.setText(section.getName());
 		holder.sectionName.setTag(section);
-		holder.removeButton.setVisibility(this.mIsEditMode ? View.VISIBLE : View.GONE);
+		holder.removeButton.setVisibility(this.mIsEditMode && !section.isLocked() ? View.VISIBLE : View.GONE);
 
 		convertView.setVisibility(View.VISIBLE);
 
