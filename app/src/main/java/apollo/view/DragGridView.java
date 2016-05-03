@@ -153,7 +153,6 @@ public class DragGridView extends GridView {
 					return super.onInterceptTouchEvent(ev);
 
 				this.mCurrentItemView = getChildAt(mCurrentItemPosition - getFirstVisiblePosition());
-				//mCurrentItemView.setSelected(true);
 
 				// 获得当前 point 到 item的偏移量
 				mPoint2ItemOffsetLeft = mDownX - mCurrentItemView.getLeft();
@@ -168,8 +167,8 @@ public class DragGridView extends GridView {
 				mOffsetTop = (int) (ev.getRawY() - mDownY);
 
 				// 将当前按下的Item设置不显示, 需要在停止拖放onDrop的时候还原
-				mAdapter.setSelectedItemPosition(this.mCurrentItemPosition);
-				mAdapter.setSelectedItemVisibility(View.GONE);
+				mAdapter.setDragItemPosition(this.mCurrentItemPosition);
+				mAdapter.setDragItemVisibility(View.GONE);
 				mAdapter.notifyDataSetChanged();
 
 				// 创建一个拖拽的位图
@@ -349,8 +348,8 @@ public class DragGridView extends GridView {
 	private void onDrop() {
 		SectionAdapter adapter = (SectionAdapter) this.getAdapter();
 		
-		adapter.setSelectedItemPosition(mCurrentItemPosition);
-		adapter.setSelectedItemVisibility(View.VISIBLE);
+		adapter.setDragItemPosition(mCurrentItemPosition);
+		adapter.setDragItemVisibility(View.VISIBLE);
 		adapter.notifyDataSetChanged();
 	}
 	

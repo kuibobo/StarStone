@@ -181,7 +181,9 @@ public class WofangPagerFragment extends Fragment {
                 mPagerPosition = position;
                 mSectionListView.setSelection(position);
                 mViewPager.setCurrentItem(position);
+
                 mRecommSectionAdapter.setSelectedItemPosition(position);
+                mRecommSectionAdapter.notifyDataSetChanged();
             }
 
 
@@ -258,7 +260,7 @@ public class WofangPagerFragment extends Fragment {
             public void onPageSelected(int position) {
                 mPagerPosition = position;
                 mSectionListView.setSelection(position);
-                mRecommSectionAdapter.setSelectedItemPosition(position);
+                mRecommSectionAdapter.setDragItemPosition(position);
             }
 
             @Override

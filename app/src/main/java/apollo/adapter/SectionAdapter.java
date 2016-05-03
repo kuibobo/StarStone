@@ -2,6 +2,7 @@ package apollo.adapter;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,9 @@ public class SectionAdapter extends BaseAdapter {
 	private Animation mShakeAnimation = null;
 
 	private int mLastItemVisibility = View.VISIBLE;
-	private int mSelectedItemVisibility = View.VISIBLE;
-	private int mSelectedItemPosition;
+	private int mDragItemVisibility = View.VISIBLE;
+	private int mDragItemPosition = -1;
+	private int mSelectedItemPosition = -1;
 	private boolean mIsEditMode = false;
 
 	private RemoveHandle mRemoveHandle;
@@ -105,16 +107,18 @@ public class SectionAdapter extends BaseAdapter {
 		section = (Section) this.getItem(position);
 		holder.sectionName.setText(section.getName());
 		holder.sectionName.setTag(section);
+		holder.sectionName.setSelected(false);
 		holder.removeButton.setVisibility(this.mIsEditMode && !section.isLocked() ? View.VISIBLE : View.GONE);
 
 		convertView.setVisibility(View.VISIBLE);
-
 		if (position == (this.getCount() - 1)) {
 			convertView.setVisibility(this.mLastItemVisibility);
 		}
-		
+		if (position == this.mDragItemPosition) {
+			convertView.setVisibility(this.mDragItemVisibility);
+		}
 		if (position == this.mSelectedItemPosition) {
-			convertView.setVisibility(this.mSelectedItemVisibility);
+			holder.sectionName.setSelected(true);
 		}
 
 		if (this.mIsEditMode && convertView.getVisibility() == View.VISIBLE) {
@@ -126,7 +130,7 @@ public class SectionAdapter extends BaseAdapter {
 	}
 	
 	public void swap(int index1, int index2) {
-		this.mSelectedItemPosition = index2;
+		this.mDragItemPosition = index2;
 		Collections.swap(this.mItems, index1, index2);
 		this.notifyDataSetChanged();
 	}
@@ -145,11 +149,15 @@ public class SectionAdapter extends BaseAdapter {
 		 this.mLastItemVisibility = visibility;
 	}
 	
-	public void setSelectedItemVisibility(int visibility) {
-		 this.mSelectedItemVisibility = visibility;
+	public void setDragItemVisibility(int visibility) {
+		 this.mDragItemVisibility = visibility;
+	}
+
+	public void setDragItemPosition(int position) {
+		this.mDragItemPosition = position;
 	}
 
 	public void setSelectedItemPosition(int position) {
-		this.mSelectedItemPosition = position;		
+		this.mSelectedItemPosition = position;
 	}
 }
