@@ -30,7 +30,6 @@ public class SectionAdapter extends BaseAdapter {
 	private Animation mShakeAnimation = null;
 
 	private int mLastItemVisibility = View.VISIBLE;
-	private int mDragItemVisibility = View.VISIBLE;
 	private int mDragItemPosition = -1;
 	private int mSelectedItemPosition = -1;
 	private boolean mIsEditMode = false;
@@ -115,7 +114,7 @@ public class SectionAdapter extends BaseAdapter {
 			convertView.setVisibility(this.mLastItemVisibility);
 		}
 		if (position == this.mDragItemPosition) {
-			convertView.setVisibility(this.mDragItemVisibility);
+			convertView.setVisibility(View.GONE);
 		}
 		if (position == this.mSelectedItemPosition) {
 			holder.sectionName.setSelected(true);
@@ -128,29 +127,25 @@ public class SectionAdapter extends BaseAdapter {
 		}
 		return convertView;
 	}
-	
-	public void swap(int index1, int index2) {
-		this.mDragItemPosition = index2;
-		Collections.swap(this.mItems, index1, index2);
-		this.notifyDataSetChanged();
-	}
-	
+
 	public void addItem(Section s) {
 		this.mItems.add(s);
-		this.notifyDataSetChanged();
+	}
+
+	public void addItem(int position, Section s) {
+		this.mItems.add(position, s);
 	}
 	
 	public void removeItem(Section s) {
 		this.mItems.remove(s);
-		this.notifyDataSetChanged();
 	}
-	
+
+	public Section removeItem(int position) {
+		return this.mItems.remove(position);
+	}
+
 	public void setLastItemVisibility(int visibility) {
 		 this.mLastItemVisibility = visibility;
-	}
-	
-	public void setDragItemVisibility(int visibility) {
-		 this.mDragItemVisibility = visibility;
 	}
 
 	public void setDragItemPosition(int position) {

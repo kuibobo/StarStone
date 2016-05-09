@@ -20,6 +20,7 @@ import android.widget.ListAdapter;
 
 import apollo.adapter.SectionAdapter;
 import apollo.app.wofang.R;
+import apollo.data.model.Section;
 
 public class DragGridView extends GridView {
 
@@ -168,7 +169,6 @@ public class DragGridView extends GridView {
 
 				// 将当前按下的Item设置不显示, 需要在停止拖放onDrop的时候还原
 				mAdapter.setDragItemPosition(this.mCurrentItemPosition);
-				mAdapter.setDragItemVisibility(View.GONE);
 				mAdapter.notifyDataSetChanged();
 
 				// 创建一个拖拽的位图
@@ -226,11 +226,40 @@ public class DragGridView extends GridView {
 		}
 		return super.onTouchEvent(ev);
 	}
-	
+
+	class TranslateAnimationListener implements Animation.AnimationListener {
+
+		int moveItemPosition = 0;
+		int prevItemPosition = 0;
+
+		@Override
+		public void onAnimationStart(Animation animation) {
+
+		}
+
+		@Override
+		public void onAnimationEnd(Animation animation) {
+			View preItemview = getChildAt(prevItemPosition);
+			Section s = null;
+
+			s = mAdapter.removeItem(prevItemPosition);
+			mAdapter.addItem(moveItemPosition, s);
+			mAdapter.setDragItemPosition(moveItemPosition);
+			mAdapter.notifyDataSetChanged();
+
+			mCurrentItemPosition = moveItemPosition;
+			mIsMoving = false;
+		}
+
+		@Override
+		public void onAnimationRepeat(Animation animation) {
+
+		}
+	}
 
 	private void onMove(int x, int y) {
-		if (mIsMoving == true)
-			return;
+		//if (mIsMoving == true)
+		//	return;
 		
 		mIsMoving = true;
 		// 当前滑动经过的的Item的position 
@@ -260,7 +289,8 @@ public class DragGridView extends GridView {
 			int prev_item_position = 0;
 			int fromXDelta; int fromYDelta; 
 			int toXDelta; int toYDelta;
-			
+			TranslateAnimationListener animationListener = null;
+
 			if ( this.mCurrentItemPosition > mMoveOverPosition ) {
 				move_item_position = this.mCurrentItemPosition - i - 1;
 				prev_item_position = move_item_position + 1;
@@ -271,7 +301,8 @@ public class DragGridView extends GridView {
 			
 			move_item_view = getChildAt(move_item_position);
 			move_item_view.getLocationInWindow(move_item_location);
-			
+			move_item_view.setVisibility(View.GONE);
+
 			prev_item_view = getChildAt(prev_item_position);
 			prev_item_view.getLocationInWindow(prev_item_location);
 			
@@ -283,48 +314,11 @@ public class DragGridView extends GridView {
 			
 			animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
 			animation.setDuration(mDuration);
-			// 设置最后一个移动的
-			if (move_item_position == mMoveOverPosition) {
-				this.mLastAnimation = animation.toString();
-			}
-			animation.setAnimationListener(new Animation.AnimationListener(){
 
-				@Override
-				public void onAnimationStart(Animation animation) {
-					mIsMoving = true;
-				}
-
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					// 当 当前动画是最后一个结束的时候，交换拖拽的和最后放下的那个
-					if (animation.toString().equals(mLastAnimation)) {
-						
-						new Handler().postDelayed(new Runnable(){
-							@Override
-							public void run() {
-								SectionAdapter adapter = null;
-								
-								adapter = (SectionAdapter) getAdapter();
-								adapter.swap(mCurrentItemPosition, mMoveOverPosition);
-
-								if (mSwapItemHandle != null)
-									mSwapItemHandle.swap(mCurrentItemPosition, mMoveOverPosition);
-								mCurrentItemPosition = mMoveOverPosition;
-								mIsMoving = false;
-								
-							}
-						}, 10L);
-						
-					}
-					
-					
-				}
-
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-				}
-				
-			});
+			animationListener = new TranslateAnimationListener();
+			animationListener.moveItemPosition = move_item_position;
+			animationListener.prevItemPosition = prev_item_position;
+			animation.setAnimationListener(animationListener);
 			
 			move_item_view.startAnimation(animation);
 		}
@@ -348,8 +342,8 @@ public class DragGridView extends GridView {
 	private void onDrop() {
 		SectionAdapter adapter = (SectionAdapter) this.getAdapter();
 		
-		adapter.setDragItemPosition(mCurrentItemPosition);
-		adapter.setDragItemVisibility(View.VISIBLE);
+		adapter.setDragItemPosition(-1);
+		//adapter.setDragItemVisibility(View.VISIBLE);
 		adapter.notifyDataSetChanged();
 	}
 	
