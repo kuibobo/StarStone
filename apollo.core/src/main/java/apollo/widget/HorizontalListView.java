@@ -52,7 +52,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
 	private ListAdapter mAdapter = null;
 	private Scroller mScroller = null;
 	private GestureDetector mGesture = null;
-
+	private View mPreSelectedView = null;
 	
 	private int mRightItemPosition = 0;
 	private int mLeftItemPosition = -1;
@@ -63,7 +63,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
 	private int mDisplayOffset = 0;
 	private int mRequestedHorizontalSpacing = 0;
 	private boolean mDataChanged = false;
-	
+
 	private DataSetObserver mDataObserver = new DataSetObserver(){
 		@Override  
         public void onChanged() {  
@@ -116,12 +116,10 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
 		return null;
 	}
 
-	private View mPreSelectedView = null;
 	@Override
 	public void setSelection(int position) {
 		View view = null;
- 
-		
+
 		if (mPreSelectedView != null)
 			mPreSelectedView.setSelected(false);
 		
@@ -134,8 +132,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> implements
 			mPreSelectedView = view;
 		} 
 		super.requestLayout();
-	}  
-  
+	}
 	
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {

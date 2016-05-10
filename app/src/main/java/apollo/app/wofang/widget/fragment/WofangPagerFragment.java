@@ -68,6 +68,7 @@ public class WofangPagerFragment extends Fragment {
 
         this.mRecommSections = new ArrayList<Section>();
         this.mRecommSectionAdapter = new SectionAdapter(this.getActivity(), this.mRecommSections);
+        this.mRecommSectionAdapter.setSelectedItemPosition(0);
 
         this.mSubSections = new ArrayList<Section>();
         this.mSubSectionAdapter = new SectionAdapter(this.getActivity(), this.mSubSections);
