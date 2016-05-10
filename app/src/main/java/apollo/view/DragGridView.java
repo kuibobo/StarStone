@@ -285,6 +285,9 @@ public class DragGridView extends GridView {
 				if (move_items == 0)
 					return;
 
+				if (mAdapter.getSection(mMoveOverPosition).isLocked())
+					return;
+
 				Log.i("DragGridView", "current:" + mCurrentItemPosition + " moveover:" + mMoveOverPosition);
 				move_items = Math.abs(move_items);
 				for (int i = 0; i < move_items; i++) {

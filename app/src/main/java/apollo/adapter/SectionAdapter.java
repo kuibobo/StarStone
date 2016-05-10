@@ -58,6 +58,10 @@ public class SectionAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
+		return getSection(position);
+	}
+
+	public Section getSection(int position) {
 		return this.mItems.get(position);
 	}
 
@@ -83,10 +87,10 @@ public class SectionAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		SectionViewHolder holder = null;
 		Section section = null;
-		
+
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.item_main_section_grid_item, null);
-			
+
 			holder = new SectionViewHolder();
 			holder.sectionName = (TextView) convertView.findViewById(R.id.section_name);
 			holder.removeButton = (ImageView) convertView.findViewById(R.id.btn_remove);
@@ -107,14 +111,15 @@ public class SectionAdapter extends BaseAdapter {
 		holder.sectionName.setText(section.getName());
 		holder.sectionName.setTag(section);
 		holder.sectionName.setSelected(false);
-
-		if (this.mIsEditMode && !section.isLocked()) {
-			holder.removeButton.setVisibility(View.VISIBLE);
-			convertView.setAnimation(mShakeAnimation);
-		} else {
-			holder.removeButton.setVisibility(View.GONE);
-			convertView.clearAnimation();
+		if (position == this.mSelectedItemPosition) {
+			holder.sectionName.setSelected(true);
 		}
+		holder.sectionName.setEnabled(true);
+		if (this.mIsEditMode && section.isLocked()) {
+			holder.sectionName.setEnabled(false);
+		}
+
+		holder.removeButton.setVisibility(this.mIsEditMode && !section.isLocked() ? View.VISIBLE : View.GONE);
 
 		convertView.setVisibility(View.VISIBLE);
 		if (position == (this.getCount() - 1)) {
@@ -123,10 +128,13 @@ public class SectionAdapter extends BaseAdapter {
 		if (position == this.mDragItemPosition) {
 			convertView.setVisibility(View.GONE);
 		}
-		if (position == this.mSelectedItemPosition) {
-			holder.sectionName.setSelected(true);
-		}
 
+
+		if (this.mIsEditMode && !section.isLocked() && convertView.getVisibility() == View.VISIBLE) {
+			convertView.setAnimation(mShakeAnimation);
+		} else {
+			convertView.clearAnimation();
+		}
 		return convertView;
 	}
 
