@@ -74,6 +74,9 @@ public class DragGridView extends GridView {
 	
 	/** 长按Item对应postion */
 	private int mCurrentItemPosition;
+
+	/** 当前移动的元素数量 */
+	private int mMovingItems = 0;
 	
 	/** 按下后的Item对应的View */
 	private View mCurrentItemView;
@@ -81,14 +84,18 @@ public class DragGridView extends GridView {
 	/** 拖拽的时候显示的位图 **/
 	private Bitmap mDragBmp;
 
+	/** 数据源适配器 */
 	private SectionAdapter mAdapter = null;
 
 	/** 振动器 **/
 	private Vibrator mVibrator; 
 	
 	private WindowManager.LayoutParams mDragViewLayoutParams;
-	
-	
+
+	/** 动画监听器 */
+	private Animation mLastAnimation = null;
+
+
 	public DragGridView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
@@ -233,7 +240,7 @@ public class DragGridView extends GridView {
 
 		@Override
 		public void onAnimationStart(Animation animation) {
-
+			Log.i("DragGridView", "animation:" + animation);
 		}
 
 		@Override
@@ -245,6 +252,8 @@ public class DragGridView extends GridView {
 				Log.i("DragGridView", "current:" + mCurrentItemPosition);
 				mAdapter.notifyDataSetChanged();
 			}
+			mMovingItems --;
+			Log.i("DragGridView", "items:" + mMovingItems);
 		}
 
 		@Override
@@ -253,36 +262,44 @@ public class DragGridView extends GridView {
 		}
 	}
 
-	private Animation mLastAnimation = null;
-
 	private void onMove(int x, int y) {
 		// 当前滑动经过的的Item的position 
 		mMoveOverPosition = pointToPosition(x, y);
-		if (mMoveOverPosition == -1) {
-			return;
-		}
-		
-		// 需要移动的个数
-		int move_items = this.mCurrentItemPosition - mMoveOverPosition;
-		
-		if (move_items == 0) {
-			return;
-		}
 
-		move_items = Math.abs(move_items);
-		for (int i = 0; i < move_items; i++) {
-			int move_item_position = 0;
-			int prev_item_position = 0;
+		new Handler().postDelayed(new Runnable(){
+			@Override
+			public void run() {
+				// 需要移动的个数
+				int move_items = -1;
 
-			if ( this.mCurrentItemPosition > mMoveOverPosition ) {
-				move_item_position = this.mCurrentItemPosition - i - 1;
-				prev_item_position = move_item_position + 1;
-			} else {
-				move_item_position = this.mCurrentItemPosition + i + 1;
-				prev_item_position = move_item_position - 1;
+				if (mMoveOverPosition == -1)
+					return;
+
+				if (mMovingItems > 0)
+					return;
+
+				move_items = mCurrentItemPosition - mMoveOverPosition;
+				if (move_items == 0)
+					return;
+
+				Log.i("DragGridView", "current:" + mCurrentItemPosition + " moveover:" + mMoveOverPosition);
+				move_items = Math.abs(move_items);
+				for (int i = 0; i < move_items; i++) {
+					int move_item_position = 0;
+					int prev_item_position = 0;
+
+					if ( mCurrentItemPosition > mMoveOverPosition ) {
+						move_item_position = mCurrentItemPosition - i - 1;
+						prev_item_position = move_item_position + 1;
+					} else {
+						move_item_position = mCurrentItemPosition + i + 1;
+						prev_item_position = move_item_position - 1;
+					}
+					moveItem(move_item_position, prev_item_position);
+				}
 			}
-			moveItem(move_item_position, prev_item_position);
-		}
+		}, 500L);
+
 	}
 
 	private void moveItem(int move_item_position, int prev_item_position) {
@@ -290,11 +307,16 @@ public class DragGridView extends GridView {
 		View prev_item_view = null;
 		TranslateAnimation animation = null;
 		TranslateAnimationListener animationListener = null;
-		int[] move_item_location = new int[2];
-		int[] prev_item_location = new int[2];
+		int[] move_item_location = null;
+		int[] prev_item_location = null;
 		int fromXDelta; int fromYDelta;
 		int toXDelta; int toYDelta;
 
+		if (move_item_position < 0 || prev_item_position < 0)
+			return;
+
+		move_item_location = new int[2];
+		prev_item_location = new int[2];
 		move_item_view = getChildAt(move_item_position);
 		move_item_view.getLocationInWindow(move_item_location);
 		move_item_view.setVisibility(View.GONE);
@@ -320,9 +342,11 @@ public class DragGridView extends GridView {
 		s = mAdapter.removeItem(prev_item_position);
 		mAdapter.addItem(move_item_position, s);
 
-		Log.i("DragGridView", "move item:" + move_item_position + " pre item:" + prev_item_position);
-
+		move_item_view.clearAnimation();
 		move_item_view.startAnimation(animation);
+		mMovingItems++;
+		Log.i("DragGridView", "move item:" + move_item_position
+				+ " pre item:" + prev_item_position + " items:" + mMovingItems + " animation:" + animation);
 	}
 	
 	private void onDrag(int x, int y) {
@@ -341,11 +365,9 @@ public class DragGridView extends GridView {
 	}
 	
 	private void onDrop() {
-		SectionAdapter adapter = (SectionAdapter) this.getAdapter();
-		
-		adapter.setDragItemPosition(-1);
-		//adapter.setDragItemVisibility(View.VISIBLE);
-		adapter.notifyDataSetChanged();
+		mAdapter.setDragItemPosition(-1);
+		mAdapter.notifyDataSetChanged();
+		mMovingItems = 0;
 	}
 	
 	private void startDrag(Bitmap bmp, int x, int y) {
