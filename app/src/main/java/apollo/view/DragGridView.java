@@ -159,6 +159,9 @@ public class DragGridView extends GridView {
 				if (this.mCurrentItemPosition == -1)
 					return super.onInterceptTouchEvent(ev);
 
+				if (((Section)this.mAdapter.getItem(this.mCurrentItemPosition)).isLocked())
+					return super.onInterceptTouchEvent(ev);
+
 				this.mCurrentItemView = getChildAt(mCurrentItemPosition - getFirstVisiblePosition());
 
 				// 获得当前 point 到 item的偏移量

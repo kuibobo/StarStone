@@ -107,7 +107,14 @@ public class SectionAdapter extends BaseAdapter {
 		holder.sectionName.setText(section.getName());
 		holder.sectionName.setTag(section);
 		holder.sectionName.setSelected(false);
-		holder.removeButton.setVisibility(this.mIsEditMode && !section.isLocked() ? View.VISIBLE : View.GONE);
+
+		if (this.mIsEditMode && !section.isLocked()) {
+			holder.removeButton.setVisibility(View.VISIBLE);
+			convertView.setAnimation(mShakeAnimation);
+		} else {
+			holder.removeButton.setVisibility(View.GONE);
+			convertView.clearAnimation();
+		}
 
 		convertView.setVisibility(View.VISIBLE);
 		if (position == (this.getCount() - 1)) {
@@ -120,11 +127,6 @@ public class SectionAdapter extends BaseAdapter {
 			holder.sectionName.setSelected(true);
 		}
 
-		if (this.mIsEditMode && convertView.getVisibility() == View.VISIBLE) {
-			convertView.setAnimation(mShakeAnimation);
-		} else {
-			convertView.clearAnimation();
-		}
 		return convertView;
 	}
 
