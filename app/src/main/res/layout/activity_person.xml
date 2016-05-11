@@ -12,14 +12,13 @@
                     <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
                         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginRight="10.0dip">
                             <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/drawer_left_header_avatar_size"
-                                android:layout_height="@dimen/drawer_left_header_avatar_size"
-                                android:layout_marginLeft="@dimen/drawer_left_header_content_padding"
-                                android:layout_marginStart="@dimen/drawer_left_header_content_padding"
-                                android:layout_marginTop="@dimen/drawer_left_header_avatar_marginTop"
-                                android:src="@drawable/ic_launcher"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/person_avatar_marginRight"
+                                android:layout_marginTop="@dimen/person_avatar_marginTop"
+                                android:src="@drawable/drawer_left_user_header"
                                 app:border_width="@dimen/drawer_left_header_avatar_border"
-                                app:border_color="@color/drawer_left_header_avatar_border"/>
+                                app:border_color="@color/drawer_left_header_avatar_border" />
                             <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
                                 <LinearLayout android:gravity="center_vertical" android:layout_gravity="top" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
                                     <TextView android:textSize="18.0dip" android:textColor="#ff4a4a4a" android:layout_gravity="top" android:id="@+id/txt_userName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="名字" />

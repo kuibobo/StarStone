@@ -19,7 +19,7 @@ import apollo.widget.StatusLayout;
  */
 public class TabContentFragment extends WofangWebContentFragment {
 
-    private final String TAG = this.getClass().getName();
+    private final String TAG = "TabContentFragment";
     private boolean mIsVisibleToUser = false;
     private boolean mViewCreated = false;
     @Override
