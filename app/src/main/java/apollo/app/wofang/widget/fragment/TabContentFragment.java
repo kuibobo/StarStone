@@ -7,6 +7,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import apollo.app.wofang.activity.WofangWebContentFragmentActivity;
 import apollo.util.Regex;
 import apollo.widget.StatusLayout;
@@ -31,6 +34,14 @@ public class TabContentFragment extends WofangWebContentFragment {
 
     @Override
     protected void executeOnLoadDataSuccess(String content) {
+        URI uri = null;
+        String baseUrl = null;
+
+        try {
+            uri = new URI(mUrl);
+        } catch (URISyntaxException e) {
+        }
+        baseUrl = uri.getScheme() + "://" + uri.getAuthority();
         // fix css
 //        content = Regex.replace(content,
 //                "<link\\s.*?href=\"([^\"]+)\"[^>]*/>",
@@ -52,7 +63,7 @@ public class TabContentFragment extends WofangWebContentFragment {
         //content += "<style>.header,.footer,.footer_from{display:none;}</style>";
 
         mWebView.loadDataWithBaseURL(
-                this.getBaseUrl(), content, "text/html", "UTF-8", null);
+                baseUrl, content, "text/html", "UTF-8", null);
 
         mStatusLayout.setStatus(StatusLayout.HIDE_LAYOUT);
     }

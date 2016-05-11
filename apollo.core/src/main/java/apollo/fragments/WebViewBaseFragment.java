@@ -111,9 +111,9 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
 
     protected WebView mWebView;
     protected StatusLayout mStatusLayout;
+    protected String mUrl = null;
 
     protected abstract String getCacheKey();
-    protected abstract String getBaseUrl();
     protected abstract void sendRequestData();
     protected abstract void sendRequestData(String url);
     protected abstract void executeOnLoadDataSuccess(String content);

@@ -8,11 +8,14 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import apollo.util.Encoding;
 import apollo.util.FileUtil;
+import apollo.util.StringUtil;
 
 /**
  * HTTP请求对象
@@ -242,12 +245,38 @@ public class WebRequest {
 		WebResponse resp = null;
 		InputStream in = null;
 		ByteArrayOutputStream baos = null;
-		//StringBuffer buffer = null;
-		//String line = null;
 		byte[] bytes = null;
-		
+
 		resp = new WebResponse();
-		//resp.urlString = url_str;
+		resp.m_conn = conn;
+		resp.code = conn.getResponseCode();
+		resp.host = conn.getURL().getHost();
+		resp.protocol = conn.getURL().getProtocol();
+
+		// 处理302
+		if (resp.code == HttpURLConnection.HTTP_MOVED_TEMP) {
+			String location = resp.getHeaderField("Location");
+			String server_cookie = null;
+			List<String> cookies = resp.getHeaderFields("Set-Cookie");
+			HashMap<String, String> propertys = null;
+			WebRequest _req = null;
+
+			conn.disconnect();
+
+			if (location.indexOf("http") < 0)
+				url_str = resp.protocol + "://"+ resp.host + location;
+			else
+				url_str = location;
+
+			server_cookie = StringUtil.join(cookies, "; ");
+			propertys = new HashMap<String, String>();
+			propertys.put("Cookie", server_cookie);
+
+			_req = new WebRequest();
+			_req.setResponseCharset("UTF-8");
+			return _req.create(url_str, null, propertys);
+		}
+
 		resp.defaultPort = conn.getURL().getDefaultPort();
 		resp.file = conn.getURL().getFile();
 		resp.host = conn.getURL().getHost();
@@ -266,18 +295,15 @@ public class WebRequest {
 		resp.connectTimeout = conn.getConnectTimeout();
 		resp.readTimeout = conn.getReadTimeout();
 		resp.m_conn = conn;
-		
+
 		if ("".equals(resp.contentType) == false) {
 			int char_pos = resp.contentType.indexOf("charset=");
 			if (char_pos > 0) {
 				int end_pos = resp.contentType.length();
-				resp.contentCharset = resp.contentType.substring(char_pos + 8,
+				resp.charset = resp.contentType.substring(char_pos + 8,
 						end_pos);
 			}
 		}
-		
-		if (resp.contentCharset == null || "".equals(resp.contentCharset))
-			resp.contentCharset = this.responseCharset;
 
 		if ("gzip".equals(resp.contentEncoding))
 			in = new GZIPInputStream(conn.getInputStream());

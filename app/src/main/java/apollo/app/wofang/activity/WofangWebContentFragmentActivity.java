@@ -23,7 +23,7 @@ import apollo.app.wofang.widget.fragment.WofangWebContentFragment;
  */
 public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity {
 
-    private static final String TAG = WofangWebContentFragmentActivity.class.getName();
+    private static final String TAG = "WofangWebContentFragmentActivity";
     public static final String BUNDLE_KEY_URL = "URL";
     public static final String BUNDLE_KEY_FRAGMENT_CLASS = "FRAGMENT_CLASS";
 
@@ -93,25 +93,25 @@ public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity 
         super.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        menu.findItem(R.id.action_menu_search).setIcon(
-                new IconDrawable(this, FontAwesomeIcons.fa_search)
-                        .colorRes(R.color.toolbar_text_color)
-                        .sizeDp(20)
-        );
-
-        menu.findItem(R.id.action_menu_favor).setIcon(
-                new IconDrawable(this, FontAwesomeIcons.fa_star)
-                        .colorRes(R.color.toolbar_text_color)
-                        .actionBarSize()
-        );
-        return super.onCreateOptionsMenu(menu);
-    }
-
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//
+//        menu.findItem(R.id.action_menu_search).setIcon(
+//                new IconDrawable(this, FontAwesomeIcons.fa_search)
+//                        .colorRes(R.color.toolbar_text_color)
+//                        .sizeDp(20)
+//        );
+//
+//        menu.findItem(R.id.action_menu_favor).setIcon(
+//                new IconDrawable(this, FontAwesomeIcons.fa_star)
+//                        .colorRes(R.color.toolbar_text_color)
+//                        .actionBarSize()
+//        );
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
