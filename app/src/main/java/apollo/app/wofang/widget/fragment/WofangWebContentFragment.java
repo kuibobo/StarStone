@@ -27,14 +27,12 @@ import apollo.widget.StatusLayout;
 
 public class WofangWebContentFragment extends WebContentFragment<Section> {
 
-    private final String TAG = "WofangWebContentFragment";
-
+    private final String TAG = "WFWebContentFragment";
 
     @Override
     protected String getCacheKey() {
         return "WCF";
     }
-
 
     @Override
     protected void executeOnLoadDataSuccess(String content) {
@@ -61,6 +59,19 @@ public class WofangWebContentFragment extends WebContentFragment<Section> {
     }
 
 
+    @Override
+    protected boolean onUrlClick(String url) {
+        Log.i(TAG, "onUrlClick:" + url);
 
+        if (url.startsWith("tel:")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+            return true;
+        } else {
+            WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankContentFragment.class);
+        }
+
+        return false;
+    }
 
 }
