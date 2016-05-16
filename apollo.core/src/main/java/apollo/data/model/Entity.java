@@ -13,11 +13,7 @@ public abstract class Entity implements Serializable, Parcelable {
     private int id;
     private String guid;
     private String name;
-    private String body;
-    private String icon;
-    private String url;
-    private String refer;
-    private boolean locked;
+    private String value;
 
     public int getId() {
         return id;
@@ -43,57 +39,22 @@ public abstract class Entity implements Serializable, Parcelable {
         this.name = name;
     }
 
-    public String getBody() {
-        return body;
+    public String getValue() {
+        return value;
     }
 
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public boolean isLocked() {
-        return locked;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public String getRefer() {
-        return refer;
-    }
-
-    public void setRefer(String refer) {
-        this.refer = refer;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public Entity() {
-
     }
 
     public Entity(Parcel in) {
         id = in.readInt();
         guid = in.readString();
         name = in.readString();
-        body = in.readString();
-        url = in.readString();
-        icon = in.readString();
+        value = in.readString();
     }
 
     @Override
@@ -106,8 +67,6 @@ public abstract class Entity implements Serializable, Parcelable {
         dest.writeInt(id);
         dest.writeString(guid);
         dest.writeString(name);
-        dest.writeString(body);
-        dest.writeString(url);
-        dest.writeString(icon);
+        dest.writeString(value);
     }
 }

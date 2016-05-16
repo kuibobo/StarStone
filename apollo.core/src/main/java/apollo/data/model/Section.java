@@ -19,7 +19,10 @@ public class Section extends Entity {
 	}
 
 	private int type;
-	
+	private String url;
+	private String refer;
+	private boolean locked;
+
     public static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {
 		@Override
 		public Section createFromParcel(Parcel p) {
@@ -33,7 +36,6 @@ public class Section extends Entity {
 
 	public Section() {}
 
-    
     public Section(Parcel in) {
     	super(in);
     }
@@ -46,6 +48,30 @@ public class Section extends Entity {
 		this.type = type;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
+
+	public String getRefer() {
+		return refer;
+	}
+
+	public void setRefer(String refer) {
+		this.refer = refer;
+	}
+
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -55,6 +81,5 @@ public class Section extends Entity {
 	public void writeToParcel(Parcel dest, int flags) {
 		super.writeToParcel(dest, flags);
 	}
-	
-	
+
 }

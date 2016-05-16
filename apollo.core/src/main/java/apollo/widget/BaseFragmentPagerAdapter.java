@@ -47,7 +47,7 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentStatePagerAdap
             String name = null;
             Class<?> clazz = null;
 
-            name = e.getRefer();
+            name = e.getValue();//e.getRefer();
             try {clazz = Class.forName(name);} catch (Exception ex) {}
             if (clazz == null)
                 clazz = this.getFragmentClass();
