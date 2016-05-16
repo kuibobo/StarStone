@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.WebView;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -74,4 +76,10 @@ public class WofangWebContentFragment extends WebContentFragment<Section> {
         return false;
     }
 
+    @Override
+    public void onWebPageFinished(WebView view, String url) {
+        CookieManager cookieManager = CookieManager.getInstance();
+        String CookieStr = cookieManager.getCookie(url);
+        Log.e(TAG, "Cookies = " + CookieStr);
+    }
 }

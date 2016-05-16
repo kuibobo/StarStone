@@ -98,6 +98,7 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            onWebPageFinished(view, url);
         }
 
         @Override
@@ -119,6 +120,7 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
     protected abstract void executeOnLoadDataSuccess(String content);
     protected abstract void executeOnLoadDataError(String content);
     protected abstract boolean onUrlClick(String url);
+    protected abstract void onWebPageFinished(WebView view, String url);
 
     protected void saveCache(Entity entity) {
         new SaveCacheTask(entity, getCacheKey()).execute();

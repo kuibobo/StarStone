@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -81,6 +82,10 @@ public class WebContentFragment<T> extends WebViewBaseFragment<T> {
     @Override
     protected void executeOnLoadDataError(String content) {
         mStatusLayout.setStatus(StatusLayout.NETWORK_ERROR);
+    }
+
+    @Override
+    public void onWebPageFinished(WebView view, String url) {
     }
 
     @Override
