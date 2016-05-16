@@ -17,9 +17,9 @@ import apollo.widget.StatusLayout;
 /**
  * Created by kuibo on 2015/8/8.
  */
-public class TabContentFragment extends WofangWebContentFragment {
+public class WofangPagerWebContentFragment extends WofangWebContentFragment {
 
-    private final String TAG = "TabContentFragment";
+    private final String TAG = "WFPWebContentFragment";
     private boolean mIsVisibleToUser = false;
     private boolean mViewCreated = false;
     @Override
