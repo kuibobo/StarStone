@@ -77,14 +77,6 @@ public class WofangPagerWebContentFragment extends WofangWebContentFragment {
     }
 
     @Override
-    protected boolean onUrlClick(String url) {
-        if (super.onUrlClick(url) == false)
-            WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankContentFragment.class);
-
-        return true;
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         this.mViewCreated = true;
         if (this.mIsVisibleToUser)

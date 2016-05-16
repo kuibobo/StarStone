@@ -69,11 +69,10 @@ public class WofangWebContentFragment extends WebContentFragment<Section> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
             return true;
-        } else {
-            WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankContentFragment.class);
         }
 
-        return false;
+        WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankContentFragment.class);
+        return true;
     }
 
     @Override
