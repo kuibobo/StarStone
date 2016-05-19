@@ -6,12 +6,14 @@ import android.content.pm.PackageManager;
 import android.provider.SyncStateContract;
 import android.util.Log;
 
+import apollo.data.model.User;
 import apollo.util.ConfigUtil;
 
 public abstract class ApolloApplication extends Application {
 	private static final String LAST_VERSION = "lase_version";
 
 	protected static ApolloApplication app;
+	private User mCurrentUser;
 
 	public static ApolloApplication app() {
 		return ApolloApplication.app;
@@ -50,4 +52,13 @@ public abstract class ApolloApplication extends Application {
 		editor.putString(LAST_VERSION, ConfigUtil.VERSION);
 		editor.commit();
 	}
+
+	public void setCurrentUser(User u) {
+		this.mCurrentUser = u;
+	}
+
+	public User getCurrentUser() {
+		return this.mCurrentUser;
+	}
+
 }
