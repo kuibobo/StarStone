@@ -3,7 +3,7 @@ package apollo.app.wofang.widget;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
-import apollo.app.wofang.widget.fragment.WofangPagerWebContentFragment;
+import apollo.app.wofang.widget.fragment.webcontent.WofangPagerWebFragment;
 import apollo.widget.BaseFragmentPagerAdapter;
 
 /**
@@ -17,6 +17,6 @@ public class SectionPagerAdapter extends BaseFragmentPagerAdapter {
 
     @Override
     public Class<?> getFragmentClass() {
-        return WofangPagerWebContentFragment.class;
+        return WofangPagerWebFragment.class;
     }
 }
