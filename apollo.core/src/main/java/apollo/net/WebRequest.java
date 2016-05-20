@@ -29,7 +29,7 @@ public class WebRequest {
 	private String contentCharset;
 	private RequestMethod method;
 	private int timeout = 30000;
-	private boolean autoRedirect = false;
+	private boolean autoRedirect = true;
 
 	static {
 		for (int idx = 0; idx < 0x20; idx++) {
@@ -217,7 +217,7 @@ public class WebRequest {
 
 		conn = (HttpURLConnection) url.openConnection();
 
-		conn.setInstanceFollowRedirects(false);
+		conn.setInstanceFollowRedirects(autoRedirect);
 		conn.setRequestMethod(method.toString());
 		conn.setDoOutput(true);
 		conn.setDoInput(true);
@@ -273,7 +273,7 @@ public class WebRequest {
 		resp.protocol = conn.getURL().getProtocol();
 
 		// 处理302
-		if (this.autoRedirect == true && resp.code == HttpURLConnection.HTTP_MOVED_TEMP) {
+		if (resp.code == HttpURLConnection.HTTP_MOVED_TEMP) {
 			String location = resp.getHeaderField("Location");
 			String server_cookie = null;
 			List<String> cookies = resp.getHeaderFields("Set-Cookie");

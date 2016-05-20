@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import apollo.app.wofang.activity.WofangWebContentFragmentActivity;
+import apollo.app.wofang.bll.Users;
 import apollo.data.model.Section;
 import apollo.fragments.WebContentFragment;
 import apollo.util.Regex;
@@ -55,14 +56,17 @@ public class WofangWebFragment extends WebContentFragment<Section> {
     @Override
     protected boolean onUrlClick(String url) {
         Log.i(TAG, "onUrlClick:" + url);
-
+        Class<?> fragment  = null;
         if (url.startsWith("tel:")) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
-            return true;
+        } else if (url.startsWith("g=user&m=sale&a=add") && Users.getUser() == null) {
+            fragment = WofangLoginWebFragment.class;
+        } else {
+            fragment = BlankWebFragment.class;
         }
 
-        WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, BlankWebFragment.class);
+        WofangWebContentFragmentActivity.startActivity(super.getActivity(), url, fragment);
         return true;
     }
 
