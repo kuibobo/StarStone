@@ -6,17 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import apollo.activity.BaseShareFragmentActivity;
 import apollo.activity.DrawerNightModeTabActivity;
 import apollo.app.wofang.R;
-import apollo.app.wofang.widget.fragment.WofangWebContentFragment;
+import apollo.app.wofang.widget.fragment.webcontent.WofangWebFragment;
 
 /**
  * Created by Texel on 2015/8/28.
@@ -32,7 +27,7 @@ public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity 
     protected int mLayoutResId = R.layout.activity_webcontent_fragment;
 
     public static void startActivity(Activity activity, String url) {
-        startActivity(activity, url, WofangWebContentFragment.class);
+        startActivity(activity, url, WofangWebFragment.class);
     }
 
     public static void startActivity(Activity activity, String url, Class<?> fragment) {
@@ -71,7 +66,7 @@ public class WofangWebContentFragmentActivity extends BaseShareFragmentActivity 
 
         try { fragment = (Fragment)this.mFragment.newInstance();} catch (Exception ex) {}
         if (fragment == null)
-            fragment = new WofangWebContentFragment();
+            fragment = new WofangWebFragment();
 
         Bundle args = new Bundle();
         args.putString(BUNDLE_KEY_URL, this.mUrl);

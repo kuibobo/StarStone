@@ -1,23 +1,19 @@
-package apollo.app.wofang.widget.fragment;
+package apollo.app.wofang.widget.fragment.webcontent;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import apollo.app.wofang.activity.WofangWebContentFragmentActivity;
 import apollo.util.Regex;
 import apollo.widget.StatusLayout;
 
 /**
  * Created by kuibo on 2015/8/8.
  */
-public class WofangPagerWebContentFragment extends WofangWebContentFragment {
+public class WofangPagerWebFragment extends WofangWebFragment {
 
     private final String TAG = "WFPWebContentFragment";
     private boolean mIsVisibleToUser = false;
