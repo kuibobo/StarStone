@@ -14,6 +14,7 @@ public class User extends Entity {
 		public static String NAME = "name";
 		public static String PASSWORD = "password";
 		public static String TICKET = "ticket";
+		public static String ACTIVE = "active";
 	}
 
 	public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
@@ -29,6 +30,7 @@ public class User extends Entity {
 
 	private String password;
 	private String ticket;
+	private boolean active;
 
 	public String getPassword() {
 		return password;
@@ -46,8 +48,19 @@ public class User extends Entity {
 		this.ticket = ticket;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public User() {}
+
 	public User(Parcel in) {
 		super.setId(in.readInt());
+		active = in.readInt() == 1;
 	}
 
 	@Override
