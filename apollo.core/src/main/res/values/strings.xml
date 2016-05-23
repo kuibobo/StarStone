@@ -3,6 +3,7 @@
     <string name="app_name">apollo.core</string>
     <string name="app_guide_enter">进入系统</string>
 
+    <string name="ok">确定</string>
     <string name="exit">退出</string>
     <string name="reboot">重启</string>
     <string name="loading">Loading</string>

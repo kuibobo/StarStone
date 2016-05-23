@@ -91,14 +91,10 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
     protected WebChromeClient mChromeClient = new WebChromeClient() {
         @Override
         public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-            new AlertDialog.Builder(ApolloApplication.app()).setMessage(message)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    }).create().show();
-
-            return false;
+            new AlertDialog.Builder(WebViewBaseFragment.this.getActivity()).setMessage(message)
+                    .setPositiveButton(R.string.ok, null).show();
+            result.confirm();
+            return true;
         }
     };
 

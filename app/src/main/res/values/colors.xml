@@ -21,6 +21,11 @@
 
     <!-- brand color: blue -->
     <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#C51162</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="colorAccent">#FF80AB</color>
 
     <!--Common Configuration-->
     <color name="main">@color/colorPrimary</color>
