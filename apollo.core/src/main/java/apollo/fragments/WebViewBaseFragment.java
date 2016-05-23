@@ -1,14 +1,18 @@
 package apollo.fragments;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -18,6 +22,7 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 
 import apollo.cache.AppCache;
+import apollo.core.ApolloApplication;
 import apollo.core.R;
 import apollo.data.model.Entity;
 import apollo.net.SyncHttpClient;
@@ -83,6 +88,20 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
         }
     }
 
+    protected WebChromeClient mChromeClient = new WebChromeClient() {
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            new AlertDialog.Builder(ApolloApplication.app()).setMessage(message)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).create().show();
+
+            return false;
+        }
+    };
+
     protected WebViewClient mWebViewClient = new WebViewClient() {
         private boolean receiveError = false;
 
@@ -139,7 +158,7 @@ public abstract class WebViewBaseFragment<T> extends EntityBaseFragment<T> {
         this.mStatusLayout = (StatusLayout) view.findViewById(R.id.layout_status);
         this.mWebView = (WebView)view.findViewById(R.id.webview);
         this.mWebView.setWebViewClient(this.mWebViewClient);
-
+        this.mWebView.setWebChromeClient(this.mChromeClient);
         this.initWebViews(mWebView);
     }
 
